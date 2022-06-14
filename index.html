@@ -114,19 +114,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li>
 <a href="#the-tidyverse" id="toc-the-tidyverse" class="nav-link" data-scroll-target="#the-tidyverse"> <span class="header-section-number">4</span> The tidyverse</a>
   <ul class="collapse">
-<li><a href="#loading-data" id="toc-loading-data" class="nav-link" data-scroll-target="#loading-data"> <span class="header-section-number">4.0.1</span> Loading data</a></li>
-  <li><a href="#piping" id="toc-piping" class="nav-link" data-scroll-target="#piping"> <span class="header-section-number">4.0.2</span> Piping</a></li>
-  <li><a href="#joing-tables" id="toc-joing-tables" class="nav-link" data-scroll-target="#joing-tables"> <span class="header-section-number">4.0.3</span> Joing tables</a></li>
-  <li><a href="#saving-data" id="toc-saving-data" class="nav-link" data-scroll-target="#saving-data"> <span class="header-section-number">4.0.4</span> Saving data</a></li>
+<li><a href="#loading-data" id="toc-loading-data" class="nav-link" data-scroll-target="#loading-data"> <span class="header-section-number">4.1</span> Loading data</a></li>
+  <li>
+<a href="#piping" id="toc-piping" class="nav-link" data-scroll-target="#piping"> <span class="header-section-number">4.2</span> Piping</a>
+  <ul class="collapse">
+<li><a href="#group-and-summarise" id="toc-group-and-summarise" class="nav-link" data-scroll-target="#group-and-summarise"> <span class="header-section-number">4.2.1</span> Group and summarise</a></li>
+  <li><a href="#select-filter-and-mutate" id="toc-select-filter-and-mutate" class="nav-link" data-scroll-target="#select-filter-and-mutate"> <span class="header-section-number">4.2.2</span> Select, filter and mutate</a></li>
+  <li><a href="#renaming-columns" id="toc-renaming-columns" class="nav-link" data-scroll-target="#renaming-columns"> <span class="header-section-number">4.2.3</span> Renaming columns</a></li>
+  <li><a href="#arranging-results" id="toc-arranging-results" class="nav-link" data-scroll-target="#arranging-results"> <span class="header-section-number">4.2.4</span> Arranging results</a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions"> <span class="header-section-number">4.2.5</span> Questions</a></li>
+  </ul>
+</li>
+  <li><a href="#joing-tables" id="toc-joing-tables" class="nav-link" data-scroll-target="#joing-tables"> <span class="header-section-number">4.3</span> Joing tables</a></li>
+  <li><a href="#saving-data" id="toc-saving-data" class="nav-link" data-scroll-target="#saving-data"> <span class="header-section-number">4.4</span> Saving data</a></li>
+  <li><a href="#summary-questions-1" id="toc-summary-questions-1" class="nav-link" data-scroll-target="#summary-questions-1"> <span class="header-section-number">4.5</span> Summary questions</a></li>
   </ul>
 </li>
   <li>
 <a href="#graphing" id="toc-graphing" class="nav-link" data-scroll-target="#graphing"> <span class="header-section-number">5</span> Graphing</a>
   <ul class="collapse">
-<li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.1</span> exporting plots</a></li>
+<li>
+<a href="#geoms" id="toc-geoms" class="nav-link" data-scroll-target="#geoms"> <span class="header-section-number">5.1</span> Geoms</a>
+  <ul class="collapse">
+<li><a href="#scales" id="toc-scales" class="nav-link" data-scroll-target="#scales"> <span class="header-section-number">5.1.1</span> Scales</a></li>
+  <li><a href="#questions-1" id="toc-questions-1" class="nav-link" data-scroll-target="#questions-1"> <span class="header-section-number">5.1.2</span> Questions</a></li>
+  <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting"> <span class="header-section-number">5.1.3</span> Faceting</a></li>
+  <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes"> <span class="header-section-number">5.1.4</span> Themes</a></li>
   </ul>
 </li>
-  <li><a href="#statistical-analysis-in-r" id="toc-statistical-analysis-in-r" class="nav-link" data-scroll-target="#statistical-analysis-in-r"> <span class="header-section-number">6</span> Statistical analysis in R</a></li>
+  <li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.2</span> Exporting plots</a></li>
+  </ul>
+</li>
+  <li><a href="#statistical-analysis" id="toc-statistical-analysis" class="nav-link" data-scroll-target="#statistical-analysis"> <span class="header-section-number">6</span> Statistical analysis</a></li>
   <li><a href="#pretty-tables" id="toc-pretty-tables" class="nav-link" data-scroll-target="#pretty-tables"> <span class="header-section-number">7</span> Pretty tables</a></li>
   </ul></nav>
 </div>
@@ -154,7 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header><section id="introduction" class="level1" data-number="1"><h1 data-number="1">
 <span class="header-section-number">1</span> Introduction</h1>
-<p>This short course aims to take you through the process of writing your first program in the <strong>R statistical programming language</strong>. To do this we will be using the <strong>R Studio</strong> integrated development environment (IDE), a desktop application to support you in writing R scripts. R Studio supports your programming by flagging up errors in your code as you write it, and helping you manage your analysis environment by giving you quick access to tables, objects and graphs as you develop them. In addition, we will be looking at data analysis using the <strong>tidyverse</strong> code packages. The tidyverse is a standardised collection of supporting code that helps you read data, tidy it into a usable format, analyse it and present your findings.</p>
+<p>This short course aims to take you through the process of writing your first programs in the <strong>R statistical programming language</strong> to analyse national and international educational datasets. To do this we will be using the <strong>R Studio</strong> integrated development environment (IDE), a desktop application to support you in writing R scripts. R Studio supports your programming by flagging up errors in your code as you write it, and helping you manage your analysis environment by giving you quick access to tables, objects and graphs as you develop them. In addition, we will be looking at data analysis using the <strong>tidyverse</strong> code packages. The tidyverse is a standardised collection of supporting code that helps you read data, tidy it into a usable format, analyse it and present your findings.</p>
 <p>The R programming language offers similar functionality to an application based statistical tool such as SPSS, with more of a focus on you writing code to solve your problems, rather than using prebuilt tools. R is open source, meaning that it is free to use and that lots of people have written code in R that they have shared with others. R statistical libraries are some of the most comprehensive in existence. R is popular<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> in academia and industry, being used for everything from sales modelling to cancer detection.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># This example shows how R can pull data directly from the internet</span></span>
@@ -182,9 +201,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <pre><code>[1] Code output appears like this</code></pre>
 <p><code>Courier font</code> indicates keyboard presses, column names, column values and function names.</p>
-<p><span class="opt">Optional/alternative things to do are in orange</span></p>
-<p><span class="extra">Extra reading is in salmon</span></p>
-<p><span class="remind">Reminders are in purple</span></p>
+<p><code>&lt;table&gt;</code> Courier font within brackets describe values that can be passed to functions and that you need to define yourself. I.e. copying and pasting these code chunks verbatim won’t work!</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>specifies things to note</p>
+</div>
+</div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>gives warning messages</p>
+</div>
+</div>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>highlights issues that might break your code</p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>gives suggestions on how to do things in a better way</p>
+</div>
+</div>
 <div class="question">
 <p>Activities and coding tasks look like this</p>
 <div class="cell">
@@ -192,7 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-2"><a href="#cb3-2"></a>code <span class="sc">==</span> <span class="st">"do"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>An answer booklet for the exercises is <a href="https://docs.google.com/document/d/1Sou5oWav1ocvFdVH6xYid9Mi3-fdiENQn_OFhjUe3JQ/edit">here</a>.</p>
+<p>An answer booklet for the exercises is <a href="answers.html">here</a>.</p>
 </section><section id="getting-set-up" class="level1" data-number="2"><h1 data-number="2">
 <span class="header-section-number">2</span> Getting set up</h1>
 <section id="installation-on-your-own-machine" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="installation-on-your-own-machine">
@@ -348,11 +417,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 <li>Don’t use spaces in names</li>
 <li>Don’t start a name with a number</li>
-<li>Keep punctuation in object names to underscore (<code>_</code>) e.g.&nbsp;<code>my_name</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
+<li>Keep punctuation in object names to underscore (<code>_</code> and full stop <code>.</code>) e.g.&nbsp;<code>my_name</code>, <code>my.name</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
 <li>Stick to a convention for all your objects, it’ll make your code easier to read, e.g.
 <ul>
-<li>myName, yourName, ourName (this is camelCase<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>)</li>
-<li>my_name, your_name, our_name</li>
+<li>
+<code>myName</code>, <code>yourName</code>, <code>ourName</code> (this is <em>camelCase</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>)</li>
+<li>
+<code>my_name</code>, <code>your_name</code>, <code>our_name</code>
+</li>
 </ul>
 </li>
 </ul>
@@ -457,7 +529,7 @@ Note
 </div>
 </div>
 <p>Whilst R will understand what to do when we multiply numbers with numbers, it gets very confused and raises an error when we try to perform an <em>arithmetic</em> operation using <em>words</em> and <em>numbers</em>.</p>
-<p>To perform the calculation we will need to convert the <code>days_in_week</code> from a string to a number, using the <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric( )</a></code> command:</p>
+<p>To perform the calculation we will need to convert the <code>days_in_week</code> from a string to a number, using the <code>as.numeric(&lt;text&gt;)</code> command:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>weeks <span class="ot">&lt;-</span> <span class="dv">4</span></span>
 <span id="cb20-2"><a href="#cb20-2"></a>days_in_week <span class="ot">&lt;-</span> <span class="st">"7"</span></span>
@@ -548,7 +620,7 @@ Tip
 </div>
 </section><section id="stitching-things-together" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="stitching-things-together">
 <span class="header-section-number">3.5</span> Stitching things together</h2>
-<p>Printing raw results to the screen is fine, but you will want to combine results together to make them more meaningful. Annoyingly, R doesn’t allow you to print lots of things at the same time,<code>print("hello", "reader")</code> will bring up an error. To stitch things together ready for printing we use the <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code> command. Paste allows us to put combinations of text and objects on the same line:</p>
+<p>Printing raw results to the screen is fine, but you will want to combine results together to make them more meaningful. Annoyingly, R doesn’t allow you to print lots of things at the same time,<code>print("hello", "reader")</code> will bring up an error. To stitch things together ready for printing we use the <code>paste(&lt;object&gt;, &lt;text&gt;, ... )</code> command. Paste allows us to put combinations of text and objects on the same line:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>name <span class="ot">&lt;-</span> <span class="st">"Stone henge"</span></span>
 <span id="cb30-2"><a href="#cb30-2"></a>age <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
@@ -598,7 +670,7 @@ Tip
 </div>
 </section><section id="vectors" class="level2" data-number="3.6"><h2 data-number="3.6" class="anchored" data-anchor-id="vectors">
 <span class="header-section-number">3.6</span> Vectors</h2>
-<p>So far we have seen how R does simple calculations and prints out the results. Underlying all of this are <em>vectors</em>. Vectors are data structures that bring together one or data elements of the <em>same</em> datatype. E.g. we might have a <code>numeric</code> vector recording the grades of a class, or a <code>character</code> vector storing the gender of a set of students. To define a vector we use <code>c(item, item, ...)</code>, where <code>c</code> stands for <em>combine</em>. Vectors are very important to R, even declaring a single object, <code>x &lt;- 6</code>, is creating a vector of size one. Larger vectors look like this:</p>
+<p>So far we have seen how R does simple calculations and prints out the results. Underlying all of this are <em>vectors</em>. Vectors are data structures that bring together one or data elements of the <em>same</em> datatype. E.g. we might have a <code>numeric</code> vector recording the grades of a class, or a <code>character</code> vector storing the gender of a set of students. To define a vector we use <code>c(&lt;item&gt;, &lt;item&gt;, ...)</code>, where <code>c</code> stands for <em>combine</em>. Vectors are very important to R, even declaring a single object, <code>x &lt;- 6</code>, is creating a vector of size one. Larger vectors look like this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>maths_grade <span class="ot">&lt;-</span>   <span class="fu">c</span>(<span class="dv">5</span>,    <span class="dv">4</span>,    <span class="dv">4</span>,    <span class="dv">1</span>,     <span class="dv">7</span>,     <span class="dv">5</span>,     <span class="dv">8</span>)</span>
 <span id="cb36-2"><a href="#cb36-2"></a>english_grade <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>,    <span class="dv">5</span>,    <span class="dv">3</span>,    <span class="dv">2</span>,     <span class="dv">3</span>,     <span class="dv">6</span>,     <span class="dv">9</span>)</span>
@@ -715,7 +787,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>There are several shortcuts that you can take when creating vectors. Instead of writing a whole sequence of numbers by hand, you can use the <code>seq(start, finish, step)</code> command. For example:</p>
+<p>There are several shortcuts that you can take when creating vectors. Instead of writing a whole sequence of numbers by hand, you can use the <code>seq(&lt;start&gt;, &lt;finish&gt;, &lt;step&gt;)</code> command. For example:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="co"># the step default is 1, so you can miss it from seq(1,10,1)</span></span>
 <span id="cb59-2"><a href="#cb59-2"></a><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>)   <span class="sc">==</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>)</span>
@@ -903,9 +975,22 @@ Try this out
 <p>The code above transforms data and converts it into a graph. It doesn’t have any comments, but you should hopefully be able to understand what a lot of the code does by just reading it. Can you guess what each line does? Try running the code by selecting parts of it and pressing <code>control</code> | <code>command</code> and <code>Enter</code></p>
 </div>
 </div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Core to the <em>tidyverse</em> is the idea of <em>tidy data</em>, a rule of thumb for creating datasets that can be easily manipulated, modeled and presented. <em>Tidy data</em> are datasets where each variable is a column and each observation a row.</p>
+</div>
+</div>
 <p>In this section you will look at some of the basic features of the tidyverse, with a focus <code>readxl</code> for loading data, <code>dplyr</code> for tidying data, and <code>ggplot2</code> for presenting your findings.</p>
-<section id="loading-data" class="level3" data-number="4.0.1"><h3 data-number="4.0.1" class="anchored" data-anchor-id="loading-data">
-<span class="header-section-number">4.0.1</span> Loading data</h3>
+<section id="loading-data" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="loading-data">
+<span class="header-section-number">4.1</span> Loading data</h2>
 <p>This section will look at how R stores data in <em>dataframes</em> (the equivalent of tables in a spreadsheet), and how we can access columns and rows from these dataframes. First we need to get some data into R so we can start analysing them. For this example we are going to be using GCSE results for English schools in 2018/19<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 <p>R can load data in all the standard statistical formats, including SPSS, SAS, Stata, CSV, SQL and Excel. For this example we are going to be loading school results and school details from an Excel file called <code>dfe_data.xlsx</code>.</p>
 <div class="question">
@@ -929,6 +1014,7 @@ Try this out
 <li>To find the location of a file in <em>Mac OSX</em> do the following: https://support.apple.com/en-gb/guide/mac-help/mchlp1774/mac</li>
 </ul>
 </div>
+<p>To load the data into R we need to use the <code>read_excel(&lt;file_location&gt;, &lt;sheet_name&gt;)</code> command, specifying the location and name of the file we are loading, and as we are reading an Excel file, we need to specify the sheet name within the Excel file. See the following code:</p>
 <div class="cell" data-context="setup">
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="co"># load the basic tidyverse libraries and readxl</span></span>
 <span id="cb68-2"><a href="#cb68-2"></a><span class="co"># readxl is for reading and writing Excel files </span></span>
@@ -945,7 +1031,6 @@ Try this out
 <span id="cb68-13"><a href="#cb68-13"></a>results <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"dfe_data.xlsx"</span>, <span class="st">"Results"</span>)</span>
 <span id="cb68-14"><a href="#cb68-14"></a>schools <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"dfe_data.xlsx"</span>, <span class="st">"Schools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="{callout-note}">
 <p>You might have found that you get an error if you don’t convert your backslashes <code>\</code> into forwardslashes <code>/</code>. It’s common mistake and very annoying. In most programming languages a backslash signifies the start of a special command, for example <code>\n</code> signifies a <code>newline</code>.</p>
 <p>With R there are three ways to get around the problem of backslashes in file locations, for the location:<code>"C:\myfolder\"</code> we could:</p>
 <ul>
@@ -956,13 +1041,12 @@ Try this out
 <li>use the inbuilt R command to deal with filenames: <code>r"[C:\myfolder\]"</code>
 </li>
 </ul>
-</div>
-<p>You might struggle to get the above code to work if you have your data files in a different location to your code files. If that is the case, you can give R the full address of where your files live, for me that was the following:</p>
+<p>If you have struggled to get the above code to work if you have your data files in a different location to your code files. If that is the case, you can give R the full address of where your files live, for me that was the following:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>results <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx"</span>, <span class="st">"Results"</span>)</span>
 <span id="cb69-2"><a href="#cb69-2"></a>schools <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx"</span>, <span class="st">"Schools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When you load the tables you might find that there is a warning:</p>
+<p>When you load the tables you will get some warnings:</p>
 <div class="callout-warning callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -976,7 +1060,7 @@ Warning
 <p>Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, : Expecting numeric in I27750 / R27750C9: got ‘SUPP’</p>
 </div>
 </div>
-<p>This is telling you that a column in the dataframe is nearly all <code>numeric</code>, except for some rows which are storing the <code>character</code> string <code>SUPP</code>. This is the DfE’s way of <em>suppressing</em> data for schools and subjects that are smaller than 5 students. We’ll deal with these when we come to cleaning our data.</p>
+<p>This warning is telling you that a column in the dataframe is nearly all <code>numeric</code>, except for some rows which are storing the <code>character</code> string <code>SUPP</code>. This is the DfE’s way of <em>suppressing</em> data for schools and subjects that are smaller than 5 students. We’ll deal with these when we come to cleaning our data.</p>
 <p>You can check that the tables have loaded correctly by typing the object names and running them (<code>control</code>|<code>command</code> and <code>Enter</code>)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1103,7 +1187,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>To get a good overview of what a table contains, you can use the <code>str</code> and <code>summary</code> commands.</p>
+<p>To get a good overview of what a table contains, you can use the <code>str(table_name)</code> and <code>summary(table_name)</code> commands.</p>
 </div>
 </div>
 <p>Often when performing calculations, you will meet the <code>NA</code> value, this will most likely derail your calculations:</p>
@@ -1135,7 +1219,7 @@ Tip
 </div>
 <div class="question">
 <ol type="1">
-<li>Can you spot the <em>five</em> errors in this code:</li>
+<li>Can you spot the <em>six</em> errors in this code:</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a><span class="fu">library</span>(tidyvrse)</span>
@@ -1181,11 +1265,11 @@ Tip
 
 </div>
 </div>
-</section><section id="piping" class="level3" data-number="4.0.2"><h3 data-number="4.0.2" class="anchored" data-anchor-id="piping">
-<span class="header-section-number">4.0.2</span> Piping</h3>
+</section><section id="piping" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="piping">
+<span class="header-section-number">4.2</span> Piping</h2>
 <p>Piping allows us to break down complex tasks into manageable chunks that can be written and tested one after another. There are several powerful commands in the tidyverse as part of the <em>dplyr</em> package that can help us <code>group</code>, <code>filter</code>, <code>select</code>, <code>mutate</code> and <code>summarise</code> datasets. With this small set of commands we can use piping to convert massive datasets into simple and useful results. Using the pipe <code>%&gt;%</code> command, we can feed the results from one command into the next command making for reusable and easy to read code.</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="images/pipe_drawing.svg" class="img-fluid figure-img" width="675"></p>
+<figure class="figure"><p><img src="images/pipe_drawing.svg" class="img-fluid figure-img"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">how piping works</figcaption><p></p>
 </figure>
 </div>
@@ -1274,10 +1358,10 @@ Note
 </div>
 </div>
 <p>Let’s look a little more closely at the commands we have just used.</p>
-<section id="group-and-summarise" class="level4" data-number="4.0.2.1"><h4 data-number="4.0.2.1" class="anchored" data-anchor-id="group-and-summarise">
-<span class="header-section-number">4.0.2.1</span> Group and summarise</h4>
-<p><code>group_by()</code> collects data together using one or more column values, you can then perform calculations using that grouping.</p>
-<p><code>summarise</code> performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and the given <em>grouping</em> columns.</p>
+<section id="group-and-summarise" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="group-and-summarise">
+<span class="header-section-number">4.2.1</span> Group and summarise</h3>
+<p><code>group_by(&lt;column&gt;, &lt;column&gt;)</code> collects data together using one or more column values, you can then perform calculations using that grouping.</p>
+<p><code>summarise(&lt;col_name&gt; = &lt;calculation&gt;)</code> performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and the given <em>grouping</em> columns.</p>
 <p><code>ungroup()</code> gets rid of any current grouping.</p>
 <p>Taking another example, we might want to find the number of students taking each subject in the <code>results</code> table, e.g.&nbsp;the number of GCSE CS students entered in 2018/19</p>
 <div class="cell">
@@ -1382,11 +1466,11 @@ using the `.groups` argument.</code></pre>
 
 </div>
 </div>
-</section><section id="select-filter-and-mutate" class="level4" data-number="4.0.2.2"><h4 data-number="4.0.2.2" class="anchored" data-anchor-id="select-filter-and-mutate">
-<span class="header-section-number">4.0.2.2</span> Select, filter and mutate</h4>
-<p><code>select</code> let’s us pick which columns we want to display.</p>
-<p><code>filter</code> takes one or more criteria, allowing us to only display the rows that meet our requirements.</p>
-<p><code>mutate</code> creates a column based on a set value, or one or more other columns. It’s similar to <code>summarise</code>, but it doesn’t get rid of all the other non-grouped columns or reduce the number of rows in a grouping.</p>
+</section><section id="select-filter-and-mutate" class="level3" data-number="4.2.2"><h3 data-number="4.2.2" class="anchored" data-anchor-id="select-filter-and-mutate">
+<span class="header-section-number">4.2.2</span> Select, filter and mutate</h3>
+<p><code>select(&lt;column&gt;, &lt;column&gt;, ...)</code> let’s us pick which columns we want to display.</p>
+<p><code>filter(&lt;column&gt; &lt;comparison&gt; &lt;value&gt;)</code> takes one or more criteria, allowing us to only display the rows that meet our requirements.</p>
+<p><code>mutate(&lt;col_name&gt; = &lt;calculation&gt;)</code> creates a column based on a set value, or one or more other columns. It’s similar to <code>summarise</code>, but it doesn’t get rid of all the other non-grouped columns or reduce the number of rows in a grouping.</p>
 <p>Let’s take another example. Imagine we only want to know details about the schools where they had students entering <code>GCSE Chinese</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb100"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a>results <span class="sc">%&gt;%</span> </span>
@@ -1431,17 +1515,7 @@ using the `.groups` argument.</code></pre>
 2 136359 Dartford Grammar School            150 Chinese          82 0.547</code></pre>
 </div>
 </div>
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can see in the last example that we had two <code>filters</code>, one after another. This acts like an <code>AND</code>, i.e.&nbsp;the code <code>filters</code> for <code>Description == "Chinese"</code> <em>AND</em> <code>Grade == "Total number entered"</code>. If you want to <em>AND</em> your filters you can also put them together, as shown below:</p>
+<p>You can see in the last example that we had two <code>filters</code>, one after another. This acts like an <code>AND</code>, i.e.&nbsp;the code <code>filters</code> for <code>Description == "Chinese"</code> <em>AND</em> <code>Grade == "Total number entered"</code>. If you want to <em>AND</em> your filters you can also put them together, as shown below, with a comma separating them <code>,</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb104"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1"></a>results <span class="sc">%&gt;%</span> </span>
 <span id="cb104-2"><a href="#cb104-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>,</span>
@@ -1467,7 +1541,7 @@ Note
 <p>You might want to <code>OR</code> your filter, for example finding all the results that are either <code>"Chinese"</code> <code>OR</code> <code>"French"</code>. You can do this using the bar <code>|</code> character:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb106"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb106-2"><a href="#cb106-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span> <span class="sc">|</span> <span class="co"># the bar character finds </span></span>
+<span id="cb106-2"><a href="#cb106-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span> <span class="sc">|</span> <span class="co"># the bar character is the same as OR </span></span>
 <span id="cb106-3"><a href="#cb106-3"></a>         Description <span class="sc">==</span> <span class="st">"French"</span>,</span>
 <span id="cb106-4"><a href="#cb106-4"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb106-5"><a href="#cb106-5"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1489,8 +1563,6 @@ Note
 </div>
 </div>
 <p>Using commas <code>,</code> and bars <code>|</code> you can create complex filters.</p>
-</div>
-</div>
 <div class="question">
 <p>Adjust the above code to find all schools where over 60% of students take German, or another subject or subjects of your choice.</p>
 </div>
@@ -1540,15 +1612,34 @@ Important
 # ... with 1,039 more rows</code></pre>
 </div>
 </div>
-</section><section id="arranging-results" class="level4" data-number="4.0.2.3"><h4 data-number="4.0.2.3" class="anchored" data-anchor-id="arranging-results">
-<span class="header-section-number">4.0.2.3</span> Arranging results</h4>
-<p>The results returned by pipes can be huge, so it’s a good idea to store them in objects and explore them in the <em>Environment</em> window where you can sort and search within the output. There might also be times when you want to order/<code>arrange</code> the outputs. We can do this quite easily in the tidyverse by using the <code>arrange()</code> function. In the example below we are arranging the output by the <code>desc</code>ending value of the <code>total</code> providers, followed by the school <code>Phase</code> name (ordering any rows where total is the same; e.g.&nbsp;rows 18 and 19).</p>
+</section><section id="renaming-columns" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="renaming-columns">
+<span class="header-section-number">4.2.3</span> Renaming columns</h3>
+<p>Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g.&nbsp;<em>BCBG10B</em> and <em>BCBG11.</em> To rename columns in the tidyverse we use the <code>rename(&lt;old_name&gt; = &lt;new_name&gt;)</code> command. For example, if you wanted to rename the rather confusing schools column called <code>Open</code> you would do the following:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb110-2"><a href="#cb110-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb110-3"><a href="#cb110-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb110-4"><a href="#cb110-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb110-5"><a href="#cb110-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total), Phase)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb110-2"><a href="#cb110-2"></a>  <span class="fu">rename</span>(<span class="at">Status =</span> Open) <span class="sc">%&gt;%</span></span>
+<span id="cb110-3"><a href="#cb110-3"></a>  <span class="fu">select</span>(ID, Status, TypeOfEstablishment) <span class="sc">%&gt;%</span></span>
+<span id="cb110-4"><a href="#cb110-4"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 x 3
+      ID Status TypeOfEstablishment           
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;                         
+1 100000 Open   Voluntary aided school        
+2 100001 Open   Other independent school      
+3 100002 Open   Other independent school      
+4 100003 Open   Other independent school      
+5 100004 Closed Local authority nursery school</code></pre>
+</div>
+</div>
+</section><section id="arranging-results" class="level3" data-number="4.2.4"><h3 data-number="4.2.4" class="anchored" data-anchor-id="arranging-results">
+<span class="header-section-number">4.2.4</span> Arranging results</h3>
+<p>The results returned by pipes can be huge, so it’s a good idea to store them in objects and explore them in the <em>Environment</em> window where you can sort and search within the output. There might also be times when you want to order/<code>arrange</code> the outputs. We can do this quite easily in the tidyverse by using the <code>arrange(&lt;column_name&gt;)</code> function. In the example below we are arranging the output by the <code>desc</code>ending value of the <code>total</code> providers, followed by the school <code>Phase</code> name (this allows the ordering any rows where total is the same; e.g.&nbsp;rows 18 and 19).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb112-2"><a href="#cb112-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-3"><a href="#cb112-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-4"><a href="#cb112-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-5"><a href="#cb112-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total), Phase)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20 x 3
 # Groups:   Phase [8]
@@ -1578,12 +1669,12 @@ Important
 </div>
 <p>If you want to show the results by <code>Phase</code>, then <code>total</code> schools, we need to change the order within <code>arrange</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb112-2"><a href="#cb112-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb112-3"><a href="#cb112-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb112-4"><a href="#cb112-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb112-5"><a href="#cb112-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Phase), <span class="fu">desc</span>(total)) <span class="sc">%&gt;%</span></span>
-<span id="cb112-6"><a href="#cb112-6"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="co"># returns the top 10 results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb114-2"><a href="#cb114-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb114-3"><a href="#cb114-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb114-4"><a href="#cb114-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb114-5"><a href="#cb114-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Phase), <span class="fu">desc</span>(total)) <span class="sc">%&gt;%</span></span>
+<span id="cb114-6"><a href="#cb114-6"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="co"># returns the top 10 results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 x 3
 # Groups:   Phase [4]
@@ -1601,30 +1692,30 @@ Important
 10 Not applicable Mixed   3925</code></pre>
 </div>
 </div>
-</section><section id="summary-questions-1" class="level4" data-number="4.0.2.4"><h4 data-number="4.0.2.4" class="anchored" data-anchor-id="summary-questions-1">
-<span class="header-section-number">4.0.2.4</span> Summary questions</h4>
-<div class="questions">
+</section><section id="questions" class="level3" data-number="4.2.5"><h3 data-number="4.2.5" class="anchored" data-anchor-id="questions">
+<span class="header-section-number">4.2.5</span> Questions</h3>
+<div class="question">
 <ol type="1">
 <li>Predict what this code does:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb114-2"><a href="#cb114-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb114-3"><a href="#cb114-3"></a>  <span class="fu">filter</span>(TypeOfEstablishment <span class="sc">==</span> <span class="st">"Pupil referral unit"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb114-4"><a href="#cb114-4"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
-<span id="cb114-5"><a href="#cb114-5"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), </span>
-<span id="cb114-6"><a href="#cb114-6"></a>            <span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys <span class="sc">+</span> NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb114-7"><a href="#cb114-7"></a>            <span class="at">average_boys =</span> <span class="fu">mean</span>(NumberOfBoys, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb114-8"><a href="#cb114-8"></a>            <span class="at">average_girls =</span> <span class="fu">mean</span>(NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb116-2"><a href="#cb116-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-3"><a href="#cb116-3"></a>  <span class="fu">filter</span>(TypeOfEstablishment <span class="sc">==</span> <span class="st">"Pupil referral unit"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-4"><a href="#cb116-4"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb116-5"><a href="#cb116-5"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), </span>
+<span id="cb116-6"><a href="#cb116-6"></a>            <span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys <span class="sc">+</span> NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb116-7"><a href="#cb116-7"></a>            <span class="at">average_boys =</span> <span class="fu">mean</span>(NumberOfBoys, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb116-8"><a href="#cb116-8"></a>            <span class="at">average_girls =</span> <span class="fu">mean</span>(NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>What are the 6 errors in this code:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1"></a>schools</span>
-<span id="cb115-2"><a href="#cb115-2"></a>  <span class="fu">filter</span>(<span class="at">Gender =</span> <span class="st">"boys"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb115-3"><a href="#cb115-3"></a>  <span class="fu">fitler</span>(TypeOfEstablishment <span class="sc">==</span> Free schools) <span class="sc">%&gt;%</span></span>
-<span id="cb115-4"><a href="#cb115-4"></a>  <span class="fu">summarise</span>(<span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1"></a>schools</span>
+<span id="cb117-2"><a href="#cb117-2"></a>  <span class="fu">filter</span>(<span class="at">Gender =</span> <span class="st">"boys"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb117-3"><a href="#cb117-3"></a>  <span class="fu">fitler</span>(TypeOfEstablishment <span class="sc">==</span> Free schools) <span class="sc">%&gt;%</span></span>
+<span id="cb117-4"><a href="#cb117-4"></a>  <span class="fu">summarise</span>(<span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
@@ -1672,11 +1763,14 @@ Important
 
 </div>
 </div>
-</section></section><section id="joing-tables" class="level3" data-number="4.0.3"><h3 data-number="4.0.3" class="anchored" data-anchor-id="joing-tables">
-<span class="header-section-number">4.0.3</span> Joing tables</h3>
+</section></section><section id="joing-tables" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="joing-tables">
+<span class="header-section-number">4.3</span> Joing tables</h2>
 <p>We currently have two tables of data, the <code>results</code> table and the <code>schools</code> table. Wouldn’t it be great if we could combine the school <em>details</em> with the <em>results</em> of the school? It would then allow us to run models looking at the impact of school demographics on exam entries and results.</p>
-<p>There are several different join commands in R, the command we are interested in <code>left_join()</code>. In short, this command will take one table, and link it with rows from the other table that match a given column or columns. This matches the <code>left_join</code> diagram shown in the helpsheet below:</p>
-<p><embed src="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" class="img-fluid"></p>
+<p>There are several different join commands in R, the command we are interested in <code>left_join(&lt;table_1&gt;, &lt;table_2&gt;, &lt;matching_column&gt;)</code>. In short, this command will take one table, and link it with rows from the other table that match a given column or columns. This matches the <code>left_join</code> diagram shown in the helpsheet below:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/left_join.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1692,50 +1786,230 @@ Note
 </div>
 <p>We want to join each results to matching schools in the schools table, i.e.&nbsp;only include the details about schools where results exist. If school X doesn’t have any results for 2019 we shouldn’t copy it over, as it won’t have any rows in the results table that matches its <code>ID</code> .</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now check it works by running the following command that selects data from the results table (e.g.&nbsp;<code>Description</code>, <code>Grade</code>) and data from the schools table (e.g.&nbsp;<code>FSM</code>, <code>NumberOfBoys</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1"></a>data_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb117-2"><a href="#cb117-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
-<span id="cb117-3"><a href="#cb117-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb117-4"><a href="#cb117-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
-<span id="cb117-5"><a href="#cb117-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1"></a>data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb119-2"><a href="#cb119-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
+<span id="cb119-3"><a href="#cb119-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb119-4"><a href="#cb119-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
+<span id="cb119-5"><a href="#cb119-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 458 x 7
+       ID Total_students Description Entries   FSM NumberOfBoys NumberOfGirls
+    &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;
+ 1 100001            107 Chinese          33 0                0           752
+ 2 137181            171 Chinese          61 0.383          591           542
+ 3 100053            137 Chinese           1 0.263          668           340
+ 4 100054            107 Chinese           1 0.189          146           879
+ 5 100065            132 Chinese           5 0             1137            89
+ 6 100076            103 Chinese           1 0                0           929
+ 7 138449            187 Chinese           1 0.342          654           490
+ 8 145315            188 Chinese           1 0.225          626           409
+ 9 141309            254 Chinese           1 0.11           907           704
+10 100192            221 Chinese           1 0.234          698           518
+# ... with 448 more rows</code></pre>
 </div>
-</section><section id="saving-data" class="level3" data-number="4.0.4"><h3 data-number="4.0.4" class="anchored" data-anchor-id="saving-data">
-<span class="header-section-number">4.0.4</span> Saving data</h3>
+</div>
+</section><section id="saving-data" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="saving-data">
+<span class="header-section-number">4.4</span> Saving data</h2>
 <p>As we have already noted, with exploratory data analysis it’s useful to store results in objects to use later. We might want to store our findings more permanently to use later or share with others, saving them as <code>CSV</code>, <code>Excel</code> or <code>SPSS</code> files.</p>
-<p>The easiest way to do this in R is to use the <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> function. This function lets you specify the name of the object you want to save, along with where you want to save it.:</p>
+<p>The easiest way to do this in R is to use the <code>write.csv(&lt;table&gt;, &lt;location&gt;)</code> function. This function lets you specify the name of the table object you want to save, along with where you want to save it.:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a>data_output <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb118-2"><a href="#cb118-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
-<span id="cb118-3"><a href="#cb118-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb118-4"><a href="#cb118-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
-<span id="cb118-5"><a href="#cb118-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span>
-<span id="cb118-6"><a href="#cb118-6"></a></span>
-<span id="cb118-7"><a href="#cb118-7"></a><span class="fu">write.csv</span>(data_output, <span class="st">"file location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1"></a>data_output <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb121-2"><a href="#cb121-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
+<span id="cb121-3"><a href="#cb121-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb121-4"><a href="#cb121-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
+<span id="cb121-5"><a href="#cb121-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span>
+<span id="cb121-6"><a href="#cb121-6"></a></span>
+<span id="cb121-7"><a href="#cb121-7"></a><span class="fu">write.csv</span>(data_output, <span class="st">"file location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You can write excel files using the <code>openxlsx</code> package</p>
-<section id="summary-questions-2" class="level4" data-number="4.0.4.1"><h4 data-number="4.0.4.1" class="anchored" data-anchor-id="summary-questions-2">
-<span class="header-section-number">4.0.4.1</span> Summary questions</h4>
-</section></section></section><section id="graphing" class="level1" data-number="5"><h1 data-number="5">
-<span class="header-section-number">5</span> Graphing</h1>
-<p>The tidyverse includes the incredibly powerful <code>ggplot2</code> package. This package is pretty much the industry standard for making graphs for publication. <code>ggplot2</code> is built on the <em>grammar of graphics</em> where you build graphs by specifying underlying attributes and layering geometric objects on top of each other. In the diagram below you can see how a graph is built from a scale, a coordinate system and geometric objects.</p>
-<p><img src="images/grammar_of_graphics.png" class="img-fluid"></p>
-<p>Graphs are layered: - Data - - Aesthetics - Scales - Geometric objects - Statistics - Facets - Coordinate system</p>
-<p>geom_bar</p>
-<p>geom_point</p>
-<p>geom_text</p>
-<p>facets</p>
-<p>levels</p>
-<p>colours</p>
-<section id="exporting-plots" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="exporting-plots">
-<span class="header-section-number">5.1</span> exporting plots</h2>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can write excel files using the <code>openxlsx</code> package, more information <a href="https://www.rdocumentation.org/packages/openxlsx/versions/4.2.5">here</a></p>
+</div>
+</div>
+</section><section id="summary-questions-1" class="level2" data-number="4.5"><h2 data-number="4.5" class="anchored" data-anchor-id="summary-questions-1">
+<span class="header-section-number">4.5</span> Summary questions</h2>
+<p>To check your understanding of this section you will be attempting to analyse a subset of the TIMSS 2019 Grade 8 school questionnaire. This dataset includes data on school locations, facilities, student demographics and teachers.</p>
+<p>You can access the cut down TIMSS school dataset as an Excel file <a href="https://docs.google.com/spreadsheets/d/1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B/edit?usp=sharing&amp;ouid=105471590997842250248">here</a>. Save it to your computer and load it into an object called <code>TIMSS</code> using the <code>read_excel(&lt;location_of_file&gt;, &lt;sheet_name&gt;)</code> command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a>TIMSS <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:\Users\Peter\Google Drive\Kings\R intro\code\TIMSS.xlsx"</span>, <span class="st">"school_data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Take a look at the data using the Environment panel, it’s rather confusing as Excel didn’t store the full question names. This data originally comes from SPSS and it is possible to look at the names in R, but here we might need to do some renaming to make the dataset a little more manageable.</p>
+<p><img src="images/exploring_timss.png" class="img-fluid"></p>
+<p>You can find more details on the question mappings in the TIMSS <a href="https://timss2019.org/international-database/downloads/T19_UG_Supp1-international-context-questionnaires.pdf">context document</a>, pages 308-311.</p>
+<p>Please attempt the following questions:</p>
+<div class="question">
+<ol type="1">
+<li>Work out how many schools are in each country <code>CNTRY</code>.</li>
+</ol>
 <div class="cell">
 
 </div>
-</section></section><section id="statistical-analysis-in-r" class="level1" data-number="6"><h1 data-number="6">
-<span class="header-section-number">6</span> Statistical analysis in R</h1>
+<ol start="2" type="1">
+<li>Only for those headteachers that have a masters or equivalent degree qualification (<code>BCBG21B</code>), what is the average number of years they have been in their school (<code>BCBG19</code>)?</li>
+</ol>
+<div class="cell">
+
+</div>
+<ol start="3" type="1">
+<li>For the students in each country: What is the average and median instructional time in hours, in a typical day? Can you arrange the results so we find the hardest working country? You need to use <code>BCBG06B</code>, and hint, this column might not be <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric()</a></code> just yet…</li>
+</ol>
+<div class="cell">
+
+</div>
+<ol start="4" type="1">
+<li>For each country, what percentage of their schools have students with a <code>Very high</code> desire to do well in school (<code>BCBG14I</code>)? One of the countries is missing, why?</li>
+</ol>
+<div class="cell">
+
+</div>
+<ol start="5" type="1">
+<li><p>Save the results of one of the above questions using <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>.</p></li>
+<li><p>[EXTENSION] explore the data for “To what degree is each of the following a problem among <eighth grade=""> students in your school?” <code>BCBG16E</code> - Profanity; <code>BCBG16J</code> - Intimidation or verbal abuse of teachers or staff</eighth></p></li>
+</ol>
+</div>
+</section></section><section id="graphing" class="level1" data-number="5"><h1 data-number="5">
+<span class="header-section-number">5</span> Graphing</h1>
+<p>The tidyverse includes the incredibly powerful <code>ggplot2</code> package. This package is pretty much the industry standard for making graphs for publication. <code>ggplot2</code> is built on the <em>grammar of graphics</em> where you build graphs by specifying underlying attributes and layering geometric objects on top of each other. In the diagram below you can see how a graph is built from <em>geometric objects</em> (the things that are plotted such as points and bars) a <em>scale</em>, and <em>plot annotations</em> (e.g.&nbsp;a key, title etc). You can also used <em>faceting</em> to split one graph into multiple plots, allowing you to easily compare different groupings.</p>
+<div id="fig-anonymous-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><a href="http://vita.had.co.nz/papers/layered-grammar.pdf"><img src="images/grammarofgraphics.svg" class="img-fluid figure-img"></a></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">adapted from <em>A Layered Grammar of Graphics</em>, Wickham, 2010</figcaption><p></p>
+</figure>
+</div>
+<p>The basic structure of <code>ggplot</code> code is to combine different graphing elements through the use of the <code>+</code> operator. To demonstrate this, let’s look at the relationship between the percentage of males in a school and the percentage of the school taking <code>computer science</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1"></a><span class="co"># join our data</span></span>
+<span id="cb123-2"><a href="#cb123-2"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb123-3"><a href="#cb123-3"></a></span>
+<span id="cb123-4"><a href="#cb123-4"></a><span class="co"># wrangle our data</span></span>
+<span id="cb123-5"><a href="#cb123-5"></a><span class="co"># grepl looks for the word “Comput” in the string Description</span></span>
+<span id="cb123-6"><a href="#cb123-6"></a>computing_test <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span></span>
+<span id="cb123-7"><a href="#cb123-7"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Comput"</span>, Description),</span>
+<span id="cb123-8"><a href="#cb123-8"></a>         Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
+<span id="cb123-9"><a href="#cb123-9"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span></span>
+<span id="cb123-10"><a href="#cb123-10"></a>  <span class="fu">select</span>(ID, Total_students, Entries, </span>
+<span id="cb123-11"><a href="#cb123-11"></a>         FSM, NumberOfBoys, NumberOfGirls) <span class="sc">%&gt;%</span></span>
+<span id="cb123-12"><a href="#cb123-12"></a>  <span class="fu">mutate</span>(<span class="at">per_male =</span></span>
+<span id="cb123-13"><a href="#cb123-13"></a>           NumberOfBoys <span class="sc">/</span> (NumberOfBoys <span class="sc">+</span> NumberOfGirls),</span>
+<span id="cb123-14"><a href="#cb123-14"></a>        <span class="at">per_taking_cs =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
+<span id="cb123-15"><a href="#cb123-15"></a><span class="fu">arrange</span>(<span class="fu">desc</span>(per_taking_cs))</span>
+<span id="cb123-16"><a href="#cb123-16"></a></span>
+<span id="cb123-17"><a href="#cb123-17"></a><span class="co"># display a graph of the results</span></span>
+<span id="cb123-18"><a href="#cb123-18"></a><span class="fu">ggplot</span>(<span class="at">data=</span>computing_test, </span>
+<span id="cb123-19"><a href="#cb123-19"></a>       <span class="fu">aes</span>(<span class="at">x=</span>per_male, <span class="at">y=</span>per_taking_cs)) <span class="sc">+</span></span>
+<span id="cb123-20"><a href="#cb123-20"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb123-21"><a href="#cb123-21"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>) <span class="sc">+</span></span>
+<span id="cb123-22"><a href="#cb123-22"></a>  <span class="fu">ggtitle</span>(<span class="st">"The more boys, the more CS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-190-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Hopefully you can work out what lines 1-17 do from the previous chapters, let’s focus on the <code>ggplot</code> commands</p>
+<ul>
+<li>18-19 these lines set up the <code>ggplot</code> giving it the table object <code>computing_test</code> as its data input and setting up the aesthetics for the rest of the graph elements using columns from <code>computing_test</code>. <code>x=per_male</code> and <code>y=per_taking_cs</code> will pass down to the geometric objects so we don’t have to define these <code>x</code> and <code>y</code> axis items again.</li>
+<li>20 using the data and <code>aes</code> values defined on lines 18-19, <code>geom_point</code> uses the <code>x</code> and <code>y</code> values to draw a point for each school in our dataset. There are lots of different parameters we could give <code>geom_point</code>, but here we are content with using the defaults.</li>
+<li>21 we add another geometric object on top of points, this time we add a line of best fit <code>geom_smooth</code>, again this geometric object uses the values specified on lines 18-19, and we define the <code>method</code> as <code>lm</code>, to calculate a linear model line of best fit.</li>
+<li>22 finally we customise the title of the graph, <code>ggtitle</code>, ready for display.</li>
+</ul>
+<section id="geoms" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="geoms">
+<span class="header-section-number">5.1</span> Geoms</h2>
+<p>There are about 40 different geometric objects in ggplot, allowing you to create almost any sort of graph. We will be exploring a few of them in detail, but if you want to explore others, please follow some of the links below:</p>
+<ul>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a> for creating bar charts and histograms</li>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a> for plotting single points</li>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a> for connecting points together and showing trends</li>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a> for adding text labels to data points</li>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a> for representing the range of data</li>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a> for creating heat maps</li>
+<li>
+<a href="https://ggplot2.tidyverse.org/reference/geom_map.html">geom_map</a> for adding geographic maps</li>
+</ul>
+<p>geom_bar</p>
+<p>groups colours</p>
+<p>geom_line</p>
+<p>geom_text</p>
+<section id="scales" class="level3" data-number="5.1.1"><h3 data-number="5.1.1" class="anchored" data-anchor-id="scales">
+<span class="header-section-number">5.1.1</span> Scales</h3>
+</section><section id="questions-1" class="level3" data-number="5.1.2"><h3 data-number="5.1.2" class="anchored" data-anchor-id="questions-1">
+<span class="header-section-number">5.1.2</span> Questions</h3>
+<ol type="1">
+<li>
+</li></ol></section><section id="faceting" class="level3" data-number="5.1.3"><h3 data-number="5.1.3" class="anchored" data-anchor-id="faceting">
+<span class="header-section-number">5.1.3</span> Faceting</h3>
+<p>Additionally <code>facet</code>s</p>
+</section><section id="themes" class="level3" data-number="5.1.4"><h3 data-number="5.1.4" class="anchored" data-anchor-id="themes">
+<span class="header-section-number">5.1.4</span> Themes</h3>
+</section></section><section id="exporting-plots" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="exporting-plots">
+<span class="header-section-number">5.2</span> Exporting plots</h2>
+<div class="cell">
+
+</div>
+</section></section><section id="statistical-analysis" class="level1" data-number="6"><h1 data-number="6">
+<span class="header-section-number">6</span> Statistical analysis</h1>
+<p>There are probably statistical libraries in R to do every sort of test you might ever need. The full list of R packages sits on the (cran server)[https://cran.r-project.org/web/packages/available_packages_by_name.html].</p>
+<p>However, R comes pre-packaged with some common statistical tools, for example, the <code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code> and linear model regression <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>.</p>
+<p>Let’s look at an example to see if poverty (<code>FSM</code>) is related to achieving the highest grade (<code>9</code>) in <code>GCSE Mathematics</code>,</p>
+<p>First we need to <em>wrangle</em> our data, that is get it in a form where we can build a statistical model. We need to mutate a column for <code>per_top</code>, the percentage of a school’s maths class getting the top grade, we will compare this against <code>FSM</code>, the percentage of a school on free school meals</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a><span class="co"># wrangle our data</span></span>
+<span id="cb124-2"><a href="#cb124-2"></a>top_grades <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb124-3"><a href="#cb124-3"></a><span class="fu">filter</span>(Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
+<span id="cb124-4"><a href="#cb124-4"></a>                         Open<span class="sc">==</span><span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb124-5"><a href="#cb124-5"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
+<span id="cb124-6"><a href="#cb124-6"></a>  <span class="fu">mutate</span>(<span class="at">Sub_students =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
+<span id="cb124-7"><a href="#cb124-7"></a>  <span class="fu">filter</span>(Grade <span class="sc">!=</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb124-8"><a href="#cb124-8"></a>  <span class="fu">select</span>(ID, Description, Grade, </span>
+<span id="cb124-9"><a href="#cb124-9"></a>Entries, Sub_students, FSM, Open) <span class="sc">%&gt;%</span></span>
+<span id="cb124-10"><a href="#cb124-10"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(Grade))) <span class="sc">%&gt;%</span></span>
+<span id="cb124-11"><a href="#cb124-11"></a>  <span class="fu">mutate</span>(<span class="at">top_grade =</span> <span class="fu">ifelse</span>(Grade <span class="sc">==</span> <span class="dv">9</span>, Entries, <span class="dv">0</span>),</span>
+<span id="cb124-12"><a href="#cb124-12"></a>         <span class="at">per_top =</span> top_grade <span class="sc">/</span> Sub_students)</span>
+<span id="cb124-13"><a href="#cb124-13"></a></span>
+<span id="cb124-14"><a href="#cb124-14"></a><span class="co">#filter to select only the maths results</span></span>
+<span id="cb124-15"><a href="#cb124-15"></a>top_maths <span class="ot">&lt;-</span> top_grades <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Mathematics"</span>)</span>
+<span id="cb124-16"><a href="#cb124-16"></a></span>
+<span id="cb124-17"><a href="#cb124-17"></a><span class="co"># Build the model</span></span>
+<span id="cb124-18"><a href="#cb124-18"></a>result_maths <span class="ot">&lt;-</span> <span class="fu">lm</span>(per_top <span class="sc">~</span> FSM, top_maths )</span>
+<span id="cb124-19"><a href="#cb124-19"></a></span>
+<span id="cb124-20"><a href="#cb124-20"></a><span class="co"># Output the result</span></span>
+<span id="cb124-21"><a href="#cb124-21"></a><span class="fu">summary</span>(result_maths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = per_top ~ FSM, data = top_maths)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.08648 -0.05081 -0.02103  0.01879  0.79588 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.086476   0.003539  24.434   &lt;2e-16 ***
+FSM         -0.236189   0.027284  -8.657   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.09347 on 1099 degrees of freedom
+Multiple R-squared:  0.06384,   Adjusted R-squared:  0.06298 
+F-statistic: 74.94 on 1 and 1099 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
 <p>geom_smooth</p>
 <p>geom_box</p>
 </section><section id="pretty-tables" class="level1" data-number="7"><h1 data-number="7">
@@ -1743,7 +2017,7 @@ Note
 </section><div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 <ol>
 <li id="fn1" role="doc-endnote"><p>As of October 2020, Tiobe has R as the 9th most popular programming language: <a href="">https://www.tiobe.com/tiobe-index/</a> Many other, contradictory, ranking systems exist.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>object names with full stops in them are also allowed e.g.&nbsp;<code>my.name</code>, but not recommended!<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><code>camelCase</code> has a capital letter in the front or front and middle forming the camel’s hump(s), there are multiple <a href="https://en.wikipedia.org/wiki/Naming_convention_(programming)">naming conventions</a>, it doesn’t matter what you pick, just stick to one of them<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3" role="doc-endnote"><p><code>camelCase</code> has a capital letter in the front or front and middle forming the camel’s hump(s), there are multiple <a href="https://en.wikipedia.org/wiki/Naming_convention_(programming)">naming conventions</a>, it doesn’t matter what you pick, just stick to one of them<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4" role="doc-endnote"><p>packages contain functionality that isn’t built into R by default, but you can choose to load or install them to meet the needs of your tasks. For example you have code packages to deal with SPSS data, and other packages to run machine learning algorithms. Nearly all R packages are free to use! You’ll sometimes see the words package and library used interchangeably, technically the library is the place where the packages are stored.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5" role="doc-endnote"><p>Data is from https://www.compare-school-performance.service.gov.uk/download-data and https://get-information-schools.service.gov.uk/. Data for 2020 was witheld by the government and 2021 doesn’t include grades.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
