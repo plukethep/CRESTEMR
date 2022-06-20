@@ -1,0 +1,1091 @@
+---
+title: "CRESTEM-R ANSWERS"
+subtitle: "an introduction to analysing educational data"
+author: "Peter EJ Kemp"
+toc: true
+number-sections: true
+format:
+  # pdf:
+  #  code-line-numbers: true
+  #https://quarto.org/docs/authoring/callouts.html 
+  html:
+    code-line-numbers: true
+    code-link: true
+css: css/CRESTEMR.css
+execute:
+  cache: false
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(tidyverse)
+library(readxl)
+
+data_folder <- r"(C:/Users/Peter/Google Drive/Kings/R intro/code/)"
+#data_folder <- r"(C:/Users/w1926273/Google Drive/Kings/R intro/code/)"
+
+knitr::opts_knit$set(root.dir = data_folder)
+
+# this code actually runs to allow for datasets to be used
+results <- read_excel(paste0(data_folder, "dfe_data.xlsx"), "Results")
+schools <- read_excel(paste0(data_folder, "dfe_data.xlsx"), "Schools")
+
+# load TIMSS data
+TIMSS <- read_excel(paste0(data_folder, "TIMSS.xlsx"), "school_data")
+
+
+
+```
+
+# Introduction
+
+# Getting set up
+
+# Starting to code
+
+## Objects and instructions
+
+```{r code_intro_maths}
+HoursInYear <- 365 * 24
+print(HoursInYear) 
+```
+
+::: question
+Type the two examples above into your RStudio script file and check that they work. Adapt them to say your full name and give the number of `MinutesInADay`
+:::
+
+```{r}
+myname <- "Sheila"
+print(myname)
+
+MinutesInADay <- 24 * 60
+print(MinutesInADay) 
+```
+
+::: question
+what are the outputs of the following code snippets/what do they do? One of the examples might not output anything, why is that? Type the code into your script file to check your answers:
+
+code example 1
+
+```{r}
+#| eval: true
+rabbits <- 50
+feet <- 4
+
+totalfeet <- rabbits * feet
+print(totalfeet)
+```
+
+code example 2
+
+```{r}
+#| eval: true
+p <- 3.14 - 0.14
+r <- 5
+
+print(p * r^2)
+```
+
+code example 3
+
+```{r}
+tax <- 17.5
+price <- 4.50
+sales <- 128
+tax <- 20
+
+income <- (sales * price) * (1 + (tax/100))
+```
+
+The above code doesn't output anything as there isn't a print statement, let's add one:
+
+```{r}
+print(income)
+```
+
+:::
+
+## Naming objects
+
+::: question
+Which of these are valid R object names:
+
+-   `my_Number` - VALID
+-   `my-Number` - INVALID as it uses a hyphen
+-   `myNumber!` - INVALID as it uses an exclaimation mark
+-   `first name`- INVALID as it uses a space
+-   `FIRSTname` - VALID
+-   `i`         - VALID
+-   `3names`    - INVALID as it starts with a number
+-   `names3`    - VALID
+:::
+
+
+## Comments
+
+::: question
+Using only the comment `#` symbol, can you edit this code to *not* charge tax on top of the `total_sales`?
+
+```{r test_code_comments}
+#| eval: true
+# this prints the total cost of sales
+total_sales <- 4000
+# tax <- total_sales * 0.2
+
+cost <- total_sales #+ tax
+print(cost)
+```
+commenting out line 3 isn't absolutely necessary as the comment on line 5 does the job of snipping out the tax from the calcuation
+
+:::
+
+::: question
+Julie is exactly 40 years old today, this means that she has been alive for `40 * 12` or `480` months. How many weeks has she been alive for?
+
+-   use a sensible variable name.
+-   add a comment to explain what you have done,
+-   `print( )` the answer,
+-   \[Extension\] try and work out how many seconds old Julie is.
+
+```{r}
+years <- 40
+weeks <- years * 52 # multiple years by the number of weeks in a year
+print(weeks)
+
+# I could use the weeks object here, but use 365 days instead to better avoid rounding errors
+seconds <- years * 365 * 24 * 60 * 60
+```
+
+:::
+
+## Data types
+
+::: question
+1.  Can you spot the error(s) in this code and fix them so it outputs: "July is month 7"?
+
+```{r}
+#| eval: false
+#| class.source: "none"
+month <- "July"
+order <- 7
+  
+print(month)
+Print("is")
+print(month)
+print("order")
+```
+
+```{r}
+#| eval: false
+#| echo: true
+month <- "July"
+order <- 7
+  
+print(month)    
+print("is") #1 print needs a lowercase p
+print("month")    #2 month is a character not an object, use speech marks
+print(order)    #3 order is an object, not a character, so drop the speech marks
+```
+
+```{r}
+#| eval: true
+#| echo: false
+month <- "July"
+order <- 7
+  
+print(month)    
+print("is") #1 print needs a lowercase p
+print("month")    #2 month is a character not an object, use speech marks
+print(order)    #3 order is an object, not a character, so drop the speech marks
+```
+
+2.  Can you spot the error(s) in this code and fix it?
+
+```{r}
+#| eval: false
+#| class.source: "none"
+a <- 7
+b <- "8"
+c < - 3
+  
+print(a + b + c)
+```
+
+```{r}
+#| eval: true
+#| echo: true
+a <- 7
+b <- 8 #1 b is numeric so drop the speech marks
+c <- 3 #2 the arrow needs to be together, remove the space
+  
+print(a + b + c)
+```
+
+2.  Can you spot the error(s) in this code and fix it?
+
+```{r}
+#| eval: false
+#| class.source: "none"
+pass mark <- 50 
+exam_grade <- 50
+
+# did the student pass?
+print(exam_grade > pass_mark)
+```
+
+```{r}
+#| eval: true
+#| echo: true
+
+pass_mark <- 50 #1 the variable name can't have any spaces
+exam_grade <- 50
+
+# did the student pass?
+print(exam_grade >= pass_mark) #2 this needs to be >= as they had a passing grade
+```
+:::
+
+## Stitching things together
+
+::: question
+1.  What are the *five* errors in this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+place <- "Nantwich
+pop <- 17,424
+
+Print(paste(place "has a population of" , "pop"))
+```
+
+```{r}
+#| eval: true
+#| echo: true
+place <- "Nantwich" #1 missing speech mark
+pop <- 17424       #2 numbers can't have commas
+
+print(paste(place, "has a population of" , pop))
+#3 missing comma after place
+#4 pop is an object, remove the speech marks
+#5 capital P in print should be lower case
+```
+
+2.  Write code that stores `length` and `width` of a rectangular table and calculates and prints the total `area` in the format:
+
+```{r}
+#| echo: true
+length <- 10
+width  <- 5
+area <- length * width
+
+print(paste("table length:", length, "table width:", width, "area =", area ))
+```
+:::
+
+## Vectors
+
+::: question
+1.  Can you spot the *four* problems with this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+
+nums <- v(1,2,"3",4,7,2,2)
+sum(nums)
+mean(nums)
+# return a vector of all numbers greater than 2
+nums(nums >= 2)
+```
+
+```{r}
+#| eval: true
+
+nums <- c(1,2,3,4,7,2,2) 
+#1 a vector is declared using c(), not v()
+#2 3 should be numeric, so no need for speech marks
+# (though technically R would do this conversion for you?!)
+
+sum(nums)
+mean(nums)
+# return a vector of all numbers greater than 2
+nums[nums >= 2] #3 to pick items from another vector, use square brackets
+```
+
+2.  Create a vector to store the number of glasses of water you have drunk for each day in the last 7 days. Work out:
+    -   the average number of glasses for the week,
+    -   the total number of glasses,
+    -   the number of days where you drank less than 2 glasses (feel free to replace water with your own tipple: wine, coffee, tea, coke, etc.)
+
+```{r}
+#| eval: true
+#| echo: true
+glasses <- c(6,1,3,2,3,0)
+mean(glasses)
+sum(glasses)
+sum(glasses < 2)
+```
+
+3.  Using the vectors below, create a program that will find out the average grade for females taking English:
+
+```{r}
+#| eval: false
+english_grade <- c(8,5,3,2,3,6,9)
+genders <- c("F", "M", "M", "F", "M", "F", "M")
+```
+
+```{r}
+#| eval: true
+#| echo: true
+english_grade <- c(8,5,3,2,3,6,9)
+genders <- c("F", "M", "M", "F", "M", "F", "M")
+mean(english_grade[genders == "F"])
+
+```
+:::
+
+## Summary questions
+
+::: question
+1.  Describe three datatypes that you can use in your program?
+
+```{r}
+#| echo: true
+#| eval: true
+print("numeric for numbers")
+print("character for words/strings")
+print("logical for boolean values")
+```
+
+2.  What are two reasons that you might use comments?
+
+```{r}
+#| echo: true
+#| eval: true
+print("to make your code more understandable")
+print("to disable bits of code that you might want to reenable later")
+
+```
+
+3.  Which object names are valid?
+
+    -   my_name
+    -   your name
+    -   our-name
+    -   THYname
+
+```{r}
+#| echo: false
+#| eval: true
+print("my_name - VALID")
+print("your name - INVALID use of space")
+print("our-name - INVALID use of hyphen")
+print("THYname - VALID")
+```
+
+4.  Can you spot the *seven* errors in this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+
+stu1 <- 12
+2stu <- 13
+stu3 <- "15"
+
+# now work out the average of the ages
+avg < - (Stu1 + stu2 + stu3) / 3
+print("students are, on average, " + avg,  years old)
+```
+
+```{r}
+#| eval: true
+#| echo: true
+
+stu1 <- 12
+stu2 <- 13 #1 2stu to stu2, cannot start name with a number
+stu3 <- 15 #2 no need for speech marks on "15"
+
+# now work out the average of the ages
+avg <- (stu1 + stu2 + stu3) / 3 #3 broken arrow < - #4 capital letter on Stu1
+print(paste("students are, on average, ", avg, "years old"))
+#5 missing paste() 
+#6 + should be comma ,
+#7 missing speech marks on years old
+```
+
+5.  Write a program that stores objects for your `firstName` and `secondName.` Make it print out:
+
+```{r}
+#| eval: true
+#| echo: true
+# declare separate objects to store the first and last name
+firstName <- "Mike"
+secondName <- "Smith"
+
+# i use the paste here to concatenate the name parts together
+print(paste("Hello", firstName, secondName))
+```
+
+6.  Add comments to the code from the previous question explain how it works
+
+7.  Calculate the number of seconds in a week and print out `there are [num] seconds in a week`, where \[num\] is a number
+
+```{r}
+#| eval: true
+#| echo: true
+
+seconds <- 7 * 24 * 60 * 60
+print(paste("there are", seconds, "in a week"))
+```
+
+8.  \[Extension\] You have been given the vectors below that store distances and times between locations in England.
+    -   convert all the times in seconds
+    -   convert the distances into kilometres
+    -   find times shorter than 3 hours
+    -   calculate and print the origin and destination of trips over 150 miles
+
+```{r}
+#| eval: false
+#| echo: false
+origin <- c("Manchester", "London", "Cardiff", "Colchester", "Canterbury")
+dest <- c("London", "Cardiff", "Colchester", "Canterbury", "Manchester")
+time <- c(258, 233, 253, 131, 266) # in minutes
+dist <- c(200, 149, 224, 94, 308)  # in miles
+```
+
+```{r}
+#| eval: true
+#| echo: true
+origin <- c("Manchester", "London", "Cardiff", "Colchester", "Canterbury")
+dest <- c("London", "Cardiff", "Colchester", "Canterbury", "Manchester")
+time <- c(258, 233, 253, 131, 266) # in minutes
+dist <- c(200, 149, 224, 94, 308)  # in miles
+
+time * 60 * 60
+dist * 1.6
+time < 180
+print(paste(origin[dist > 150], dest[dist > 150]))
+```
+
+9.  \[Extension\] Calculate the number of seconds since 1970.
+
+```{r}
+#| eval: true
+#| echo: true
+this_year <- 2022
+focus_year <- 1970
+
+(this_year - focus_year) * 365 * 24 * 60 * 60
+```
+
+10. \[Extension\] find the `min`imum and `max`imum times and distances in Question 8, above.
+
+
+:::
+
+# The tidyverse
+
+## Loading data
+
+::: question
+1.  Can you spot the *five* errors in this code:
+
+```{r}
+#| eval: false
+#| echo: false
+#| class.source: "none"
+library(tidyvrse)
+
+setwd("C:\Users/Peter/Google Drive/Kings/R intro/code")
+results <- read_excel("dfe_data.xlsx", "Results)
+schools < read_excel("dfe_data.xlsx", "Schools")
+
+sum(results£Entries)
+```
+
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse) #1 spelling mistake on tidyverse
+
+setwd("C:/Users/Peter/Google Drive/Kings/R intro/code") #2 the first slash was a forward slash
+results <- read_excel("dfe_data.xlsx", "Results") #3 missing speech mark from Results
+schools <- read_excel("dfe_data.xlsx", "Schools") #4 missing tail on the assignment arrow <-
+
+sum(results$Entries, na.rm=TRUE) #5 £ used instead of a dollar # 6 missing na.rm
+```
+
+```{r}
+#| eval: true
+#| echo: false
+#| warning: false
+sum(results$Entries)
+```
+
+2.  What is the largest `Total_students` size?
+
+```{r}
+#| eval: true
+#| echo: true
+max(results$Total_students)
+```
+
+3.  How many different types of subject `Description` are there?
+
+```{r}
+#| eval: true
+#| echo: true
+unique(results$Description)
+# also:
+length(unique(results$Description))
+```
+
+4.  What's the average value for free school meals (`FSM`)?
+
+```{r}
+#| eval: true
+#| echo: true
+# This seems very low, it should be about ~18%, 
+# this is because it doesn't use NA values, the 
+# dfe set data for closed schools and private schools to 0(?!)
+mean(schools$FSM)
+```
+
+This seems very low, it should be about ~18%, this is because it doesn't use NA values, the dfe set data for closed schools and private schools to 0(?!)
+
+5.  What `Region` values exist for England?
+
+```{r}
+#| eval: true
+#| echo: true
+# You can see "Wales (pseudo)" here.
+unique(schools$Region)
+```
+
+6.  Load the `results` and `schools` tables and explore the data from the environment panel.
+
+7.  \[Extension\] What are the largest, minimum and average school cohort sizes? (hint, you'll need to *add* two fields on the `schools` table) \[Super Extension if you've done the vector section above\] can you get R to output the name of the largest school only using vectors and R?
+
+```{r}
+#| eval: true
+#| echo: true
+max(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)
+min(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)
+mean(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)
+
+# don't worry, we're going to learn about much easier ways of doing this!
+unique(
+  schools$Name[
+    schools$NumberOfBoys + schools$NumberOfGirls == 
+      max(schools$NumberOfBoys + schools$NumberOfGirls, 
+          na.rm = TRUE)])
+
+# the easier way is using dplyr, see chapter 4.
+schools %>% 
+  mutate(total = NumberOfBoys + NumberOfGirls) %>% 
+  filter(total == max(total, na.rm=TRUE)) %>% 
+  select(Name)
+
+```
+:::
+
+## Piping
+
+### Group and summarise
+
+::: question
+1.  Can you spot the *six* errors in this code:
+
+```{r}
+#| eval: false
+#| echo: false
+#| class.source: "none"
+
+starwars 
+  group_by("species") %>%
+  summarise(avg_weight == mean(mass, rm.na=true)) %>%
+
+```
+
+```{r}
+#| eval: false
+#| echo: true
+#| class.source: "none"
+
+starwars %>%  #1 missing pipe %>%
+  group_by(species) %>% #2 species shouldn't be in speech marks
+  summarise(avg_weight = mean(mass, na.rm=TRUE))
+  #3 this is an assignment, so no need for double =
+  #4 lower case TRUE in na.rm needs to be upper
+  #5 rm.na should be na.rm
+  #6 trailing pipe command %>% needs to be removed
+
+```
+
+```{r}
+#| eval: true
+#| echo: false
+#| class.source: "none"
+
+starwars %>%  #1 missing pipe %>%
+  group_by(species) %>% #2 species shouldn't be in speech marks
+  summarise(avg_weight = mean(mass, na.rm=TRUE))
+```
+
+2.  Using the `schools` table, find the maximum `FSM` value for each `LA`
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  group_by(LA) %>%
+  summarise(max_FSM = max(FSM, na.rm=TRUE))
+```
+
+3.  Using the `schools` table, find the mean `FSM` for each `OfstedRating`
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  group_by(OfstedRating) %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE))
+```
+
+4.  Using the *schools* table, find the mean `FSM` for each `LA`, also grouping by whether the school is `Open`
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+schools %>%
+  group_by(LA, Open) %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE))
+```
+
+5.  \[Extension\] Using the *results* table, find the total number of students entering exams by `School_type.`
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+results %>%
+  # we have to include School_type here to avoid 
+  # losing it in the second summarise command
+  group_by(ID, School_type) %>%
+  summarise(sch_entries = max(Total_students)) %>%
+  group_by(School_type) %>%
+  summarise(total = sum(sch_entries))
+```
+:::
+
+### Select, filter and mutate
+
+::: question
+Adjust the above code to find all schools where over 60% of students take German, or another subject of your choice.
+:::
+```{r}
+#| eval: false
+# we can find results for German OR Italian
+results %>% 
+  filter(Description == "German" | Description == "Italian") %>%
+  filter(Grade == "Total number entered") %>%
+  select(ID, School, Total_students,Description, Entries) %>%
+  mutate(per = Entries/Total_students) %>%
+  filter(per > 0.6)
+```
+
+::: question
+
+1.  Predict what this code does:
+
+It finds the average student size of pupil referral units by gender of school and gender of student.
+```{r}
+#| eval: true
+schools %>% 
+  filter(Open == "Open") %>% 
+  filter(TypeOfEstablishment == "Pupil referral unit") %>% 
+  group_by(Gender) %>%
+  summarise(n = n(), 
+            average = mean(NumberOfBoys + NumberOfGirls, na.rm = TRUE), 
+            average_boys = mean(NumberOfBoys, na.rm = TRUE), 
+            average_girls = mean(NumberOfGirls, na.rm = TRUE))
+```
+
+2.  What are the *six* errors in this code:
+```{r}
+#| eval: false
+schools
+  filter(Gender = "boys") %>%
+  fitler(TypeOfEstablishment == Free schools) %>%
+  summarise(average = mean(NumberOfBoys))
+```
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>% #1 missing pipe
+  #2 double == for comparison; #3 capital B in Boys
+  filter(Gender == "Boys") %>% 
+  #4 filter rather than fitler; #5 speech marks around "Free schools"
+  filter(TypeOfEstablishment == "Free schools") %>% 
+  summarise(average = mean(NumberOfBoys, na.rm = TRUE)) #6 missing na.rm = TRUE
+```
+
+3.  Display (`Select`) only the `ID`, `LA`, `Gender`, `OfstedRating` from a school
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  select(ID, LA, Gender, OfstedRating)
+```
+
+4.  Show all the Open schools that have exactly `400` girls. 
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  filter(NumberOfGirls == 400, 
+         Open == "Open")
+```
+
+5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`, and arrange them by descending `FSM`.
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  filter(OfstedRating == "Outstanding") %>%
+  select(ID, Name, FSM, TypeOfEstablishment) %>%
+  arrange(desc(FSM))
+```
+
+6.  Count the number (`n()`) of `Open` schools that have an `FSM` number of over `0.95` (You don't have to use `summarise`, but it helps)
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  summarise(n=n())
+
+# alternatively:
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  count()
+
+# alternatively:
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  nrow()
+
+```
+
+7.  How many `Open` schools in each (`group_by`) `Region` have more than `2000` students?
+
+```{r}
+#| eval: true
+#| echo: true
+# the order of mutate and filter doesn't matter here,
+# but group_by and summarise do!
+schools %>%
+  group_by(Region) %>%
+  mutate(total_students = NumberOfBoys + NumberOfGirls) %>%
+  filter(Open == "Open",
+         total_students > 2000) %>%
+  summarise(n=n())
+
+# alternatively, we can do without the mutate: 
+schools %>%
+  group_by(Region) %>%
+  filter(Open == "Open",
+         NumberOfBoys + NumberOfGirls > 2000) %>%
+  summarise(n=n())
+```
+
+8.  Count (`summarise`) the number of schools, grouped as both `Open` and `Closed` under each `OfstedRating`, make the `Open` results appear at the top of the table. Output the result to an object and explore it in the Environment area.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+schools %>%
+  group_by(OfstedRating, Open) %>%
+  summarise(n=n()) %>%
+  ungroup() %>%
+  arrange(desc(Open))
+```
+
+9.  \[Extension\] What's the average `FSM` rating for each `Gender` of school in each `Region`? Arrange the results so the most impoverished area appears first.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+schools %>%
+  group_by(Region, Gender) %>%
+  filter(Open == "Open") %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE)) %>%
+  ungroup() %>%
+  arrange(desc(mean_FSM))
+```
+:::
+
+### Renaming columns
+
+### Arranging results
+
+### Questions
+
+::: question
+
+1.  Predict what this code does:
+```{r}
+#| eval: true
+schools %>% 
+  filter(Open == "Open") %>% 
+  filter(TypeOfEstablishment == "Pupil referral unit") %>% 
+  group_by(Gender) %>%
+  summarise(n = n(), 
+            average = mean(NumberOfBoys + NumberOfGirls, na.rm = TRUE), 
+            average_boys = mean(NumberOfBoys, na.rm = TRUE), 
+            average_girls = mean(NumberOfGirls, na.rm = TRUE))
+```
+
+2.  What are the 6 errors in this code:
+
+```{r}
+#| eval: false
+schools
+  filter(Gender = "boys") %>%
+  fitler(TypeOfEstablishment == Free schools) %>%
+  summarise(average = mean(NumberOfBoys))
+```
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>% #1 missing pipe
+  #2 double == for comparison; #3 capital B in Boys
+  filter(Gender == "Boys") %>% 
+  #4 filter rather than fitler; #5 speech marks around "Free schools"
+  filter(TypeOfEstablishment == "Free schools") %>% 
+  summarise(average = mean(NumberOfBoys, na.rm = TRUE)) #6 missing na.rm = TRUE
+```
+
+3.  Display (`Select`) only the `ID`, `LA`, `Gender`, `OfstedRating` from a school
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  select(ID, LA, Gender, OfstedRating)
+```
+
+4.  Show all the Open schools that have exactly `400` girls.
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  filter(NumberOfGirls == 400)
+```
+
+5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`, and arrange them by descending `FSM`.
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  filter(OfstedRating == "Outstanding") %>%
+  select(ID, Name, FSM, TypeOfEstablishment) %>%
+  arrange(desc(FSM))
+```
+
+6.  Count the number (`n()`) of `Open` schools that have an `FSM` number of over `0.95` (You don't have to use `summarise`, but it helps)
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  summarise(n=n())
+
+# alternatively:
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  count()
+
+# alternatively:
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  nrow()
+
+```
+
+7.  How many `Open` schools in each (`group_by`) `Region` have more than `2000` students?
+
+```{r}
+#| eval: true
+#| echo: true
+# the order of mutate and filter doesn't matter here,
+# but group_by and summarise do!
+schools %>%
+  group_by(Region) %>%
+  mutate(total_students = NumberOfBoys + NumberOfGirls) %>%
+  filter(Open == "Open",
+         total_students > 2000) %>%
+  summarise(n=n())
+
+# alternatively, we can do without the mutate: 
+schools %>%
+  group_by(Region) %>%
+  filter(Open == "Open",
+         NumberOfBoys + NumberOfGirls > 2000) %>%
+  summarise(n=n())
+```
+
+8.  Count (`summarise`) the number of schools, grouped as both `Open` and `Closed` under each `OfstedRating`, make the `Open` results appear at the top of the table. Output the result to an object and explore it in the Environment area.
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  group_by(OfstedRating, Open) %>%
+  summarise(n=n()) %>%
+  ungroup() %>%
+  arrange(desc(Open))
+```
+
+9.  \[Extension\] What's the average `FSM` rating for each `Gender` of school in each `Region`? `arrange` the results so the most impoverished area appears first.
+
+```{r}
+#| eval: true
+#| echo: true
+schools %>%
+  group_by(Region, Gender) %>%
+  filter(Open == "Open") %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE)) %>%
+  ungroup() %>%
+  arrange(desc(mean_FSM))
+```
+:::
+
+
+## Joing tables
+
+## Saving data
+
+## Summary questions
+
+::: question
+
+1. Work out how many schools are in each country `CNTRY`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  summarise(n = n())
+```
+
+2. For only those headteachers that have a masters or equivalent degree qualification (`BCBG21B`), what is the average number of years they have been a principal (`BCBG18`)?
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+TIMSS %>% 
+  filter(BCBG21B == "Yes") %>%
+  summarise(avg_years = mean(BCBG18, na.rm=TRUE))
+```
+
+3. For the students in each country: What is the average and median instructional time in hours (calculated from `BCBG06B`), in a typical day? Can you arrange the results so we find the hardest working country? HINT, you might want to mutate `BCBG06B` to make it `as.numeric()`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(BCBG06B = as.numeric(BCBG06B)) %>%
+  summarise(mean_teaching = mean(BCBG06B/60, na.rm=TRUE),
+            median_teaching = median(BCBG06B/60, na.rm=TRUE)) %>%
+  arrange(desc(median_teaching))
+```
+
+4. For each country, what percentage of their schools have students with a `Very high` desire to do well in school (`BCBG14I`)? One of the countries is missing, why?
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| 
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(total_schools = n()) %>%
+  filter(BCBG14I == "Very high") %>%
+  summarise(do_well = 100*(n() / unique(total_schools)))
+  
+# we can also work out the percentage for all the responses to this question
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(total_schools = n()) %>%
+  group_by(CNTRY, BCBG14I) %>%
+  summarise(do_well = 100*(n() / unique(total_schools)))
+
+# Russia is missing as there were no schools that gave "Very high" as a response to BCBG14I.
+# You can work this out by using the set difference command setdiff:
+very_high <- TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(total_schools = n()) %>%
+  filter(BCBG14I == "Very high") %>%
+  summarise(do_well = 100*(n() / unique(total_schools)))
+
+setdiff(unique(TIMSS$CNTRY), unique(very_high$CNTRY))
+```
+
+5. Save the results of one of the above questions using `write.csv()`.
+
+6. [EXTENSION] explore the data for "To what degree is each of the following a problem among eighth grade students in your school?" `BCBG16E` - Profanity; `BCBG16J` - Intimidation or verbal abuse of teachers or staff.
+
+:::
+
+# Graphing
+
+
+## exporting plots
+
+```{r}
+#| echo: false
+#| eval: false
+as.data.frame(
+  list(
+    origin = c("Manchester", "London", "Cardiff", "Colchester", "Canterbury"),
+    dest = c("London", "Cardiff", "Colchester", "Canterbury", "Manchester"),
+    time = c(258, 233, 253, 131, 266),
+    dist = c(200, 149, 224, 94, 308)))
+
+```
+
+# Statistical analysis in R
+
+geom_smooth
+
+geom_box
+
+# Pretty tables

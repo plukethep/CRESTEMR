@@ -1,0 +1,1977 @@
+---
+title: "CRESTEM-R"
+subtitle: "an introduction to analysing educational data"
+author: "Peter EJ Kemp"
+toc: true
+number-sections: true
+crossref: 
+  chapters: true
+format:
+  # pdf:
+  #   code-line-numbers: true
+  #https://quarto.org/docs/authoring/callouts.html 
+  html:
+    code-line-numbers: true
+    code-link: true
+css: css/CRESTEMR.css
+execute:
+  cache: false
+---
+
+```{r setup}
+#| include=FALSE
+library(glue)
+folder_images <- "images"
+```
+
+# Introduction
+
+This short course aims to take you through the process of writing your first programs in the **R statistical programming language** to analyse national and international educational datasets. To do this we will be using the **R Studio** integrated development environment (IDE), a desktop application to support you in writing R scripts. R Studio supports your programming by flagging up errors in your code as you write it, and helping you manage your analysis environment by giving you quick access to tables, objects and graphs as you develop them. In addition, we will be looking at data analysis using the **tidyverse** code packages. The tidyverse is a standardised collection of supporting code that helps you read data, tidy it into a usable format, analyse it and present your findings.
+
+The R programming language offers similar functionality to an application based statistical tool such as SPSS, with more of a focus on you writing code to solve your problems, rather than using prebuilt tools. R is open source, meaning that it is free to use and that lots of people have written code in R that they have shared with others. R statistical libraries are some of the most comprehensive in existence. R is popular[^1] in academia and industry, being used for everything from sales modelling to cancer detection.
+
+[^1]: As of October 2020, Tiobe has R as the 9th most popular programming language: [https://www.tiobe.com/tiobe-index/]() Many other, contradictory, ranking systems exist.
+
+```{r}
+#| warning: false
+#| message: false
+# This example shows how R can pull data directly from the internet
+# tidy it and start making graphs. All within 9 lines of code
+library(tidyverse)
+
+education <- read_csv(
+  "https://barrolee.github.io/BarroLeeDataSet/BLData/BL_v3_MF.csv")
+
+education %>%
+  filter(agefrom == 15, ageto == 24,
+         country %in% c("Germany","France","Italy","United Kingdom")) %>%
+  ggplot(aes(x=year, y=yr_sch, colour=country)) +
+  geom_point() +
+  geom_line()
+```
+
+Whilst it is possible to use R through menu systems and drop down tools, the focus of this course is to write your own R scripts. These are text files that will tell the computer how to go through the process of loading, cleaning, analysing and presenting data. The sequential and modular nature of these files makes it very easy to develop and test each stage separately, reuse code in the future, and share with others.
+
+This booklet is written with the following sections to support you:
+
+```{r example_code}
+# Code examples and questions appear like this
+a <- 1 + 3
+```
+
+```{=html}
+<pre><code>[1] Code output appears like this</code></pre>
+```
+`Courier font` indicates keyboard presses, column names, column values and function names.
+
+`<table>` Courier font within brackets describe values that can be passed to functions and that you need to define yourself. I.e. copying and pasting these code chunks verbatim won't work!
+
+::: callout-note
+specifies things to note
+:::
+
+::: callout-warning
+gives warning messages
+:::
+
+::: callout-important
+highlights issues that might break your code
+:::
+
+::: callout-tip
+gives suggestions on how to do things in a better way
+:::
+
+::: question
+Activities and coding tasks look like this
+
+```{r}
+#| eval: false
+what <- "does this"
+code == "do"
+```
+:::
+
+An answer booklet for the exercises is [here](CRESTEMR-answers.html).
+
+# Getting set up
+
+## Installation (on your own machine)
+
+1.  Install R (default settings should be fine)
+
+    a.  **Windows** users visit [here] (https://cran.r-project.org/bin/windows/base/R-4.2.0-win.exe)
+    b.  **Mac** users visit: [intel](https://cran.r-project.org/bin/macosx/base/R-4.2.0.pkg) [M1 Macs](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.2.0-arm64.pkg)
+
+2.  Install **RStudio**, visit [here]. (https://rstudio.com/products/rstudio/download/#download) and it should present you with the version suitable for your operating system.
+
+(If the above doesn't work follow the instructions [here](https://www.rstudio.com/products/rstudio/download/#download))
+
+## Installation (KCL restricted machine)
+
+1.  load the software center
+
+2.  Search for and install **"R Statistics"**
+
+    ![](images/software_centre_R.png)
+
+3.  Search for and install **"RStudio"**
+
+    ![](images/software_centre_RStudio.png)
+
+You might find this tutorial video helpful:
+
+https://vimeo.com/203516510
+
+## Setting up RStudio and the tidyverse
+
+1.  Open RStudio
+
+2.  On the bottom right-hand side, select **Packages**, then select **Install**, then type **"tidyverse"** into the Packages field of the new window:
+
+    ![](images/tidyverse_install.png)
+
+3.  Click Install and you should see things happening in the console (bottom left). Wait for the console activity to finish (it'll be downloading and checking packages).
+
+4.  Add a new R Script using the ![](images/RStudio_new_button.png) button
+
+    ![](images/RStudio_new_button_RScript.png){width="210" height="74"}
+
+5.  In the new R script, write the following:
+
+    ![](images/code_starwars.png){width="514"}
+
+6.  Select all the lines and press `Control` or `Command` and `Enter` on your keyboard at the same time. Alternatively, press the ![](images/RStudio-run.png){width="36"} button
+
+    ![](images/code_starwars_select.png){width="585"}
+
+7.  Check that you have the following in the console window:
+
+    ![](images/output_data_starwars.png)
+
+8.  That's it, you should be set up!
+
+9.  Any issues, please mail [peter.kemp\@kcl.ac.uk](mailto:peter.kemp@kcl.ac.uk)
+
+# Starting to code
+
+After adding a new R Script using the button ![](images/RStudio_new_button.png){width="27" height="29"}, there are four parts to R Studio's interface. For the moment we are most interested in the Script file section, top left.
+
+![](images/RStudio_interface.png){width="600"}
+
+## Objects and instructions
+
+In programming languages we can attach data to a name, this is called assigning a value to an object (you might also call them *variables*). To do this in R we use the `<-` arrow command. For example, I want to put the word `"Pete"` into an object called `myname` (note that words and sentences such as `"Pete"` need speech marks):
+
+```{r code_intro_text}
+myname <- "Pete"
+print(myname)
+```
+
+We can also perform quick calculations and assign them to objects:
+
+```{r code_intro_maths}
+HoursInYear <- 365 * 24
+print(HoursInYear) 
+```
+
+::: question
+Type the two examples above into your RStudio script file and check that they work. Adapt them to say your full name and give the number of `MinutesInADay`
+:::
+
+::: callout-tip
+Remember to select code and press `control` or `command` and `Enter` to run it
+:::
+
+Objects can form part of calculations, for example, the code below shows how we can use the number `HoursInYear` to (roughly!) calculate the number of `HoursInWeek`:
+
+```{r code_intro_variables}
+HoursInYear <- 365 * 24
+
+HoursInWeek <- HoursInYear / 52
+print(HoursInWeek)
+```
+
+Notice from the above we can perform the main arithmetic commands using keyboard symbols: `+` (add); `-` (minus); `*` (multiply); `/` (divide); `^` (power)
+
+Objects can change values when you run code. For example in the code below:
+
+```{r code_intro_variables_reassignment}
+a <- 2000
+b <- 5
+
+a <- b
+
+a <- a * b
+print(a)
+```
+
+What's going on here?
+
+-   line 1 sets `a` to equal 2000 (note: don't use commas in writing numbers `a <- 2,000` would bring up an error),
+-   line 2 sets `b` to equal 5,
+-   line 4 overwrites the value of `a` with the value stored in `b`, making object `a` now equal to 5
+-   line six is now `5 * 5`
+
+### Questions
+
+::: question
+what are the outputs of the following code snippets/what do they do? One of the examples might not output anything, why is that? Type the code into your script file to check your answers:
+
+code example 1
+
+```{r}
+#| eval: false
+rabbits <- 50
+feet <- 4
+
+totalfeet <- rabbits * feet
+print(totalfeet)
+```
+
+code example 2
+
+```{r}
+#| eval: false
+p <- 3.14 - 0.14
+r <- 5
+
+print(p * r^2)
+```
+
+code example 3
+
+```{r}
+tax <- 17.5
+price <- 4.50
+sales <- 128
+tax <- 20
+
+income <- (sales * price) * (1 + (tax/100))
+```
+:::
+
+## Naming objects
+
+Correctly naming objects is very important. You can give an object almost any name, but there are a few rules to follow:
+
+-   Name them something sensible
+-   R is case sensitive, `myName` is not equal to (`!=`) `myname`
+-   Don't use spaces in names
+-   Don't start a name with a number
+-   Keep punctuation in object names to underscore (`_` and full stop `.`) e.g. `my_name`, `my.name`[^2].
+-   Stick to a convention for all your objects, it'll make your code easier to read, e.g.
+    -   `myName`, `yourName`, `ourName` (this is _camelCase_[^2])
+    -   `my_name`, `your_name`, `our_name`
+
+[^2]: `camelCase` has a capital letter in the front or front and middle forming the camel's hump(s), there are multiple [naming conventions](https://en.wikipedia.org/wiki/Naming_convention_(programming)), it doesn't matter what you pick, just stick to one of them
+
+::: callout-important
+The actual name of an object has no effect on what it does (other than invalid names breaking your program!). For example `age <- "Barry"` is perfectly valid to R, it's just a real pain for a human to read.
+:::
+
+### Questions
+
+::: question
+Which of these are valid R object names:
+
+-   `my_Number`
+-   `my-Number`
+-   `myNumber!`
+-   `first name`
+-   `FIRSTname`
+-   `i`
+-   `3names`
+-   `names3`
+:::
+
+::: callout-note
+For more information on the R programming style guide, see [this](http://adv-r.had.co.nz/Style.html)
+:::
+
+## Comments
+
+Code can often look confusing and it's a good idea to add `# comments` to your code to make it more understandable for you and others. The computer ignores comments when running your code:
+
+```{r code_intro_comments}
+# this calculates the average sales per shop
+
+income1 <- 132
+income2 <- 665
+income3 <- 233
+income4 <- 1200
+
+shops <- 4 # everything after the hash is a comment
+
+avgSales <- sum(income1, income2, income3, income4) / shops  
+
+# sometimes you might want to comment out code that
+# is no longer needed, but might be useful later
+# standard_deviation <- sd(c(income1, income2, income3, income4) )
+# the above code isn't run
+
+print(avgSales) # but this code is
+```
+
+### Questions
+
+::: question
+Using only the comment `#` symbol, can you edit this code to *not* charge tax on top of the `total_sales`?
+
+```{r test_code_comments}
+#| eval: false
+# this prints the total cost of sales
+total_sales <- 4000
+tax <- total_sales * 0.2
+
+cost <- total_sales + tax
+print(cost)
+```
+:::
+
+To bring together everything that you have learnt so far, try this question:
+
+::: question
+Julie is exactly 40 years old today, this means that she has been alive for `40 * 12` or `480` months. How many weeks has she been alive for?
+
+-   use a sensible variable name.
+-   add a comment to explain what you have done,
+-   `print( )` the answer,
+-   \[Extension\] try and work out how many seconds old Julie is.
+:::
+
+## Datatypes {#sec-datatypes}
+
+We have already met two different *datatypes*, the *character* datatype for words and letters (e.g. `"Peter"`) and the *numeric* datatype for numbers (e.g. `12`). Datatypes tell R how to handle data in certain circumstances. Sometimes data will be of the wrong datatype and you will need to convert between datatypes.
+
+```{r code_intro_data_type_error}
+#| error=TRUE
+weeks <- 4
+days_in_week <- "7"
+
+# we now attempt to multiply a number by a string
+# but it doesn't work!
+total_days <- weeks * days_in_week 
+```
+
+Whilst R will understand what to do when we multiply numbers with numbers, it gets very confused and raises an error when we try to perform an *arithmetic* operation using *words* and *numbers*.
+
+To perform the calculation we will need to convert the `days_in_week` from a string to a number, using the `as.numeric(<text>)` command:
+
+```{r code_intro_data_type_convert}
+weeks <- 4
+days_in_week <- "7"
+
+# we now attempt to multiply a number by a string
+total_days <- weeks * as.numeric(days_in_week)
+```
+
+There is a *logical* datatype for boolean values of `TRUE` and `FALSE`. This will become a lot more useful later.
+
+```{r datatype_logical}
+legs_snake = TRUE # you can specify logical values directly
+dogs_legs = 4
+legs_dog = dogs_legs > 0 # or as part of a calculation
+
+# Do dog's have legs?
+print(legs_dog)
+```
+
+There are actually three datatypes for numbers in R, `numeric` for most of your work, the rarer `integer` specifically for whole numbers and the even rarer `complex` for complex numbers. When you are looking at categorical data, `factors` are used on top of the underlying datatype to store the different values, for example you might have a field of `character` to store `countries`, factors would then list the different countries stored in this character field.
+
+### Questions
+
+::: question
+1.  Can you spot the error(s) in this code and fix them so it outputs: "July is month 7"?
+
+```{r}
+#| eval: false
+#| class.source: "none"
+month <- "July"
+order <- 7
+  
+print(month)
+Print("is")
+print(month)
+print("order")
+```
+
+```{r}
+#| eval: false
+#| echo: false
+month <- "July"
+order <- 7
+  
+print(month)    
+print("is") #1 print needs a lowercase p
+print("month")    #2 month is a character not an object, use speech marks
+print(order)    #3 order is an object, not a character, so drop the speech marks
+```
+
+2.  Can you spot the error(s) in this code and fix it?
+
+```{r}
+#| eval: false
+#| class.source: "none"
+a <- 7
+b <- "8"
+c < - 3
+  
+print(a + b + c)
+```
+
+```{r}
+#| eval: false
+#| echo: false
+a <- 7
+b <- 8 #1 b is numeric so drop the speech marks
+c <- 3 #2 the arrow needs to be together, remove the space
+  
+print(a + b + c)
+```
+
+2.  Can you spot the error(s) in this code and fix it?
+
+```{r}
+#| eval: false
+#| class.source: "none"
+pass mark <- 50 
+exam_grade <- 50
+
+# did the student pass?
+print(exam_grade > pass_mark)
+```
+
+```{r}
+#| eval: false
+#| echo: false
+
+pass_mark <- 50 #1 the variable name can't have any spaces
+exam_grade <- 50
+
+# did the student pass?
+print(exam_grade >= pass_mark) # this needs to be >= as they had a passing grade
+```
+:::
+
+::: callout-tip
+If you want to find out the datatype of an object you can use the structure `str` command to give you more information about the object. In this instance `chr` means that `month` is of character datatype and `num` means it is of the numeric datatype.
+
+```{r}
+month <- "July"
+str(month)
+
+month <- 7
+str(month)
+```
+:::
+
+## Stitching things together
+
+Printing raw results to the screen is fine, but you will want to combine results together to make them more meaningful. Annoyingly, R doesn't allow you to print lots of things at the same time,`print("hello", "reader")` will bring up an error. To stitch things together ready for printing we use the `paste(<object>, <text>, ... )` command. Paste allows us to put combinations of text and objects on the same line:
+
+```{r code_intro_paste}
+name <- "Stone henge"
+age <- 5000
+
+# stitch the data together
+print(paste(name, "is", age, "years old"))
+```
+
+```{r code_intro_datatypes}
+name <- "The Queen"
+birth_year <- 1926
+
+# this gives the current year as a string
+this_year <- format(Sys.Date(), "%Y")
+# we could also have written this_year <- 2022
+
+# we need to convert the year 
+age <- as.numeric(this_year) - birth_year
+print(paste(name, "is roughly", age, ""))
+
+```
+
+### Questions
+
+::: question
+1.  What are the *five* errors in this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+place <- "Nantwich
+pop <- 17,424
+
+Print(paste(place "has a population of" , "pop"))
+```
+
+```{r}
+#| eval: false
+#| echo: false
+place <- "Nantwich" #1 missing speech mark
+pop <- 17424       #2 numbers can't have commas
+
+print(paste(place, "has a population of" , pop))
+#3 missing comma after place
+#4 pop is an object, remove the speech marks
+#5 capital P in print should be lower case
+```
+
+2.  Write code that stores `length` and `width` of a rectangular table and calculates and prints the total `area` in the format:
+
+```{r}
+#| echo: false
+length <- 10
+width  <- 5
+area <- length * width
+
+print(paste("table length:", length, "table width:", width, "area =", area ))
+```
+:::
+
+## Vectors
+
+So far we have seen how R does simple calculations and prints out the results. Underlying all of this are *vectors*. Vectors are data structures that bring together one or data elements of the *same* datatype. E.g. we might have a `numeric` vector recording the grades of a class, or a `character` vector storing the gender of a set of students. To define a vector we use `c(<item>, <item>, ...)`, where `c` stands for *combine*. Vectors are very important to R, even declaring a single object, `x <- 6`, is creating a vector of size one. Larger vectors look like this:
+
+```{r vectors}
+maths_grade <-   c(5,    4,    4,    1,     7,     5,     8)
+english_grade <- c(8,    5,    3,    2,     3,     6,     9)
+genders <-      c("F",  "M",  "M",  "F",   "M",   "F",   "M")
+students <-     c("Jo", "Al", "Mo", "Flo", "Olu", "Sam", "Jim")
+```
+
+You can quickly perform calculations across whole vectors:
+
+```{r}
+# convert all genders to the lower case form
+tolower(genders) 
+
+# raise everyone's maths grade(!?)
+maths_grade + 1
+
+# work out whether students did better on average in maths or english
+paste("Maths:", mean(maths_grade), "; English:", mean(english_grade))
+```
+
+We can also perform calculations across vectors, in the example below we can find out which students got a better grade in Maths than in English.
+
+```{r}
+# this compares each pair of values
+# e.g. the first item in maths_grade (5) with
+# the first item in english_grade (8)
+# and so on
+# This returns a logical vector of TRUE and FALSE
+maths_grade > english_grade
+
+# To work out how many students got a better grade 
+# in maths than in English we can apply sum()
+# to the logical vector. 
+# We know that TRUE == 1, FALSE == 0,
+# so sum() will count all the TRUEs
+sum(maths_grade > english_grade)
+
+# we can also use one vector to pick items from another vector
+# TRUE will pick an item, FALSE will ignore it
+# for each maths_grade > english_grade that is TRUE
+# the name in that position in the student vector will be shown
+students[maths_grade > english_grade]
+```
+
+```{r}
+# if you want to find out the average grade for
+# each student in maths and english
+# add both vectors together and divide by 2
+(maths_grade + english_grade) / 2
+```
+
+You should be careful when trying to compare vectors of different lengths. When combining vectors of different lengths, the shorter vector will match the length of the longer vector by wrapping its values around. For example if we try to combine a vector of the numbers 1 ot 10 with a two item logical vector `TRUE` `FALSE`, the logical vector will repeat 5 times: `c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)`. We can use this vector as a *mask* to return the odd numbers, TRUE means keep, FALSE means ignore:
+
+```{r}
+nums <- c(1,2,3,4,5,6,7,8,9,10)
+mask <- c(TRUE, FALSE) 
+
+# you can see the repeat of mask by pasting them together
+paste(nums, mask)
+# now to filter out the numbers we don't want
+nums[mask]
+```
+
+This might not seem very useful, but it comes in very handy when we want to perform a single calculation across a whole vector. For example, we want to find all the students who achieved grade 5 in english, the below code creates a vector of `5`s the same size as `english_grade`:
+
+```{r}
+# this can also be rewritten english_grade >= c(5)
+# note, when we are doing a comparison, we need to use double ==
+students[english_grade == 5]
+#which is the same as
+students[english_grade == c(5,5,5,5,5,5,5)]
+```
+
+::: callout-important
+When we are doing a comparison, we need to use double `==` equals sign. Using a single equals sign is the equivalent of an assignment `=` is the same as `<-`
+:::
+
+::: callout-tip
+There are several shortcuts that you can take when creating vectors. Instead of writing a whole sequence of numbers by hand, you can use the `seq(<start>, <finish>, <step>)` command. For example:
+
+```{r}
+#| eval: false
+# the step default is 1, so you can miss it from seq(1,10,1)
+seq(1,10)   == c(1,2,3,4,5,6,7,8,9,10)
+seq(1,10,2) == c(1,3,5,7,9)
+```
+
+This allows for some pretty short ways of solving quite complex problems, for example if you wanted to know the sum of all the [multiples of 3 and 5 below 1000](https://projecteuler.net/problem=1), you could write it like this:
+
+```{r}
+#| eval: false
+# the unique() command gives you the unique items in a vector
+sum(unique(c(seq(3, 999, 3), seq(5, 999, 5))))
+```
+
+Another shortcut is writing `T`, `F`, or `1`, `0` instead of the whole words `TRUE`, `FALSE`:
+
+```{r}
+#| eval: false
+c(T, F) == c(1, 0) == c(TRUE, FALSE)
+```
+:::
+
+### Questions
+
+::: question
+1.  Can you spot the *four* problems with this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+
+nums <- v(1,2,"3",4,7,2,2)
+sum(nums)
+mean(nums)
+# return a vector of all numbers greater than 2
+nums(nums >= 2)
+```
+
+```{r}
+#| eval: false
+#| echo: false
+#| class.source: "none"
+
+nums <- c(1,2,3,4,7,2,2) 
+#1 a vector is declared using c(), not v()
+#2 3 should be numeric, so no need for speech marks
+# (though technically R would do this conversion for you!)
+
+sum(nums)
+mean(nums)
+# return a vector of all numbers greater than 2
+nums[nums >= 2] #3 to pick items from another vector, use square brackets
+```
+
+2.  Create a vector to store the number of glasses of water you have drunk for each day in the last 7 days. Work out:
+    -   the average number of glasses for the week,
+    -   the total number of glasses,
+    -   the number of days where you drank less than 2 glasses (feel free to replace water with your own tipple: wine, coffee, tea, coke, etc.)
+
+```{r}
+#| eval: false
+#| echo: false
+glasses <- c(6,1,3,2,3,0)
+mean(glasses)
+sum(glasses)
+sum(glasses < 2)
+```
+
+3.  Using the vectors below, create a program that will find out the average grade for females taking English:
+
+```{r}
+#| eval: false
+english_grade <- c(8,5,3,2,3,6,9)
+genders <- c("F", "M", "M", "F", "M", "F", "M")
+```
+
+```{r}
+#| eval: false
+#| echo: false
+english_grade <- c(8,5,3,2,3,6,9)
+genders <- c("F", "M", "M", "F", "M", "F", "M")
+mean(english_grade[genders == "F"])
+
+```
+:::
+
+## Summary questions
+
+Now you have covered the basics of R, it's time for some questions to check your understanding. These questions will cover all the material you have read so far and don't be worried if you need to go back and check something. Exemplar answers are provided, but don't worry if your solution looks a little different, there are often multiple ways to achieve the same outcome.
+
+::: question
+1.  Describe three datatypes that you can use in your program?
+
+```{r}
+#| echo: false
+#| eval: false
+print("numeric for numbers")
+print("character for words/strings")
+print("logical for boolean values")
+```
+
+2.  What are two reasons that you might use comments?
+
+```{r}
+#| echo: false
+#| eval: false
+print("to make your code more understandable")
+print("to disable bits of code that you might want to reenable later")
+
+```
+
+3.  Which object names are valid?
+
+    -   `my_name`
+    -   `your name`
+    -   `our-name`
+    -   `THYname`
+
+```{r}
+#| echo: false
+#| eval: false
+print("my_name - VALID")
+print("your name - INVALID use of space")
+print("our-name - INVALID use of hyphen")
+print("THYname - VALID")
+```
+
+4.  Can you spot the *seven* errors in this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+
+stu1 <- 12
+2stu <- 13
+stu3 <- "15"
+
+# now work out the average of the ages
+avg < - (Stu1 + stu2 + stu3) / 3
+print("students are, on average, " + avg,  years old)
+```
+
+```{r}
+#| eval: false
+#| echo: false
+
+stu1 <- 12
+stu2 <- 13 #1 2stu to stu2, cannot start name with a number
+stu3 <- 15 #2 no need for speech marks on "15"
+
+# now work out the average of the ages
+avg <- (stu1 + stu2 + stu3) / 3 #3 broken arrow < - #4 capital letter on Stu1
+print(paste("students are, on average, ", avg, "years old"))
+#5 missing paste() 
+#6 + should be comma ,
+#7 missing speech marks on years old
+```
+
+5.  Write a program that stores objects for your `firstName` and `secondName.` Make it print out:
+
+```{r}
+#| eval: true
+#| echo: false
+
+firstName <- "Mike"
+secondName <- "Smith"
+
+print(paste("Hello", firstName, secondName))
+```
+
+(where Mike Smith is your name)
+
+6.  Add comments to the code from the previous question explain how it works
+
+7.  Calculate the number of seconds in a week and print out `there are [num] seconds in a week`, where \[num\] is a number
+
+```{r}
+#| eval: false
+#| echo: false
+
+seconds <- 7 * 24 * 60 * 60
+print(paste("there are", seconds, "in a week"))
+```
+
+8.  \[Extension\] You have been given the vectors below that store distances and times between locations in England.
+    -   convert all the times in seconds
+    -   convert the distances into kilometres
+    -   find times shorter than 3 hours
+    -   calculate and print the origin and destination of trips over 150 miles
+
+```{r}
+#| eval: false
+origin <- c("Manchester", "London", "Cardiff", "Colchester", "Canterbury")
+dest <- c("London", "Cardiff", "Colchester", "Canterbury", "Manchester")
+time <- c(258, 233, 253, 131, 266) # in minutes
+dist <- c(200, 149, 224, 94, 308)  # in miles
+```
+
+```{r}
+#| eval: false
+#| echo: false
+origin <- c("Manchester", "London", "Cardiff", "Colchester", "Canterbury")
+dest <- c("London", "Cardiff", "Colchester", "Canterbury", "Manchester")
+time <- c(258, 233, 253, 131, 266) # in minutes
+dist <- c(200, 149, 224, 94, 308)  # in miles
+
+time * 60 * 60
+dist * 1.6
+time < 180
+print(paste(origin[dist > 150], dest[dist > 150]))
+```
+
+9.  \[Extension\] Calculate the number of seconds since 1970.
+
+```{r}
+#| eval: false
+#| echo: false
+this_year <- 2022
+focus_year <- 1970
+
+(this_year - focus_year) * 365 * 24 * 60 * 60
+```
+
+10. \[Extension\] find the `min`imum and `max`imum times and distances in Question 8, above.
+:::
+
+# The tidyverse
+
+The tidyverse is a free collection of programming *packages*[^3] that will allow you to write code that imports data, tidys it, transforms it into useful datasets, visualises findings, creates statistical models and communicates findings to others data using a standardised set of commands.
+
+[^3]: packages contain functionality that isn't built into R by default, but you can choose to load or install them to meet the needs of your tasks. For example you have code packages to deal with SPSS data, and other packages to run machine learning algorithms. Nearly all R packages are free to use! You'll sometimes see the words package and library used interchangeably, technically the library is the place where the packages are stored.
+
+![Data science workflow - RStudio](images/data-science-workflow.png)
+
+For many people the tidyverse is the main reason that they use R. The tidyverse is used widely in government, academia, NGOs and industry, notable examples include the [Financial Times](https://johnburnmurdoch.github.io/slides/r-ggplot/#/) and the [BBC](https://bbc.github.io/rcookbook/). Code in the tidyverse can be (relatively) easily understood by others and *you*, when you come back to a project after several months.
+
+```{r}
+#| quiet: true
+#| warning: false
+#| message: false
+library(tidyverse)
+starwars %>% 
+  select(name, height, mass, species) %>%
+  filter(species != "Trandoshan",
+         mass < 1000) %>%
+  mutate(species = ifelse(species == "Human", 
+                          "Human", 
+                          "Other")) %>%
+  ggplot() +
+  geom_point(aes(x=height, y=mass, colour=species)) +
+  geom_smooth(aes(x=height, y=mass), 
+              method = "lm") +
+  facet_grid(.~species) +
+  theme(legend.position="bottom")
+```
+
+```{r}
+#| eval: false
+#| echo: false
+# really nice example of downloading raw data into R
+deaths <- read.csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/excess_mortality/excess_mortality.csv")
+
+ggplot(deaths %>% 
+         filter(location %in% c("United States", "United Kingdom", "Sweden", "Germany")) %>%
+         mutate(date = as.Date(date))) +
+  geom_line(aes(x = date, y = excess_per_million_proj_all_ages, colour=location))
+```
+
+::: callout-note
+## Try this out
+The code above transforms data and converts it into a graph. It doesn't have any comments, but you should hopefully be able to understand what a lot of the code does by just reading it. Can you guess what each line does? Try running the code by selecting parts of it and pressing `control` \| `command` and `Enter`
+:::
+
+::: callout-tip
+Core to the _tidyverse_ is the idea of _tidy data_, a rule of thumb for creating datasets that can be easily manipulated, modeled and presented. _Tidy data_ are datasets where each variable is a column and each observation a row.
+:::
+
+In this section you will look at some of the basic features of the tidyverse, with a focus `readxl` for loading data, `dplyr` for tidying data, and `ggplot2` for presenting your findings.
+
+## Loading data {#sec-loading}
+
+This section will look at how R stores data in *dataframes* (also known as _tibble_, the equivalent of tables in a spreadsheet, ), and how we can access columns and rows from these dataframes. First we need to get some data into R so we can start analysing them. For this example we are going to be using GCSE results for English schools in 2018/19[^4].
+
+[^4]: Data is from https://www.compare-school-performance.service.gov.uk/download-data and https://get-information-schools.service.gov.uk/. Data for 2020 was witheld by the government and 2021 doesn't include grades.
+
+R can load data in all the standard statistical formats, including SPSS, SAS, Stata, CSV, SQL and Excel. For this example we are going to be loading school results and school details from an Excel file called `dfe_data.xlsx`.
+
+::: question
+Download the `dfe_data.xlsx` Excel file from [here](https://drive.google.com/file/d/1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM/view) and save it to your computer where your R code file is.
+
+Open the file to see what it contains.
+
+Copy the location of the file (see next step for help)
+
+-   To find the location of a file in ***Windows*** do the following:
+    1.  Navigate to the location of the file in *Windows Explorer*:
+
+        ![](images/navigate_file_location.png)
+
+    2.  Click on the address bar
+
+        ![](images/select_file_location.png)
+
+    3.  Copy the location
+-   To find the location of a file in *Mac OSX* do the following:
+
+    1. Open _Finder_
+    
+    2. Navigate to the folder where you saved the Excel file
+    
+    3. Right click on the file name and select `Copy <name of file> as Pathname`
+    
+        ![](images/mac_pathnames.jpg)
+        
+    4. Alternatively, follow [this](https://support.apple.com/en-gb/guide/mac-help/mchlp1774/mac)
+  
+:::
+
+To load the data into R we need to use the `read_excel(<file_location>, <sheet_name>)` command, specifying the location and name of the file we are loading, and as we are reading an Excel file, we need to specify the sheet name within the Excel file. See the following code:
+
+```{r}
+#| eval: true
+#| warning: false
+# context: setup
+
+# load the basic tidyverse libraries and readxl
+# readxl is for reading and writing Excel files 
+# and not loaded by the tidyverse by default
+library(tidyverse)
+library(readxl)
+
+results <- read_excel("c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx", "Results")
+schools <- read_excel("c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx", "Schools")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: false
+# context: setup
+
+# load the basic tidyverse libraries and readxl
+# readxl is for reading and writing Excel files 
+# and not loaded by the tidyverse by default
+library(tidyverse)
+library(readxl)
+
+# set the working directory to be where your data is stored
+# note that you need to convert the backslashes \ in the address to forwardslashes /
+setwd("C:/Users/Peter/Google Drive/Kings/R intro/code")
+# setwd("C:/Users/w1926273/Google Drive/Kings/R intro/code")
+
+# then load the Results and Schools sheets from dfe_data.xlsx
+results <- read_excel("dfe_data.xlsx", "Results")
+schools <- read_excel("dfe_data.xlsx", "Schools")
+
+```
+
+You might have found that you get an error if you don't convert your backslashes `\` into forwardslashes `/`. It's common mistake and very annoying. In most programming languages a backslash signifies the start of a special command, for example `\n` signifies a `newline`.
+
+With R there are three ways to get around the problem of backslashes in file locations, for the location:`"C:\myfolder\"` we could:
+
+-   replace them with forwardslashes (as shown above):`"C:/myfolder/"`
+-   replace them with double backslashes (the special character specified by two backslashes is one backslash!):`"C:\\myfolder\\"`
+-   use the inbuilt R command to deal with filenames: `r"[C:\myfolder\]"`
+
+When you load the tables you will get some warnings:
+
+::: callout-warning
+Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, : Expecting numeric in I27750 / R27750C9: got 'SUPP'
+:::
+
+This warning is telling you that a column in the dataframe is nearly all `numeric`, except for some rows which are storing the `character` string `SUPP`. This is the DfE's way of *suppressing* data for schools and subjects that are smaller than 5 students. We'll deal with these when we come to cleaning our data.
+
+You can check that the tables have loaded correctly by typing the object names and running them (`control`\|`command` and `Enter`)
+
+```{r}
+results
+```
+
+Alternatively, click on the `Environment panel` and the table icon ![](images/icon_table.png) to explore each table:
+
+![](images/explorer_panel.png)
+
+![](images/table_view.png)
+
+Alternatively, you can also hold down `command`\|`control` and click on the table name in your R Script to view the table.
+
+::: callout-note
+To learn more about loading data from in other formats, e.g. SPSS and STATA, look at the tidyverse documentation for [haven](https://haven.tidyverse.org/).
+:::
+
+The `results` and `schools` dataframes are made up of multiple columns, with each column acting like a *vector*, which means each column stores values of only one datatype. If we look at the first four columns of the schools table, you can see the ID column is a `<dbl>` (`numeric`) and the other three columns are of type `<chr>` (`character`).
+
+```{r}
+#| echo: false
+# schools[1:4] %>% head(2)
+print("ID     LA     Name   TypeOfEstablish~")
+print("<dbl>  <chr>  <chr>  <chr>")
+```
+
+::: callout-note
+Vectors are data structures that bring together one or more data elements of the same datatype. E.g. we might have a numeric vector recording the grades of a class, or a character vector storing the gender of a set of students. To define a vector we use `c(item, item, ...)`, where `c` stands for combine. Vectors are very important to R, even declaring a single object, `x <- 6`, is creating a vector of size one.
+:::
+
+We can find out some general information about the tables we have loaded. `nrow` and `ncol` tell you about the dimensions of the table
+
+```{r}
+nrow(results)  # how many rows are in the results table
+
+ncol(results)  # how many columns are in the results table
+```
+
+If we want to know the names of the columns we can use the `names()` command that returns a vector:
+
+```{r}
+names(schools) # the column names of a table
+```
+
+As mentioned, the columns in the tables are very much like a collection of vectors, to access these columns we can put a `$` \[dollar sign\] after the name of a table. This allows us to see all the columns that table has, using the up and down arrows to select, press the `Tab` key to complete:
+
+![](images/dollar_fields.png)
+
+We can apply functions to the returned column/vector, for example: `sum`, `mean`, `median`, `max`, `min`, `sd`, `round`, `unique`, `summary`, `length`. To find all the different values contained in a column:
+
+```{r}
+unique(results$Qualification) # the unique values in this column
+```
+
+::: callout-tip
+To get a good overview of what a table contains, you can use the `str(table_name)` and `summary(table_name)` commands.
+:::
+
+Often when performing calculations, you will meet the `NA` value, this will most likely derail your calculations:
+
+```{r}
+mean(schools$NumberOfBoys)
+```
+
+The reason that the `mean` function is returning `NA` is because there are many schools that can't have any students recorded as being boys according to the DfE's data rules, i.e. schools that are closed. Rather than recording `NumberOfBoys` as 0 for these schools, the DfE has used `NA`. To get past this, make sure you remove these schools from your calculations, by adding `na.rm = TRUE` (*NA remove*) inside the function call:
+
+```{r}
+mean(schools$NumberOfBoys, na.rm = TRUE)
+```
+
+::: callout-tip
+Check your data for `NA`s before running calculations. The `na.rm = TRUE` can be applied to most mathematical functions
+:::
+
+### Questions
+
+::: question
+1.  Can you spot the *six* errors in this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+library(tidyvrse)
+
+setwd("C:\Users/Peter/Google Drive/Kings/R intro/code")
+results <- read_excel("testdata.xlsx", "Results)
+schools < read_excel("testdata.xlsx", "Schools")
+
+sum(results£Entries)
+
+```
+
+```{r}
+#| eval: false
+#| echo: false
+library(tidyverse) #1 spelling mistake on tidyverse
+
+setwd("C:/Users/Peter/Google Drive/Kings/R intro/code") #2 the first slash was a forward slash
+results <- read_excel("testdata.xlsx", "Results") #3 missing speech mark from Results
+schools <- read_excel("testdata.xlsx", "Schools") #4 missing tail on the assignment arrow <-
+
+sum(results$Entries, na.rm=TRUE) #5 £ used instead of a dollar
+```
+
+2.  What is the largest `Total_students` size?
+
+```{r}
+#| eval: false
+#| echo: false
+max(results$Total_students)
+```
+
+3.  How many different types of subject `Description` are there?
+
+```{r}
+#| eval: false
+#| echo: false
+unique(results$Description)
+# also:
+length(unique(results$Description))
+```
+
+4.  What's the average value for free school meals (`FSM`)?
+
+```{r}
+#| eval: false
+#| echo: false
+mean(schools$FSM)
+# this seems very low, it should be about ~23%, this is because it doesn't use NA values, setting missing data for closed schools and private schools to 0(?!)
+```
+
+5.  What `Region` values exist for England?
+
+```{r}
+#| eval: false
+#| echo: false
+unique(schools$Region)
+# You can see "Wales (pseudo)" here.
+```
+
+6.  Load the `results` and `schools` tables and explore the data from the environment panel.
+
+7.  \[Extension\] What are the largest, minimum and average school cohort sizes? (hint, you'll need to *add* two fields on the `schools` table) \[Super Extension if you've done the vector section above\] can you get R to output the name of the largest school only using vectors and R?
+
+```{r}
+#| eval: false
+#| echo: false
+max(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)
+min(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)
+mean(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)
+
+# don't worry, we're going to learn about much easier ways of doing this!
+"Lycee Francais Charles de Gaulle"
+unique(schools$Name[schools$NumberOfBoys + schools$NumberOfGirls == max(schools$NumberOfBoys + schools$NumberOfGirls, na.rm = TRUE)])
+
+# the easier way is using dplyr
+schools %>% 
+  mutate(total = NumberOfBoys + NumberOfGirls) %>% 
+  filter(total == max(total, na.rm=TRUE)) %>% 
+  select(Name)
+
+```
+:::
+
+## Piping
+
+Piping allows us to break down complex tasks into manageable chunks that can be written and tested one after another. There are several powerful commands in the tidyverse as part of the *dplyr* package that can help us `group`, `filter`, `select`, `mutate` and `summarise` datasets. With this small set of commands we can use piping to convert massive datasets into simple and useful results. Using the pipe `%>%` command, we can feed the results from one command into the next command making for reusable and easy to read code.
+
+![how piping works](images/pipe_drawing.svg){fig-align="center"}
+
+::: callout-note
+The pipe command we are using `%>%` is from the *maggrittr* package which is installed alongside the tidyverse. Recently *R* introduced another pipe `|>` which offers very similar functionality. The examples below use the `%>%` pipe.
+:::
+
+Let's look at a piped example by using the `results` table. This table contains a field called `Total_students` which we should be able to be used to work out the number of students in the school entering exams in 2018/19. But the data is very messy. For a school's results `Total_students`, i.e. total number of students in a cohort, appears for each subject a school entered students for, but not just that, it appears for each individual grade grouping!?
+
+```{r}
+results %>% 
+  filter(ID == 100055) %>% 
+  select(ID, Total_students, Description, Grade, Entries)
+```
+
+It's no good summing the total number of students in the `results` table together if the students are counted more than once for each school, e.g. school `ID 100055` has *165* entries for`Total_students`. What we want to do is to get one `Total_students` for each school, we can do this by grouping the results for each school together, then finding the unique value for `Total_students`. As each result row for the same school has the same `Total_students` value, `unique(Total_students)` will return a single value for each individual school.
+
+```{r}
+results %>% 
+  group_by(ID) %>%
+  summarise(Total = unique(Total_students)) 
+```
+
+::: callout-note
+we met the assignment command earlier `<-`. Within the tidyverse commands we normally use the equals sign instead `=`, but you can use `<-` if you like.
+:::
+
+Knowing that we now have one result for each school, we can now feed the individual school sizes into another `summarise`, to find the total number of students entered into an exam for the *whole* country in 2018/19:
+
+```{r}
+results %>% 
+  group_by(ID) %>%
+  summarise(Total = unique(Total_students))%>% 
+  ungroup() %>%
+  summarise(Grand_Total = sum(Total))
+```
+
+Let's look a little more closely at the commands we have just used.
+
+### Group and summarise
+
+`group_by(<column>, <column>)` collects data together using one or more column values, you can then perform calculations using that grouping.
+
+`summarise(<col_name> = <calculation>)` performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and the given *grouping* columns.
+
+`ungroup()` gets rid of any current grouping.
+
+Taking another example, we might want to find the number of students taking each subject in the `results` table, e.g. the number of GCSE CS students entered in 2018/19
+
+```{r}
+#| warning: false
+sub_entries <- results %>%
+  group_by(ID, Description) %>%
+  summarise(Total = max(Entries)) %>%
+  group_by(Description) %>%
+  summarise(Subject_Total = sum(Total, na.rm=TRUE))
+```
+
+1.  gets the `results` dataframe and *pipes* it into the next instruction, whatever results from all the piping will be stored `<-` into the `sub_entries` object
+
+2.  groups the results by individual *school* (`ID`) *and* by *subject* taken in that school (`Description`).
+
+3.  creates a new column called `Total` and stores the *maximum* value from the `Entries` column, i.e. the total number entered for each subject. As the piped data is currently grouped, this will work out the total number entered for every school and subject combination.
+
+4.  as the pipe currently stores the total number of students entered for each subject in each school, we now group on `Description` *only* to allow us to look at individual subjects across *all* schools
+
+5.  creates a new column called `Subject_Total` and stores the sum of all the `Total` in each `Description` grouping, i.e. the number of students taking each subject for the whole of England
+
+In the example below, we have assigned the output of the tidyverse pipe calculation into a new object called `sub_entries`. If you run the code you will be able to access at the results in the `Environment` panel rather than just the console.
+
+```{r}
+sub_entries # output the new object to the console
+```
+
+We can also use the `n()` command to count the number of schools that meet certain criteria. `n()` returns the number of rows in a table or group.
+
+```{r}
+#| eval: true
+schools %>% 
+  group_by(TypeOfEstablishment, Open) %>%
+  summarise(total = n())
+```
+
+::: question
+1.  Can you spot the *six* errors in this code:
+
+```{r}
+#| eval: false
+#| class.source: "none"
+
+starwars 
+  group_by("species") %>%
+  summarise(avg_weight == mean(mass, rm.na=true)) %>%
+
+```
+
+```{r}
+#| eval: false
+#| echo: false
+#| class.source: "none"
+
+starwars %>%  #1 missing pipe %>%
+  group_by(species) %>% #2 species shouldn't be in speech marks
+  summarise(avg_weight = mean(mass, na.rm=TRUE))
+  #3 this is an assignment, so no need for double =
+  #4 lower case TRUE in na.rm needs to be upper
+  #5 rm.na should be na.rm
+  #6 trailing pipe command %>% needs to be removed
+
+```
+
+2.  Using the `schools` table, find the maximum `FSM` value for each `LA`
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  group_by(LA) %>%
+  summarise(max_FSM = max(FSM, na.rm=TRUE))
+```
+
+3.  Using the `schools` table, find the mean `FSM` for each `OfstedRating`
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  group_by(OfstedRating) %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE))
+```
+
+4.  Using the `schools` table, find the mean `FSM` for each `LA`, also grouping by whether the school is `Open`
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  group_by(LA, Open) %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE))
+```
+
+5.  \[Extension\] Using the *results* table, find the total number of students entering exams by `School_type.`
+
+```{r}
+#| eval: false
+#| echo: false
+results %>%
+  group_by(ID, School_type) %>% # we have to include School_type here to avoid losing it in the second summarise command
+  summarise(sch_entries = max(Total_students)) %>%
+  group_by(School_type) %>%
+  summarise(total = sum(sch_entries))
+
+```
+:::
+
+### Select, filter and mutate
+
+`select(<column>, <column>, ...)` let's us pick which columns we want to display.
+
+`filter(<column> <comparison> <value>)` takes one or more criteria, allowing us to only display the rows that meet our requirements.
+
+`mutate(<col_name> = <calculation>)` creates a column based on a set value, or one or more other columns. It's similar to `summarise`, but it doesn't get rid of all the other non-grouped columns or reduce the number of rows in a grouping.
+
+Let's take another example. Imagine we only want to know details about the schools where they had students entering `GCSE Chinese`.
+
+```{r}
+#| eval: true
+results %>% 
+  filter(Description == "Chinese") %>%
+  filter(Grade == "Total number entered") %>%
+  select(ID, School, Total_students, Description, Entries)
+```
+
+1.  gets the `results` dataframe and *pipes* it into the next instruction,
+
+2.  `filter` returns only those rows that have "Chinese" in their `Description` column, i.e. it filters out all of the other subjects
+
+3.  `filter` returns only those rows that have "Total number entered" in their `Grade` column, i.e. it filters out all of the individual grade numbers.
+
+4.  `select` gets rid of all the columns other than those listed.
+
+
+
+We can now add a new column by using `mutate`, to look at the percentage of each provider taking `Chinese`, and filter on those with more than `0.50` (50%) taking it:
+
+```{r}
+#| eval: true
+results %>% filter(Description == "Chinese") %>%
+  filter(Grade == "Total number entered") %>%
+  select(ID, School, Total_students,Description, Entries) %>%
+  mutate(per = Entries/Total_students) %>%
+  filter(per > 0.5)
+```
+
+You can see in the last example that we had two `filters`, one after another. This acts like an `AND`, i.e. the code `filters` for `Description == "Chinese"` _AND_ `Grade == "Total number entered"`. If you want to _AND_ your filters you can also put them together, as shown below, with a comma separating them `,`:
+
+```{r}
+#| eval: true
+results %>% 
+  filter(Description == "Chinese",
+         Grade == "Total number entered") %>%
+  select(ID, School, Total_students, Description, Entries)
+```
+
+You might want to `OR` your filter, for example finding all the results that are either `"Chinese"` `OR` `"French"`. You can do this using the bar `|` character:
+
+```{r}
+#| eval: true
+results %>% 
+  filter(Description == "Chinese" | # the bar character is the same as OR 
+         Description == "French",
+         Grade == "Total number entered") %>%
+  select(ID, School, Total_students, Description, Entries)
+```
+
+Using commas `,` and bars `|` you can create complex filters.
+
+::: question
+Adjust the above code to find all schools where over 60% of students take German, or another subject or subjects of your choice.
+:::
+
+::: callout-important
+Remember to include the `==` signs when looking to filter, `>=`, `<` etc also work.
+
+Remember matching is case sensitive, "chinese" `!=` "Chinese"
+:::
+
+Having lots of results can get a little confusing, try to make sure that you comment your code and don't be afraid to store pipe outputs in separate objects and explore them individually using the Environment panel. You can also use intermediate results in other pipes E.g. we might want to look at the states for open schools, by filtering on `Open == "Open"` we can store the result in `Open_schools` and then further analyse this dataset:
+
+```{r}
+#| eval: true
+#| warning: false
+# store details on all the open schools in Open_schools
+Open_schools <- schools %>% filter(Open == "Open")
+
+# use Open_schools to find stats only about schools that are open
+Open_schools %>%
+  group_by(LA) %>%
+  mutate(All_schools = n()) %>%
+  ungroup() %>%
+  group_by(LA, EstablishmentGroup, All_schools) %>%
+  summarise(total = n()) %>%
+  # the round() function allows you to specify the number of significant digits
+  mutate(per = round(total/All_schools, 2))
+```
+
+### Renaming columns {#sec-renaming}
+Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g. _BCBG10B_ and _BCBG11._ To rename columns in the tidyverse we use the `rename(<old_name> = <new_name>)` command. For example, if you wanted to rename the rather confusing schools column called `Open` you would do the following:
+
+```{r}
+#| eval: true
+#| warning: false
+schools %>%
+  rename(Status = Open) %>%
+  select(ID, Status, TypeOfEstablishment) %>%
+  head(5)
+```
+
+### Arranging results
+
+The results returned by pipes can be huge, so it's a good idea to store them in objects and explore them in the _Environment_ window where you can sort and search within the output. There might also be times when you want to order/`arrange` the outputs. We can do this quite easily in the tidyverse by using the `arrange(<column_name>)` function. In the example below we are arranging the output by the `desc`ending value of the `total` providers, followed by the school `Phase` name (this allows the ordering any rows where total is the same; e.g. rows 18 and 19).
+
+```{r}
+#| eval: true
+#| warning: false
+schools %>% 
+  filter(Open == "Open") %>% 
+  group_by(Phase, Gender) %>% 
+  summarise(total = n()) %>% 
+  arrange(desc(total), Phase)
+```
+
+If you want to show the results by `Phase`, then `total` schools, we need to change the order within `arrange`:
+
+```{r}
+#| eval: true
+#| warning: false
+schools %>% 
+  filter(Open == "Open") %>% 
+  group_by(Phase, Gender) %>% 
+  summarise(total = n()) %>% 
+  arrange(desc(Phase), desc(total)) %>%
+  head(10) # returns the top 10 results
+```
+
+### Questions
+
+::: question
+
+1.  Predict what this code does:
+
+```{r}
+#| eval: false
+schools %>% 
+  filter(Open == "Open") %>% 
+  filter(TypeOfEstablishment == "Pupil referral unit") %>% 
+  group_by(Gender) %>%
+  summarise(n = n(), 
+            average = mean(NumberOfBoys + NumberOfGirls, na.rm = TRUE), 
+            average_boys = mean(NumberOfBoys, na.rm = TRUE), 
+            average_girls = mean(NumberOfGirls, na.rm = TRUE))
+```
+
+2.  What are the 6 errors in this code:
+
+```{r}
+#| eval: false
+schools
+  filter(Gender = "boys") %>%
+  fitler(TypeOfEstablishment == Free schools) %>%
+  summarise(average = mean(NumberOfBoys))
+```
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>% #1 missing pipe
+  #2 double == for comparison; #3 capital B in Boys
+  filter(Gender == "Boys") %>% 
+  #4 filter rather than fitler; #5 speech marks around "Free schools"
+  filter(TypeOfEstablishment == "Free schools") %>% 
+  summarise(average = mean(NumberOfBoys, na.rm = TRUE)) #6 missing na.rm = TRUE
+```
+
+3.  Display (`Select`) only the `ID`, `LA`, `Gender`, `OfstedRating` from a school
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  select(ID, LA, Gender, OfstedRating)
+```
+
+4.  Show all the Open schools that have exactly `400` girls.
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  filter(NumberOfGirls == 400)
+```
+
+5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`, and arrange them by descending `FSM`.
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  filter(OfstedRating == "Outstanding") %>%
+  select(ID, Name, FSM, TypeOfEstablishment) %>%
+  arrange(desc(FSM))
+```
+
+6.  Count the number (`n()`) of `Open` schools that have an `FSM` number of over `0.95` (You don't have to use `summarise`, but it helps)
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  summarise(n=n())
+
+# alternatively:
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  count()
+
+# alternatively:
+schools %>%
+  filter(Open == "Open") %>%
+  filter(FSM > 0.95) %>%
+  nrow()
+
+```
+
+7.  How many `Open` schools in each (`group_by`) `Region` have more than `2000` students?
+
+```{r}
+#| eval: false
+#| echo: false
+# the order of mutate and filter doesn't matter here,
+# but group_by and summarise do!
+schools %>%
+  group_by(Region) %>%
+  mutate(total_students = NumberOfBoys + NumberOfGirls) %>%
+  filter(Open == "Open",
+         total_students > 2000) %>%
+  summarise(n=n())
+
+# alternatively, we can do without the mutate: 
+schools %>%
+  group_by(Region) %>%
+  filter(Open == "Open",
+         NumberOfBoys + NumberOfGirls > 2000) %>%
+  summarise(n=n())
+```
+
+8.  Count (`summarise`) the number of schools, grouped as both `Open` and `Closed` under each `OfstedRating`, make the `Open` results appear at the top of the table. Output the result to an object and explore it in the Environment area.
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  group_by(OfstedRating, Open) %>%
+  summarise(n=n()) %>%
+  ungroup() %>%
+  arrange(desc(Open))
+```
+
+9.  \[Extension\] What's the average `FSM` rating for each `Gender` of school in each `Region`? `arrange` the results so the most impoverished area appears first.
+
+```{r}
+#| eval: false
+#| echo: false
+schools %>%
+  group_by(Region, Gender) %>%
+  filter(Open == "Open") %>%
+  summarise(mean_FSM = mean(FSM, na.rm=TRUE)) %>%
+  ungroup() %>%
+  arrange(desc(mean_FSM))
+```
+:::
+
+## Joing tables
+
+We currently have two tables of data, the `results` table and the `schools` table. Wouldn't it be great if we could combine the school _details_ with the _results_ of the school? It would then allow us to run models looking at the impact of school demographics on exam entries and results.
+
+There are several different join commands in R, the command we are interested in `left_join(<table_1>, <table_2>, <matching_column>)`. In short, this command will take one table, and link it with rows from the other table that match a given column or columns. This matches the `left_join` diagram shown in the helpsheet below:
+
+![](images/left_join.png){fig-align="center"}
+
+::: callout-note
+The source of the above is the RStudio [Data Wrangling help sheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+:::
+
+We want to join each results to matching schools in the schools table, i.e. only include the details about schools where results exist. If school X doesn't have any results for 2019 we shouldn't copy it over, as it won't have any rows in the results table that matches its `ID` .
+
+```{r}
+#| eval: true
+data_joined <- left_join(results, schools, by="ID")
+```
+
+We can now check it works by running the following command that selects data from the results table (e.g. `Description`, `Grade`) and data from the schools table (e.g. `FSM`, `NumberOfBoys`):
+
+```{r}
+#| eval: true
+data_joined %>% 
+  filter(Description == "Chinese", 
+         Grade == "Total number entered" ) %>% 
+  select(ID, Total_students, Description, 
+         Entries, FSM, NumberOfBoys, NumberOfGirls)
+```
+
+## Saving data
+
+As we have already noted, with exploratory data analysis it's useful to store results in objects to use later. We might want to store our findings more permanently to use later or share with others, saving them as `CSV`, `Excel` or `SPSS` files. 
+
+The easiest way to do this in R is to use the `write.csv(<table>, <location>)` function. This function lets you specify the name of the table object you want to save, along with where you want to save it.:
+
+```{r}
+#| eval: false
+
+data_output <- data_joined %>% 
+  filter(Description == "Chinese", 
+         Grade == "Total number entered" ) %>% 
+  select(ID, Total_students, Description, 
+         Entries, FSM, NumberOfBoys, NumberOfGirls)
+
+write.csv(data_output, "file location")
+```
+
+::: callout-tip
+You can write excel files using the `openxlsx` package, more information [here](https://www.rdocumentation.org/packages/openxlsx/versions/4.2.5)
+:::
+
+## Summary questions
+
+To check your understanding of this section you will be attempting to analyse a subset of the TIMSS 2019 Grade 8 school questionnaire. This dataset includes data on school locations, facilities, student demographics and teachers.
+
+You can access the cut down TIMSS school dataset as an Excel file [here](https://docs.google.com/spreadsheets/d/1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B/edit?usp=sharing&ouid=105471590997842250248). Save it to your computer and load it into an object called `TIMSS` using the `read_excel(<location_of_file>, <sheet_name>)` command:
+
+```{r}
+#| eval: false
+#| echo: true
+#| warning: false
+TIMSS <- read_excel("C:\Users\Peter\Google Drive\Kings\R intro\code\TIMSS.xlsx", "school_data")
+```
+
+For help on loading data see @sec-loading.
+
+Take a look at the data using the Environment panel, it's rather confusing as Excel didn't store the full question names. This data originally comes from SPSS and it is possible to look at the names in R, but here we might need to do some renaming to make the dataset a little more manageable (see @sec-renaming).
+
+![](images/exploring_timss.png)
+
+You can find more details on the question mappings in the TIMSS [context document](https://timss2019.org/international-database/downloads/T19_UG_Supp1-international-context-questionnaires.pdf), pages 308-311.
+
+Please attempt the following questions:
+
+::: question
+
+1. Work out how many schools are in each country `CNTRY`.
+
+```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  summarise(n = n())
+```
+
+2. Only for those headteachers that have a masters or equivalent degree qualification (`BCBG21B`), what is the average number of years they have been in their school (`BCBG19`)?
+
+```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+TIMSS %>% 
+  filter(BCBG21B == "Yes") %>%
+  summarise(avg_years = mean(BCBG19, na.rm=TRUE))
+```
+
+3. For the students in each country: What is the average and median instructional time in hours, in a typical day? Can you arrange the results so we find the hardest working country? You need to use `BCBG06B`, and hint, this column might not be `as.numeric()` just yet. (You might want to use `mutate` and @sec-datatypes to help you)
+
+```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(BCBG06B = as.numeric(BCBG06B)) %>%
+  summarise(mean_teaching = mean(BCBG06B/60, na.rm=TRUE),
+            median_teaching = median(BCBG06B/60, na.rm=TRUE)) %>%
+  arrange(desc(median_teaching))
+```
+
+4. For each country, what percentage of their schools have students with a `Very high` desire to do well in school (`BCBG14I`)? One of the countries is missing, why?
+
+```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+#| 
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(total_schools = n()) %>%
+  filter(BCBG14I == "Very high") %>%
+  summarise(do_well = 100*(n() / unique(total_schools)))
+  
+# we can also work out the percentage for all the responses to this question
+TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(total_schools = n()) %>%
+  group_by(CNTRY, BCBG14I) %>%
+  summarise(do_well = 100*(n() / unique(total_schools)))
+
+# Russia is missing as there were no schools that gave "Very high" as a response to BCBG14I.
+# You can work this out by using the set difference command setdiff:
+
+very_high <- TIMSS %>% 
+  group_by(CNTRY) %>%
+  mutate(total_schools = n()) %>%
+  filter(BCBG14I == "Very high") %>%
+  summarise(do_well = 100*(n() / unique(total_schools)))
+
+setdiff(unique(TIMSS$CNTRY), unique(very_high$CNTRY))
+
+```
+
+5. Save the results of one of the above questions using `write.csv()`.
+
+6. [EXTENSION] explore the data for "To what degree is each of the following a problem among <eighth grade> students in your school?" `BCBG16E` - Profanity; `BCBG16J` - Intimidation or verbal abuse of teachers or staff
+
+:::
+
+# Graphing
+
+The tidyverse includes the incredibly powerful `ggplot2` package. This package is pretty much the industry standard for making graphs for publication. `ggplot2` is built on the _grammar of graphics_ where you build graphs by specifying underlying attributes and layering geometric objects on top of each other. In the diagram below you can see how a graph is built from _geometric objects_ (the things that are plotted such as points and bars) a _scale_, and _plot annotations_ (e.g. a key, title etc). You can then apply _faceting_ to the graph to automatically split one graph into multiple plots, allowing you to easily compare different groupings.
+
+[![adapted from _A Layered Grammar of Graphics_, Wickham, 2010](images/grammarofgraphics.svg){fig-align="center"}](http://vita.had.co.nz/papers/layered-grammar.pdf)
+
+The basic structure of `ggplot` code is to combine different graphing elements through the use of the `+` operator. To demonstrate this, let’s look at the relationship between the percentage of males in a school and the percentage of the school taking `computer science`:
+
+```{r}
+#| warning: false
+# join our data
+data_joined <- left_join(results, schools, by="ID")
+
+# wrangle our data
+# grepl looks for the word “Comput” in the string Description
+computing_test <- data_joined %>%
+  filter(grepl("Comput", Description),
+         Qualification == "GCSE (9-1) Full Course",
+         Grade == "Total number entered" ) %>%
+  select(ID, Total_students, Entries, 
+         FSM, NumberOfBoys, NumberOfGirls) %>%
+  mutate(per_male =
+           NumberOfBoys / (NumberOfBoys + NumberOfGirls),
+        per_taking_cs = Entries/Total_students) %>%
+arrange(desc(per_taking_cs))
+
+# display a graph of the results
+ggplot(data=computing_test, 
+       aes(x=per_male, y=per_taking_cs)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  ggtitle("The more boys, the more CS")
+```
+
+Hopefully you can work out what lines 1-17 do from the previous chapters, let's focus on the `ggplot` commands:
+
+- 18-19 these lines set up the `ggplot` giving it the table object `computing_test` as its data input and setting up the aesthetics for the rest of the graph elements using columns from `computing_test`. The `aes(<attribute>, <attribute>, ...)` command allows us to specify aesthetic elements of the graph that will change dependent on the dataset we use. `x=per_male` and `y=per_taking_cs` define the x and y coordinates, defining `aes()` in ggplot means we will pass down these values to the subsequent geometric objects so we don't have to define these `x` and `y` axis items again.
+- 20 using the data and `aes` values defined on lines 18-19, `geom_point` uses the set `x` and `y` values to draw a point for each school in our dataset. There are lots of different parameters we could give `geom_point`, but here we are content with using the defaults.
+- 21 we add another geometric object on top of points, this time we add a line of best fit `geom_smooth`, again this geometric object uses the values specified on lines 18-19, and we define the `method` as `lm`, to calculate a linear model line of best fit.
+- 22 finally we customise the title of the graph, `ggtitle`, ready for display.
+
+## Geoms
+
+There are about 40 different geometric objects in ggplot, allowing you to create almost any sort of graph. We will be exploring a few of them in detail, but if you want to explore others, please follow some of the links below:
+
+- [geom_bar](https://ggplot2.tidyverse.org/reference/geom_bar.html) for creating bar charts and histograms
+- [geom_point](https://ggplot2.tidyverse.org/reference/geom_point.html) for plotting single points
+- [geom_line](https://ggplot2.tidyverse.org/reference/geom_path.html) for connecting points together and showing trends
+- [geom_text](https://ggplot2.tidyverse.org/reference/geom_text.html) for adding text labels to data points
+- [geom_boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for representing the range of data
+- [geom_hex](https://ggplot2.tidyverse.org/reference/geom_hex.html) for creating heat maps
+- [geom_map](https://ggplot2.tidyverse.org/reference/geom_map.html) for adding geographic maps
+
+### ifelse
+
+Before we start graphing we need to look at how we can recode values. Recoding is very useful when you have a column with multiple items that you want to change to just a few. A common way to recode values is through:
+
+> `ifelse(<statement(s)>, <value_if_true>, <value_if_false>)`
+
+`ifelse` allow us to _recode_ the data. For the example below, we are going to add a new column to the schools table noting whether a school is a `grammar` school or not. A school is a grammar school _if_ it is not an _Independent_ school _and_ it is _selective_ in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school. 
+
+You can see how the above if statement is implemented in R on lines 4-7.
+
+```{r}
+#| warning: false
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Secondary") %>%
+  mutate(grammar = 
+           ifelse(EstablishmentGroup != "Independent schools" & 
+                    AdmissionsPolicy=="Selective",
+                  "GRAMMAR",
+                  "NOT GRAMMAR")) %>%
+  arrange(desc(grammar))
+```
+
+- 4 uses mutate to create a new column in the schools table called `grammar`, this will be given the value of the if statement calculation for each line.
+- 5 the `if` statement to be evaluated as `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
+- 6 is the value that will be returned if the above statement(s) are _true_
+- 7 is the value that will be returned if the above statement(s) are _false_
+
+Additionally, on line 8 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other schools to make them stand out.
+
+let's move on to looking at `geom_` elements:
+
+### Geom_point
+Rather unsurprisingly, `geom_point` allows us to plot a layer of points using x and y coordinates, as shown in the example above. We are now going to look at how `geom_point`s can be adapted to put more data into our graphs by taking the `schools` dataset and using the `colour` and `size` attributes to display the population and nature of schools. 
+
+Now we have the data recoded to display whether a school is a grammar school or not, we can plot this dataset onto the graph:
+
+```{r}
+#| warning: false
+ggplot(data=plot_data) +
+  geom_point(aes(x=Easting, y=Northing, 
+                 size = NumberOfBoys+NumberOfGirls,
+                 colour=grammar),
+                 alpha=0.4)
+```
+
+- 1 we pass the custom table `plot_data` to the ggplot command, this means this data will be available in subsequent `geom_`
+- 2 we define the `x` and `y` `aes`theic values here, we could have done this on line one, but this shows that this can be done separately for each `geom_`
+- 3 `size` is also inside `aes()` and takes the `NumberOfBoys+NumberOfGirls` as a parameter, i.e. the population of the school will change the size of the point on the graph
+- 4 `colour` takes the newly coded `grammar` values, this means that grammar schools will be a different colour from non-grammar schools
+- 6 to stop the schools blotting each other out, we set the `alpha` (transparency) of each point to `0.4`. This is done outside the aes as we want all points to have the same transparency.
+
+::: callout-important
+If you define the `colour`, `size` and `alpha` attributes _outside_ the `aes()` function you will hard code the values and they won't change with your dataset. Placing these attributes inside aes allows them to be dynamically changed by your dataset
+:::
+
+### Questions
+
+::: .question
+
+1. Errors in this graph code
+
+2. ifelse question
+
+1. Plot the size of an open primary `school` against the `FSM` grade. Are larger primary schools generally serving poorer communities?
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: false
+
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Primary")
+
+# display a graph of the results
+ggplot(data=plot_data, 
+       aes(x=NumberOfGirls + NumberOfBoys, 
+           y=FSM)) +
+  geom_point() +
+  geom_smooth(method='lm')
+```
+
+2. plot involving size and colour
+
+3. plot involving ifelse
+
+:::
+
+Adding a map to demonstrate layering
+
+```{r}
+library(maps)
+
+```
+
+### geom_bar
+groups
+stacking
+count
+
+
+
+### geom_text
+
+## Scales
+
+## Facets
+
+## Questions
+
+1. 
+
+
+
+## Faceting
+Additionally `facet`s
+
+
+
+## Themes
+
+
+
+## Exporting plots
+
+as png
+
+as svg and pdf
+
+
+
+```{r}
+#| echo: false
+#| eval: false
+as.data.frame(
+  list(
+    origin = c("Manchester", "London", "Cardiff", "Colchester", "Canterbury"),
+    dest = c("London", "Cardiff", "Colchester", "Canterbury", "Manchester"),
+    time = c(258, 233, 253, 131, 266),
+    dist = c(200, 149, 224, 94, 308)))
+
+```
+
+# Statistical analysis
+
+There are probably statistical libraries in R to do every sort of test you will ever need, from the typical ANOVA to cutting edge machine learning. The full list of R packages sits on the (cran server)[https://cran.r-project.org/web/packages/available_packages_by_name.html] and you can load packages as and when you need them at no cost. R comes pre-packaged with some common statistical tools, for example, the `t.test()` and linear model regression `lm()`.
+
+Let’s look at an example to see if poverty (`FSM`) is related to achieving the highest grade (`9`) in `GCSE Mathematics`, 
+
+First we need to _wrangle_ our data, that is get it in a form where we can build a statistical model. We need to mutate a column for `per_top`, the percentage of a school’s maths class getting the top grade, we will compare this against `FSM`, the percentage of a school on free school meals
+
+```{r}
+#| warning: false
+# wrangle our data
+top_grades <- data_joined %>% 
+filter(Qualification == "GCSE (9-1) Full Course",
+                         Open=="Open") %>%
+  group_by(ID, Description) %>%
+  mutate(Sub_students = max(Entries)) %>%
+  filter(Grade != "Total number entered") %>%
+  select(ID, Description, Grade, 
+Entries, Sub_students, FSM, Open) %>%
+  filter(Grade == max(as.numeric(Grade))) %>%
+  mutate(top_grade = ifelse(Grade == 9, Entries, 0),
+         per_top = top_grade / Sub_students)
+
+#filter to select only the maths results
+top_maths <- top_grades %>% filter(Description == "Mathematics")
+
+# Build the model
+result_maths <- lm(per_top ~ FSM, top_maths)
+
+# Output the result
+summary(result_maths)
+```
+
+logistic regression
+
+t-test
+
+anova
+
+
+
+
+
+# Pretty tables
