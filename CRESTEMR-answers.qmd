@@ -63,6 +63,8 @@ MinutesInADay <- 24 * 60
 print(MinutesInADay) 
 ```
 
+### Questions
+
 ::: question
 what are the outputs of the following code snippets/what do they do? One of the examples might not output anything, why is that? Type the code into your script file to check your answers:
 
@@ -108,6 +110,8 @@ print(income)
 
 ## Naming objects
 
+### Questions
+
 ::: question
 Which of these are valid R object names:
 
@@ -123,6 +127,8 @@ Which of these are valid R object names:
 
 
 ## Comments
+
+### Questions
 
 ::: question
 Using only the comment `#` symbol, can you edit this code to *not* charge tax on top of the `total_sales`?
@@ -160,6 +166,8 @@ seconds <- years * 365 * 24 * 60 * 60
 :::
 
 ## Data types
+
+### Questions
 
 ::: question
 1.  Can you spot the error(s) in this code and fix them so it outputs: "July is month 7"?
@@ -248,6 +256,8 @@ print(exam_grade >= pass_mark) #2 this needs to be >= as they had a passing grad
 
 ## Stitching things together
 
+### Questions
+
 ::: question
 1.  What are the *five* errors in this code:
 
@@ -285,6 +295,8 @@ print(paste("table length:", length, "table width:", width, "area =", area ))
 :::
 
 ## Vectors
+
+### Questions
 
 ::: question
 1.  Can you spot the *four* problems with this code:
@@ -351,39 +363,21 @@ mean(english_grade[genders == "F"])
 ::: question
 1.  Describe three datatypes that you can use in your program?
 
-```{r}
-#| echo: true
-#| eval: true
-print("numeric for numbers")
-print("character for words/strings")
-print("logical for boolean values")
-```
+    - numeric for numbers
+    - character for words/strings
+    - logical for boolean values
 
 2.  What are two reasons that you might use comments?
 
-```{r}
-#| echo: true
-#| eval: true
-print("to make your code more understandable")
-print("to disable bits of code that you might want to reenable later")
-
-```
+    - to make your code more understandable
+    - to disable bits of code that you might want to reenable later
 
 3.  Which object names are valid?
 
-    -   my_name
-    -   your name
-    -   our-name
-    -   THYname
-
-```{r}
-#| echo: false
-#| eval: true
-print("my_name - VALID")
-print("your name - INVALID use of space")
-print("our-name - INVALID use of hyphen")
-print("THYname - VALID")
-```
+    -   my_name  - VALID
+    -   your name - INVALID use of space
+    -   our-name - INVALID use of hyphen
+    -   THYname - VALID
 
 4.  Can you spot the *seven* errors in this code:
 
@@ -410,10 +404,11 @@ stu3 <- 15 #2 no need for speech marks on "15"
 
 # now work out the average of the ages
 avg <- (stu1 + stu2 + stu3) / 3 #3 broken arrow < - #4 capital letter on Stu1
-print(paste("students are, on average, ", avg, "years old"))
 #5 missing paste() 
 #6 + should be comma ,
 #7 missing speech marks on years old
+print(paste("students are, on average, ", avg, "years old"))
+
 ```
 
 5.  Write a program that stores objects for your `firstName` and `secondName.` Make it print out:
@@ -425,7 +420,7 @@ print(paste("students are, on average, ", avg, "years old"))
 firstName <- "Mike"
 secondName <- "Smith"
 
-# i use the paste here to concatenate the name parts together
+# I use the paste here to concatenate the name parts together
 print(paste("Hello", firstName, secondName))
 ```
 
@@ -438,7 +433,7 @@ print(paste("Hello", firstName, secondName))
 #| echo: true
 
 seconds <- 7 * 24 * 60 * 60
-print(paste("there are", seconds, "in a week"))
+print(paste("there are", seconds, "seconds in a week"))
 ```
 
 8.  \[Extension\] You have been given the vectors below that store distances and times between locations in England.
@@ -483,7 +478,6 @@ focus_year <- 1970
 
 10. \[Extension\] find the `min`imum and `max`imum times and distances in Question 8, above.
 
-
 :::
 
 # The tidyverse
@@ -499,9 +493,8 @@ focus_year <- 1970
 #| class.source: "none"
 library(tidyvrse)
 
-setwd("C:\Users/Peter/Google Drive/Kings/R intro/code")
-results <- read_excel("dfe_data.xlsx", "Results)
-schools < read_excel("dfe_data.xlsx", "Schools")
+results <- read_excel("C:\Users/Peter/Google Drive/Kings/R intro/code/testdata.xlsx", "Results)
+schools < read_excel("C:/Users/Peter/Google Drive/Kings/R intro/code/testdata.xlsx", "Schools")
 
 sum(results£Entries)
 ```
@@ -511,10 +504,12 @@ sum(results£Entries)
 #| eval: false
 #| echo: true
 library(tidyverse) #1 spelling mistake on tidyverse
+library(readxl)
 
-setwd("C:/Users/Peter/Google Drive/Kings/R intro/code") #2 the first slash was a forward slash
-results <- read_excel("dfe_data.xlsx", "Results") #3 missing speech mark from Results
-schools <- read_excel("dfe_data.xlsx", "Schools") #4 missing tail on the assignment arrow <-
+#2 the first slash was a back slash
+#3 missing speech mark from "Results"
+results <- read_excel("C:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx", "Results") 
+schools <- read_excel("C:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx", "Schools") #4 missing tail on the assignment arrow <-
 
 sum(results$Entries, na.rm=TRUE) #5 £ used instead of a dollar # 6 missing na.rm
 ```
@@ -523,7 +518,7 @@ sum(results$Entries, na.rm=TRUE) #5 £ used instead of a dollar # 6 missing na.r
 #| eval: true
 #| echo: false
 #| warning: false
-sum(results$Entries)
+sum(results$Entries, na.rm=TRUE)
 ```
 
 2.  What is the largest `Total_students` size?

@@ -100,10 +100,10 @@ An answer booklet for the exercises is [here](CRESTEMR-answers.html).
 
 1.  Install R (default settings should be fine)
 
-    a.  **Windows** users visit [here] (https://cran.r-project.org/bin/windows/base/R-4.2.0-win.exe)
+    a.  **Windows** users visit:   [here](https://cran.r-project.org/bin/windows/base/R-4.2.0-win.exe)
     b.  **Mac** users visit: [intel](https://cran.r-project.org/bin/macosx/base/R-4.2.0.pkg) [M1 Macs](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/R-4.2.0-arm64.pkg)
 
-2.  Install **RStudio**, visit [here]. (https://rstudio.com/products/rstudio/download/#download) and it should present you with the version suitable for your operating system.
+2.  Install **RStudio**, visit [here](https://rstudio.com/products/rstudio/download/#download) and it should present you with the version suitable for your operating system.
 
 (If the above doesn't work follow the instructions [here](https://www.rstudio.com/products/rstudio/download/#download))
 
@@ -938,7 +938,6 @@ To load the data into R we need to use the `read_excel(<file_location>, <sheet_n
 ```{r}
 #| eval: true
 #| warning: false
-# context: setup
 
 # load the basic tidyverse libraries and readxl
 # readxl is for reading and writing Excel files 
@@ -1074,9 +1073,8 @@ Check your data for `NA`s before running calculations. The `na.rm = TRUE` can be
 #| class.source: "none"
 library(tidyvrse)
 
-setwd("C:\Users/Peter/Google Drive/Kings/R intro/code")
-results <- read_excel("testdata.xlsx", "Results)
-schools < read_excel("testdata.xlsx", "Schools")
+results <- read_excel("C:\Users/Peter/Google Drive/Kings/R intro/code/testdata.xlsx", "Results)
+schools < read_excel("C:/Users/Peter/Google Drive/Kings/R intro/code/testdata.xlsx", "Schools")
 
 sum(results£Entries)
 
@@ -1789,7 +1787,7 @@ There are about 40 different geometric objects in ggplot, allowing you to create
 
 ### ifelse
 
-Before we start graphing we need to look at how we can recode values. Recoding is very useful when you have a column with multiple items that you want to change to just a few. A common way to recode values is through:
+Before we start graphing we need to look at how we can _recode_ values. Recoding is very useful when you have a column with multiple items that you want to change to just a few. A common way to recode values is through:
 
 > `ifelse(<statement(s)>, <value_if_true>, <value_if_false>)`
 
@@ -1812,12 +1810,12 @@ plot_data <- schools %>%
 
 - 4 uses mutate to create a new column in the schools table called `grammar`, this will be given the value of the if statement calculation for each line.
 - 5 the `if` statement to be evaluated as `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
-- 6 is the value that will be returned if the above statement(s) are _true_
-- 7 is the value that will be returned if the above statement(s) are _false_
+- 6 is the value that will be returned if the above statement(s) are _TRUE_
+- 7 is the value that will be returned if the above statement(s) are _FALSE_
 
 Additionally, on line 8 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other schools to make them stand out.
 
-let's move on to looking at `geom_` elements:
+Let's move on to looking at `geom_` elements:
 
 ### Geom_point
 Rather unsurprisingly, `geom_point` allows us to plot a layer of points using x and y coordinates, as shown in the example above. We are now going to look at how `geom_point`s can be adapted to put more data into our graphs by taking the `schools` dataset and using the `colour` and `size` attributes to display the population and nature of schools. 
@@ -1837,10 +1835,10 @@ ggplot(data=plot_data) +
 - 2 we define the `x` and `y` `aes`theic values here, we could have done this on line one, but this shows that this can be done separately for each `geom_`
 - 3 `size` is also inside `aes()` and takes the `NumberOfBoys+NumberOfGirls` as a parameter, i.e. the population of the school will change the size of the point on the graph
 - 4 `colour` takes the newly coded `grammar` values, this means that grammar schools will be a different colour from non-grammar schools
-- 6 to stop the schools blotting each other out, we set the `alpha` (transparency) of each point to `0.4`. This is done outside the aes as we want all points to have the same transparency.
+- 5 to stop the schools blotting each other out, we set the `alpha` (transparency) of each point to `0.4`. This is done outside the `aes` as we want all points to have the same transparency.
 
 ::: callout-important
-If you define the `colour`, `size` and `alpha` attributes _outside_ the `aes()` function you will hard code the values and they won't change with your dataset. Placing these attributes inside aes allows them to be dynamically changed by your dataset
+If you define the `colour`, `size` and `alpha` attributes _outside_ the `aes()` function you will hard code the values and they won't change when your dataset changes. Placing these attributes inside `aes` allows them to be dynamically changed by your dataset
 :::
 
 ### Questions
