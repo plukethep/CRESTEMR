@@ -123,7 +123,7 @@ You might find this tutorial video helpful:
 
 https://vimeo.com/203516510
 
-## Setting up RStudio and the tidyverse
+## Setting up RStudio and the tidyverse {#sec-packages}
 
 1.  Open RStudio
 
@@ -894,15 +894,57 @@ Core to the _tidyverse_ is the idea of _tidy data_, a rule of thumb for creating
 
 In this section you will look at some of the basic features of the tidyverse, with a focus `readxl` for loading data, `dplyr` for tidying data, and `ggplot2` for presenting your findings.
 
-## Loading data {#sec-loading}
+## Working with datasets {#sec-loading}
 
-This section will look at how R stores data in *dataframes* (also known as _tibble_, the equivalent of tables in a spreadsheet, ), and how we can access columns and rows from these dataframes. First we need to get some data into R so we can start analysing them. For this example we are going to be using GCSE results for English schools in 2018/19[^4].
+This section will look at how R stores data in *dataframes* (also known as _tibbles_, the equivalent of tables in a spreadsheet), and how we can access columns and rows from these dataframes. First we need to get some data into R so we can start analysing them. For this example we are going to be using GCSE results for English schools in 2018/19[^4].
 
 [^4]: Data is from https://www.compare-school-performance.service.gov.uk/download-data and https://get-information-schools.service.gov.uk/. Data for 2020 was witheld by the government and 2021 doesn't include grades.
 
 R can load data in all the standard statistical formats, including SPSS, SAS, Stata, CSV, SQL and Excel. For this example we are going to be loading school results and school details from an Excel file called `dfe_data.xlsx`.
 
-::: question
+```{r}
+#| echo: false
+#| eval: false
+
+library(openxlsx)
+TIMSS <- read.xlsx("https://drive.google.com/uc?export=download&id=1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B", "school_data")
+results <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
+          sheet="Results")
+schools <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
+                     sheet="Schools")
+
+```
+
+We can load large datatables into R by either providing the online web address, or by loading it from  a local file directory on your hard drive. Both methods are covered below:
+
+### Loading data from the web 
+
+To download files from the web we need another package, `openxlsx`, which you need to _install_ before you load it (see: @sec-packages, or use line 1 below). The code shown will download the files from an online Google drive directly into objects in R using `read.xlsx(<file_web_address>, <sheet_name>)`:
+
+```{r}
+#| eval: false
+#| echo: false
+# site to convert google docs to download links
+# https://sites.google.com/site/gdocs2direct/
+```
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+install.packages("openxlsx")
+library(openxlsx)
+
+results <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
+                      sheet="Results")
+schools <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
+                      sheet="Schools")
+```
+
+### Loading data from your computer 
+
+Downloading files directly from web addresses can be slow and you might want to prefer to use files saved to your computer's hard drive. You can do this by following the steps below:
+
 Download the `dfe_data.xlsx` Excel file from [here](https://drive.google.com/file/d/1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM/view) and save it to your computer where your R code file is.
 
 Open the file to see what it contains.
@@ -919,19 +961,18 @@ Copy the location of the file (see next step for help)
         ![](images/select_file_location.png)
 
     3.  Copy the location
--   To find the location of a file in *Mac OSX* do the following:
+-   To find the location of a file in ***Mac OSX*** do the following:
 
     1. Open _Finder_
     
     2. Navigate to the folder where you saved the Excel file
     
-    3. Right click on the file name and select `Copy <name of file> as Pathname`
+    3. Right click on the folder where the file is stored and select `Copy <name of file> as Pathname`
     
         ![](images/mac_pathnames.jpg)
         
     4. Alternatively, follow [this](https://support.apple.com/en-gb/guide/mac-help/mchlp1774/mac)
-  
-:::
+
 
 To load the data into R we need to use the `read_excel(<file_location>, <sheet_name>)` command, specifying the location and name of the file we are loading, and as we are reading an Excel file, we need to specify the sheet name within the Excel file. See the following code:
 
@@ -945,6 +986,7 @@ To load the data into R we need to use the `read_excel(<file_location>, <sheet_n
 library(tidyverse)
 library(readxl)
 
+# note that we need to add /dfe_data.xlsx to the end of the file location
 results <- read_excel("c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx", "Results")
 schools <- read_excel("c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx", "Schools")
 ```
@@ -980,6 +1022,8 @@ With R there are three ways to get around the problem of backslashes in file loc
 -   replace them with double backslashes (the special character specified by two backslashes is one backslash!):`"C:\\myfolder\\"`
 -   use the inbuilt R command to deal with filenames: `r"[C:\myfolder\]"`
 
+### Exploring dataframes
+
 When you load the tables you will get some warnings:
 
 ::: callout-warning
@@ -1010,9 +1054,9 @@ The `results` and `schools` dataframes are made up of multiple columns, with eac
 
 ```{r}
 #| echo: false
-# schools[1:4] %>% head(2)
-print("ID     LA     Name   TypeOfEstablish~")
-print("<dbl>  <chr>  <chr>  <chr>")
+print(schools[1:4] %>% head(1))
+#print("ID     LA     Name   TypeOfEstablish~")
+#print("<dbl>  <chr>  <chr>  <chr>")
 ```
 
 ::: callout-note
@@ -1044,7 +1088,7 @@ unique(results$Qualification) # the unique values in this column
 ```
 
 ::: callout-tip
-To get a good overview of what a table contains, you can use the `str(table_name)` and `summary(table_name)` commands.
+To get a good overview of what a table contains, you can use the `str(<table_name>)` and `summary(<table_name>)` commands.
 :::
 
 Often when performing calculations, you will meet the `NA` value, this will most likely derail your calculations:
@@ -1053,14 +1097,27 @@ Often when performing calculations, you will meet the `NA` value, this will most
 mean(schools$NumberOfBoys)
 ```
 
-The reason that the `mean` function is returning `NA` is because there are many schools that can't have any students recorded as being boys according to the DfE's data rules, i.e. schools that are closed. Rather than recording `NumberOfBoys` as 0 for these schools, the DfE has used `NA`. To get past this, make sure you remove these schools from your calculations, by adding `na.rm = TRUE` (*NA remove*) inside the function call:
+The reason that the `mean` function is returning `NA` is because there are many schools that can't have any students recorded as being boys according to the DfE's data rules, i.e. schools that are closed. Rather than recording `NumberOfBoys` as 0 for these schools, the DfE has used `NA`, e.g. ID `100004`.
+
+```{r}
+#| echo: false
+schools %>% select(ID, Open, NumberOfBoys) %>% head(5)
+```
+
+To get past this, you can remove these schools from your calculations by adding `na.rm = TRUE` (*NA remove*) inside the function call:
 
 ```{r}
 mean(schools$NumberOfBoys, na.rm = TRUE)
 ```
 
 ::: callout-tip
-Check your data for `NA`s before running calculations. The `na.rm = TRUE` can be applied to most mathematical functions
+Check your data for `NA`s before running calculations. You can do this by using the `is.na(<vector>)`, this will return `TRUE` or `FALSE` for each item in a column depending on whether that item is `NA` or not. We can then `sum` how many `TRUE`s we have. For our `schools$NumberOfBoys` column we have quite a few `NA`s:
+
+```{r}
+sum(is.na(schools$NumberOfBoys))
+```
+
+The `na.rm = TRUE` can be applied to most mathematical functions.
 :::
 
 ### Questions
@@ -1159,10 +1216,19 @@ Piping allows us to break down complex tasks into manageable chunks that can be 
 ![how piping works](images/pipe_drawing.svg){fig-align="center"}
 
 ::: callout-note
-The pipe command we are using `%>%` is from the *maggrittr* package which is installed alongside the tidyverse. Recently *R* introduced another pipe `|>` which offers very similar functionality. The examples below use the `%>%` pipe.
+The pipe command we are using `%>%` is from the *maggrittr* package which is installed alongside the tidyverse. Recently *R* introduced another pipe `|>` which offers very similar functionality and tutorials online might use either. The examples below use the `%>%` pipe.
 :::
 
-Let's look at a piped example by using the `results` table. This table contains a field called `Total_students` which we should be able to be used to work out the number of students in the school entering exams in 2018/19. But the data is very messy. For a school's results `Total_students`, i.e. total number of students in a cohort, appears for each subject a school entered students for, but not just that, it appears for each individual grade grouping!?
+Let's look at an example of using the pipe on the `results` table. If we wanted to know the total number of students obtaining each `Grade` in our dataset, we could `group_by` on `Grade` and pass the grouping to a `summarise` function where we can sum the total number of `Entries` and store it in a new column called `Grade_total`. Finally we pass the results to another function, `head()`, which returns the top few items. We can see that there were 139698 grade 1s overall compared to 555281 grade 3s.
+
+```{r}
+results %>% 
+  group_by(Grade) %>% 
+  summarise(Grade_total = sum(Entries, na.rm=TRUE)) %>%
+  head(6) # this returns the first 6 entries.
+```
+
+Looking at a more complex example: the `results` table contains a field called `Total_students` which should be able to be used to work out the number of students in the school entering exams in 2018/19. But the data is very messy. For a school's results `Total_students`, i.e. total number of students in a cohort, appears for each subject a school entered students for. But not just that, it appears for each individual grade grouping!?
 
 ```{r}
 results %>% 
@@ -1170,7 +1236,7 @@ results %>%
   select(ID, Total_students, Description, Grade, Entries)
 ```
 
-It's no good summing the total number of students in the `results` table together if the students are counted more than once for each school, e.g. school `ID 100055` has *165* entries for`Total_students`. What we want to do is to get one `Total_students` for each school, we can do this by grouping the results for each school together, then finding the unique value for `Total_students`. As each result row for the same school has the same `Total_students` value, `unique(Total_students)` will return a single value for each individual school.
+It's no good summing the total number of students in the `results` table together if the students are counted more than once for each school, e.g. school `ID 100055` has *165* entries for `Total_students`. What we want to do is to get one `Total_students` for each school, we can do this by grouping the results for each school together, then finding the unique value for `Total_students`. As each result row for the same school has the same `Total_students` value, `unique(Total_students)` will return a single value for each individual school.
 
 ```{r}
 results %>% 
@@ -1179,7 +1245,7 @@ results %>%
 ```
 
 ::: callout-note
-we met the assignment command earlier `<-`. Within the tidyverse commands we normally use the equals sign instead `=`, but you can use `<-` if you like.
+we met the assignment command earlier `<-`. Within the tidyverse commands we use the equals sign instead `=`.
 :::
 
 Knowing that we now have one result for each school, we can now feed the individual school sizes into another `summarise`, to find the total number of students entered into an exam for the *whole* country in 2018/19:
@@ -1187,7 +1253,7 @@ Knowing that we now have one result for each school, we can now feed the individ
 ```{r}
 results %>% 
   group_by(ID) %>%
-  summarise(Total = unique(Total_students))%>% 
+  summarise(Total = unique(Total_students)) %>% 
   ungroup() %>%
   summarise(Grand_Total = sum(Total))
 ```
@@ -1198,11 +1264,11 @@ Let's look a little more closely at the commands we have just used.
 
 `group_by(<column>, <column>)` collects data together using one or more column values, you can then perform calculations using that grouping.
 
-`summarise(<col_name> = <calculation>)` performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and the given *grouping* columns.
+`summarise(<col_name> = <calculation>)` performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and any given *grouping* columns.
 
 `ungroup()` gets rid of any current grouping.
 
-Taking another example, we might want to find the number of students taking each subject in the `results` table, e.g. the number of GCSE CS students entered in 2018/19
+Taking another example, we might want to find the number of students taking each subject in the `results` table, e.g. the number of GCSE CS students entered in 2018/19 for the whole country.
 
 ```{r}
 #| warning: false
@@ -1213,26 +1279,27 @@ sub_entries <- results %>%
   summarise(Subject_Total = sum(Total, na.rm=TRUE))
 ```
 
-1.  gets the `results` dataframe and *pipes* it into the next instruction, whatever results from all the piping will be stored `<-` into the `sub_entries` object
+- 1 - gets the `results` dataframe and *pipes* it into the next instruction, whatever comes out of all the piping will be stored `<-` into the `sub_entries` object.
 
-2.  groups the results by individual *school* (`ID`) *and* by *subject* taken in that school (`Description`).
+- 2 - groups the results by individual *school* (`ID`) *and* by *subject* taken in that school (`Description`). I.e. we will be looking at a grouping of individual subjects and school.
 
-3.  creates a new column called `Total` and stores the *maximum* value from the `Entries` column, i.e. the total number entered for each subject. As the piped data is currently grouped, this will work out the total number entered for every school and subject combination.
+- 3 - creates a new column called `Total` and stores the *maximum* value from the `Entries` column, i.e. the total number entered for each subject, all other values will be numbers of students achieving different grades. As the piped data is currently grouped, this will work out the total number entered for every school and subject combination.
 
-4.  as the pipe currently stores the total number of students entered for each subject in each school, we now group on `Description` *only* to allow us to look at individual subjects across *all* schools
+- 4 - as the pipe currently stores the total number of students entered for each subject in each school, we now group on `Description` *only* to allow us to look at individual subjects across *all* schools. Note we haven't `ungrouped` the data before grouping it again, applying a `group_by` command to already grouped data, overrides the original grouping.
 
-5.  creates a new column called `Subject_Total` and stores the sum of all the `Total` in each `Description` grouping, i.e. the number of students taking each subject for the whole of England
+- 5- creates a new column called `Subject_Total` and stores the `sum` of all the `Total` in each `Description` grouping, i.e. it adds together the total number of students taking each subject for each school, giving us a figure for the whole of England.
 
-In the example below, we have assigned the output of the tidyverse pipe calculation into a new object called `sub_entries`. If you run the code you will be able to access at the results in the `Environment` panel rather than just the console.
+In the example above, we have assigned the output of the tidyverse pipe calculation into a new object called `sub_entries`. If you run the code you will be able to access all the results in the `Environment` panel rather than just the console.
 
 ```{r}
-sub_entries # output the new object to the console
+print(sub_entries) # output the new object to the console
 ```
 
-We can also use the `n()` command to count the number of schools that meet certain criteria. `n()` returns the number of rows in a table or group.
+We can use the `n()` command to count the number of schools that meet certain criteria. `n()` returns the number of rows in a table or group.
 
 ```{r}
 #| eval: true
+#| warning: false
 schools %>% 
   group_by(TypeOfEstablishment, Open) %>%
   summarise(total = n())
@@ -1296,7 +1363,7 @@ schools %>%
   summarise(mean_FSM = mean(FSM, na.rm=TRUE))
 ```
 
-5.  \[Extension\] Using the *results* table, find the total number of students entering exams by `School_type.`
+5.  \[Extension\] Using the `results` table, find the total number of students entering exams by `School_type.`
 
 ```{r}
 #| eval: false
@@ -1328,15 +1395,13 @@ results %>%
   select(ID, School, Total_students, Description, Entries)
 ```
 
-1.  gets the `results` dataframe and *pipes* it into the next instruction,
+- 1 - gets the `results` dataframe and *pipes* it into the next instruction,
 
-2.  `filter` returns only those rows that have "Chinese" in their `Description` column, i.e. it filters out all of the other subjects
+- 2 - `filter` returns only those rows that have "Chinese" in their `Description` column, i.e. it filters out all of the other subjects
 
-3.  `filter` returns only those rows that have "Total number entered" in their `Grade` column, i.e. it filters out all of the individual grade numbers.
+- 3 - `filter` returns only those rows that have "Total number entered" in their `Grade` column, i.e. it filters out all of the individual grade numbers.
 
-4.  `select` gets rid of all the columns other than those listed.
-
-
+- 4 - `select` gets rid of all the columns other than those listed.
 
 We can now add a new column by using `mutate`, to look at the percentage of each provider taking `Chinese`, and filter on those with more than `0.50` (50%) taking it:
 
@@ -1377,7 +1442,7 @@ Adjust the above code to find all schools where over 60% of students take German
 :::
 
 ::: callout-important
-Remember to include the `==` signs when looking to filter, `>=`, `<` etc also work.
+Remember to include the `==` sign when looking to filter on equality; `!=`, `>=`, `<` etc also work.
 
 Remember matching is case sensitive, "chinese" `!=` "Chinese"
 :::
@@ -1402,7 +1467,7 @@ Open_schools %>%
 ```
 
 ### Renaming columns {#sec-renaming}
-Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g. _BCBG10B_ and _BCBG11._ To rename columns in the tidyverse we use the `rename(<old_name> = <new_name>)` command. For example, if you wanted to rename the rather confusing schools column called `Open` you would do the following:
+Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g. _BCBG10B_ and _BCBG11._ To rename columns in the tidyverse we use the `rename(<old_name> = <new_name>)` command. For example, if you wanted to rename the rather confusing school's column called `Open` you would do the following:
 
 ```{r}
 #| eval: true
@@ -1580,7 +1645,7 @@ schools %>%
 ```
 :::
 
-## Joing tables
+## Joining tables
 
 We currently have two tables of data, the `results` table and the `schools` table. Wouldn't it be great if we could combine the school _details_ with the _results_ of the school? It would then allow us to run models looking at the impact of school demographics on exam entries and results.
 
@@ -1647,17 +1712,16 @@ TIMSS <- read_excel("C:\Users\Peter\Google Drive\Kings\R intro\code\TIMSS.xlsx",
 
 For help on loading data see @sec-loading.
 
-Take a look at the data using the Environment panel, it's rather confusing as Excel didn't store the full question names. This data originally comes from SPSS and it is possible to look at the names in R, but here we might need to do some renaming to make the dataset a little more manageable (see @sec-renaming).
+Take a look at the data using the _Environment_ panel, it's rather confusing as Excel doesn't store the full question names. This data originally comes from SPSS and it is possible to load SPSS into R to look at the names, but here we have a cut down dataset and might need to do some renaming to make the table a little more manageable (see @sec-renaming).
 
 ![](images/exploring_timss.png)
-
 You can find more details on the question mappings in the TIMSS [context document](https://timss2019.org/international-database/downloads/T19_UG_Supp1-international-context-questionnaires.pdf), pages 308-311.
 
 Please attempt the following questions:
 
 ::: question
 
-1. Work out how many schools are in each country `CNTRY`.
+1. Work out how many schools are in stored in TIMSS for each country `CNTRY`.
 
 ```{r}
 #| eval: false

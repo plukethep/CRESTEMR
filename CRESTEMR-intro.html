@@ -96,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
 <li><a href="#installation-on-your-own-machine" id="toc-installation-on-your-own-machine" class="nav-link" data-scroll-target="#installation-on-your-own-machine"> <span class="header-section-number">2.1</span> Installation (on your own machine)</a></li>
   <li><a href="#installation-kcl-restricted-machine" id="toc-installation-kcl-restricted-machine" class="nav-link" data-scroll-target="#installation-kcl-restricted-machine"> <span class="header-section-number">2.2</span> Installation (KCL restricted machine)</a></li>
-  <li><a href="#setting-up-rstudio-and-the-tidyverse" id="toc-setting-up-rstudio-and-the-tidyverse" class="nav-link" data-scroll-target="#setting-up-rstudio-and-the-tidyverse"> <span class="header-section-number">2.3</span> Setting up RStudio and the tidyverse</a></li>
+  <li><a href="#sec-packages" id="toc-sec-packages" class="nav-link" data-scroll-target="#sec-packages"> <span class="header-section-number">2.3</span> Setting up RStudio and the tidyverse</a></li>
   </ul>
 </li>
   <li>
@@ -145,9 +145,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a href="#the-tidyverse" id="toc-the-tidyverse" class="nav-link" data-scroll-target="#the-tidyverse"> <span class="header-section-number">4</span> The tidyverse</a>
   <ul class="collapse">
 <li>
-<a href="#sec-loading" id="toc-sec-loading" class="nav-link" data-scroll-target="#sec-loading"> <span class="header-section-number">4.1</span> Loading data</a>
+<a href="#sec-loading" id="toc-sec-loading" class="nav-link" data-scroll-target="#sec-loading"> <span class="header-section-number">4.1</span> Working with datasets</a>
   <ul class="collapse">
-<li><a href="#questions-6" id="toc-questions-6" class="nav-link" data-scroll-target="#questions-6"> <span class="header-section-number">4.1.1</span> Questions</a></li>
+<li><a href="#loading-data-from-the-web" id="toc-loading-data-from-the-web" class="nav-link" data-scroll-target="#loading-data-from-the-web"> <span class="header-section-number">4.1.1</span> Loading data from the web</a></li>
+  <li><a href="#loading-data-from-your-computer" id="toc-loading-data-from-your-computer" class="nav-link" data-scroll-target="#loading-data-from-your-computer"> <span class="header-section-number">4.1.2</span> Loading data from your computer</a></li>
+  <li><a href="#exploring-dataframes" id="toc-exploring-dataframes" class="nav-link" data-scroll-target="#exploring-dataframes"> <span class="header-section-number">4.1.3</span> Exploring dataframes</a></li>
+  <li><a href="#questions-6" id="toc-questions-6" class="nav-link" data-scroll-target="#questions-6"> <span class="header-section-number">4.1.4</span> Questions</a></li>
   </ul>
 </li>
   <li>
@@ -160,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#questions-7" id="toc-questions-7" class="nav-link" data-scroll-target="#questions-7"> <span class="header-section-number">4.2.5</span> Questions</a></li>
   </ul>
 </li>
-  <li><a href="#joing-tables" id="toc-joing-tables" class="nav-link" data-scroll-target="#joing-tables"> <span class="header-section-number">4.3</span> Joing tables</a></li>
+  <li><a href="#joining-tables" id="toc-joining-tables" class="nav-link" data-scroll-target="#joining-tables"> <span class="header-section-number">4.3</span> Joining tables</a></li>
   <li><a href="#saving-data" id="toc-saving-data" class="nav-link" data-scroll-target="#saving-data"> <span class="header-section-number">4.4</span> Saving data</a></li>
   <li><a href="#summary-questions-1" id="toc-summary-questions-1" class="nav-link" data-scroll-target="#summary-questions-1"> <span class="header-section-number">4.5</span> Summary questions</a></li>
   </ul>
@@ -337,7 +340,7 @@ Tip
 </ol>
 <p>You might find this tutorial video helpful:</p>
 <p>https://vimeo.com/203516510</p>
-</section><section id="setting-up-rstudio-and-the-tidyverse" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="setting-up-rstudio-and-the-tidyverse">
+</section><section id="sec-packages" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="sec-packages">
 <span class="header-section-number">2.3</span> Setting up RStudio and the tidyverse</h2>
 <ol type="1">
 <li><p>Open RStudio</p></li>
@@ -1055,10 +1058,31 @@ Tip
 </div>
 <p>In this section you will look at some of the basic features of the tidyverse, with a focus <code>readxl</code> for loading data, <code>dplyr</code> for tidying data, and <code>ggplot2</code> for presenting your findings.</p>
 <section id="sec-loading" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="sec-loading">
-<span class="header-section-number">4.1</span> Loading data</h2>
-<p>This section will look at how R stores data in <em>dataframes</em> (also known as <em>tibble</em>, the equivalent of tables in a spreadsheet, ), and how we can access columns and rows from these dataframes. First we need to get some data into R so we can start analysing them. For this example we are going to be using GCSE results for English schools in 2018/19<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<span class="header-section-number">4.1</span> Working with datasets</h2>
+<p>This section will look at how R stores data in <em>dataframes</em> (also known as <em>tibbles</em>, the equivalent of tables in a spreadsheet), and how we can access columns and rows from these dataframes. First we need to get some data into R so we can start analysing them. For this example we are going to be using GCSE results for English schools in 2018/19<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 <p>R can load data in all the standard statistical formats, including SPSS, SAS, Stata, CSV, SQL and Excel. For this example we are going to be loading school results and school details from an Excel file called <code>dfe_data.xlsx</code>.</p>
-<div class="question">
+<div class="cell">
+
+</div>
+<p>We can load large datatables into R by either providing the online web address, or by loading it from a local file directory on your hard drive. Both methods are covered below:</p>
+<section id="loading-data-from-the-web" class="level3" data-number="4.1.1"><h3 data-number="4.1.1" class="anchored" data-anchor-id="loading-data-from-the-web">
+<span class="header-section-number">4.1.1</span> Loading data from the web</h3>
+<p>To download files from the web we need another package, <code>openxlsx</code>, which you need to <em>install</em> before you load it (see: <a href="#sec-packages">Section&nbsp;2.3</a>, or use line 1 below). The code shown will download the files from an online Google drive directly into objects in R using <code>read.xlsx(&lt;file_web_address&gt;, &lt;sheet_name&gt;)</code>:</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="fu">install.packages</span>(<span class="st">"openxlsx"</span>)</span>
+<span id="cb68-2"><a href="#cb68-2"></a><span class="fu">library</span>(openxlsx)</span>
+<span id="cb68-3"><a href="#cb68-3"></a></span>
+<span id="cb68-4"><a href="#cb68-4"></a>results <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"https://drive.google.com/uc?export=download&amp;id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM"</span>,</span>
+<span id="cb68-5"><a href="#cb68-5"></a>                      <span class="at">sheet=</span><span class="st">"Results"</span>)</span>
+<span id="cb68-6"><a href="#cb68-6"></a>schools <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"https://drive.google.com/uc?export=download&amp;id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM"</span>,</span>
+<span id="cb68-7"><a href="#cb68-7"></a>                      <span class="at">sheet=</span><span class="st">"Schools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="loading-data-from-your-computer" class="level3" data-number="4.1.2"><h3 data-number="4.1.2" class="anchored" data-anchor-id="loading-data-from-your-computer">
+<span class="header-section-number">4.1.2</span> Loading data from your computer</h3>
+<p>Downloading files directly from web addresses can be slow and you might want to prefer to use files saved to your computer’s hard drive. You can do this by following the steps below:</p>
 <p>Download the <code>dfe_data.xlsx</code> Excel file from <a href="https://drive.google.com/file/d/1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM/view">here</a> and save it to your computer where your R code file is.</p>
 <p>Open the file to see what it contains.</p>
 <p>Copy the location of the file (see next step for help)</p>
@@ -1078,29 +1102,29 @@ Tip
 </ol>
 </li>
 <li>
-<p>To find the location of a file in <em>Mac OSX</em> do the following:</p>
+<p>To find the location of a file in <strong><em>Mac OSX</em></strong> do the following:</p>
 <ol type="1">
 <li><p>Open <em>Finder</em></p></li>
 <li><p>Navigate to the folder where you saved the Excel file</p></li>
 <li>
-<p>Right click on the file name and select <code>Copy &lt;name of file&gt; as Pathname</code></p>
+<p>Right click on the folder where the file is stored and select <code>Copy &lt;name of file&gt; as Pathname</code></p>
 <p><img src="images/mac_pathnames.jpg" class="img-fluid"></p>
 </li>
 <li><p>Alternatively, follow <a href="https://support.apple.com/en-gb/guide/mac-help/mchlp1774/mac">this</a></p></li>
 </ol>
 </li>
 </ul>
-</div>
 <p>To load the data into R we need to use the <code>read_excel(&lt;file_location&gt;, &lt;sheet_name&gt;)</code> command, specifying the location and name of the file we are loading, and as we are reading an Excel file, we need to specify the sheet name within the Excel file. See the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="co"># load the basic tidyverse libraries and readxl</span></span>
-<span id="cb68-2"><a href="#cb68-2"></a><span class="co"># readxl is for reading and writing Excel files </span></span>
-<span id="cb68-3"><a href="#cb68-3"></a><span class="co"># and not loaded by the tidyverse by default</span></span>
-<span id="cb68-4"><a href="#cb68-4"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb68-5"><a href="#cb68-5"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb68-6"><a href="#cb68-6"></a></span>
-<span id="cb68-7"><a href="#cb68-7"></a>results <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx"</span>, <span class="st">"Results"</span>)</span>
-<span id="cb68-8"><a href="#cb68-8"></a>schools <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx"</span>, <span class="st">"Schools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a><span class="co"># load the basic tidyverse libraries and readxl</span></span>
+<span id="cb69-2"><a href="#cb69-2"></a><span class="co"># readxl is for reading and writing Excel files </span></span>
+<span id="cb69-3"><a href="#cb69-3"></a><span class="co"># and not loaded by the tidyverse by default</span></span>
+<span id="cb69-4"><a href="#cb69-4"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb69-5"><a href="#cb69-5"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb69-6"><a href="#cb69-6"></a></span>
+<span id="cb69-7"><a href="#cb69-7"></a><span class="co"># note that we need to add /dfe_data.xlsx to the end of the file location</span></span>
+<span id="cb69-8"><a href="#cb69-8"></a>results <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx"</span>, <span class="st">"Results"</span>)</span>
+<span id="cb69-9"><a href="#cb69-9"></a>schools <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"c:/Users/Peter/Google Drive/Kings/R intro/code/dfe_data.xlsx"</span>, <span class="st">"Schools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
@@ -1114,7 +1138,8 @@ Tip
 </li>
 <li>use the inbuilt R command to deal with filenames: <code>r"[C:\myfolder\]"</code>
 </li>
-</ul>
+</ul></section><section id="exploring-dataframes" class="level3" data-number="4.1.3"><h3 data-number="4.1.3" class="anchored" data-anchor-id="exploring-dataframes">
+<span class="header-section-number">4.1.3</span> Exploring dataframes</h3>
 <p>When you load the tables you will get some warnings:</p>
 <div class="callout-warning callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -1132,7 +1157,7 @@ Warning
 <p>This warning is telling you that a column in the dataframe is nearly all <code>numeric</code>, except for some rows which are storing the <code>character</code> string <code>SUPP</code>. This is the DfE’s way of <em>suppressing</em> data for schools and subjects that are smaller than 5 students. We’ll deal with these when we come to cleaning our data.</p>
 <p>You can check that the tables have loaded correctly by typing the object names and running them (<code>control</code>|<code>command</code> and <code>Enter</code>)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 677,784 x 11
        ID Total_students Qualification       Grade_structure Code  Subject_group
@@ -1171,10 +1196,10 @@ Note
 <p>The <code>results</code> and <code>schools</code> dataframes are made up of multiple columns, with each column acting like a <em>vector</em>, which means each column stores values of only one datatype. If we look at the first four columns of the schools table, you can see the ID column is a <code>&lt;dbl&gt;</code> (<code>numeric</code>) and the other three columns are of type <code>&lt;chr&gt;</code> (<code>character</code>).</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "ID     LA     Name   TypeOfEstablish~"</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "&lt;dbl&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;"</code></pre>
+<pre><code># A tibble: 1 x 4
+      ID LA             Name                                    TypeOfEstablish~
+   &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;                                   &lt;chr&gt;           
+1 100000 City of London Sir John Cass's Foundation Primary Sch~ Voluntary aided~</code></pre>
 </div>
 </div>
 <div class="callout-note callout callout-style-default callout-captioned">
@@ -1253,7 +1278,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>To get a good overview of what a table contains, you can use the <code>str(table_name)</code> and <code>summary(table_name)</code> commands.</p>
+<p>To get a good overview of what a table contains, you can use the <code>str(&lt;table_name&gt;)</code> and <code>summary(&lt;table_name&gt;)</code> commands.</p>
 </div>
 </div>
 <p>Often when performing calculations, you will meet the <code>NA</code> value, this will most likely derail your calculations:</p>
@@ -1263,9 +1288,22 @@ Tip
 <pre><code>[1] NA</code></pre>
 </div>
 </div>
-<p>The reason that the <code>mean</code> function is returning <code>NA</code> is because there are many schools that can’t have any students recorded as being boys according to the DfE’s data rules, i.e.&nbsp;schools that are closed. Rather than recording <code>NumberOfBoys</code> as 0 for these schools, the DfE has used <code>NA</code>. To get past this, make sure you remove these schools from your calculations, by adding <code>na.rm = TRUE</code> (<em>NA remove</em>) inside the function call:</p>
+<p>The reason that the <code>mean</code> function is returning <code>NA</code> is because there are many schools that can’t have any students recorded as being boys according to the DfE’s data rules, i.e.&nbsp;schools that are closed. Rather than recording <code>NumberOfBoys</code> as 0 for these schools, the DfE has used <code>NA</code>, e.g.&nbsp;ID <code>100004</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="fu">mean</span>(schools<span class="sc">$</span>NumberOfBoys, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 x 3
+      ID Open   NumberOfBoys
+   &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;
+1 100000 Open            144
+2 100001 Open              0
+3 100002 Open            149
+4 100003 Open            937
+5 100004 Closed           NA</code></pre>
+</div>
+</div>
+<p>To get past this, you can remove these schools from your calculations by adding <code>na.rm = TRUE</code> (<em>NA remove</em>) inside the function call:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a><span class="fu">mean</span>(schools<span class="sc">$</span>NumberOfBoys, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 184.44</code></pre>
 </div>
@@ -1280,22 +1318,29 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Check your data for <code>NA</code>s before running calculations. The <code>na.rm = TRUE</code> can be applied to most mathematical functions</p>
+<p>Check your data for <code>NA</code>s before running calculations. You can do this by using the <code>is.na(&lt;vector&gt;)</code>, this will return <code>TRUE</code> or <code>FALSE</code> for each item in a column depending on whether that item is <code>NA</code> or not. We can then <code>sum</code> how many <code>TRUE</code>s we have. For our <code>schools$NumberOfBoys</code> column we have quite a few <code>NA</code>s:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(schools<span class="sc">$</span>NumberOfBoys))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 21739</code></pre>
 </div>
 </div>
-<section id="questions-6" class="level3" data-number="4.1.1"><h3 data-number="4.1.1" class="anchored" data-anchor-id="questions-6">
-<span class="header-section-number">4.1.1</span> Questions</h3>
+<p>The <code>na.rm = TRUE</code> can be applied to most mathematical functions.</p>
+</div>
+</div>
+</section><section id="questions-6" class="level3" data-number="4.1.4"><h3 data-number="4.1.4" class="anchored" data-anchor-id="questions-6">
+<span class="header-section-number">4.1.4</span> Questions</h3>
 <div class="question">
 <ol type="1">
 <li>Can you spot the <em>six</em> errors in this code:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="fu">library</span>(tidyvrse)</span>
-<span id="cb85-2"><a href="#cb85-2"></a></span>
-<span id="cb85-3"><a href="#cb85-3"></a>results <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:\Users/Peter/Google Drive/Kings/R intro/code/testdata.xlsx"</span>, <span class="st">"Results)</span></span>
-<span id="cb85-4"><a href="#cb85-4"></a><span class="st">schools &lt; read_excel("</span>C<span class="sc">:</span><span class="er">/</span>Users<span class="sc">/</span>Peter<span class="sc">/</span>Google Drive<span class="sc">/</span>Kings<span class="sc">/</span>R intro<span class="sc">/</span>code<span class="sc">/</span>testdata.xlsx<span class="st">", "</span>Schools<span class="st">")</span></span>
-<span id="cb85-5"><a href="#cb85-5"></a></span>
-<span id="cb85-6"><a href="#cb85-6"></a><span class="st">sum(results£Entries)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a><span class="fu">library</span>(tidyvrse)</span>
+<span id="cb88-2"><a href="#cb88-2"></a></span>
+<span id="cb88-3"><a href="#cb88-3"></a>results <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:\Users/Peter/Google Drive/Kings/R intro/code/testdata.xlsx"</span>, <span class="st">"Results)</span></span>
+<span id="cb88-4"><a href="#cb88-4"></a><span class="st">schools &lt; read_excel("</span>C<span class="sc">:</span><span class="er">/</span>Users<span class="sc">/</span>Peter<span class="sc">/</span>Google Drive<span class="sc">/</span>Kings<span class="sc">/</span>R intro<span class="sc">/</span>code<span class="sc">/</span>testdata.xlsx<span class="st">", "</span>Schools<span class="st">")</span></span>
+<span id="cb88-5"><a href="#cb88-5"></a></span>
+<span id="cb88-6"><a href="#cb88-6"></a><span class="st">sum(results£Entries)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
@@ -1350,14 +1395,32 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The pipe command we are using <code>%&gt;%</code> is from the <em>maggrittr</em> package which is installed alongside the tidyverse. Recently <em>R</em> introduced another pipe <code>|&gt;</code> which offers very similar functionality. The examples below use the <code>%&gt;%</code> pipe.</p>
+<p>The pipe command we are using <code>%&gt;%</code> is from the <em>maggrittr</em> package which is installed alongside the tidyverse. Recently <em>R</em> introduced another pipe <code>|&gt;</code> which offers very similar functionality and tutorials online might use either. The examples below use the <code>%&gt;%</code> pipe.</p>
 </div>
 </div>
-<p>Let’s look at a piped example by using the <code>results</code> table. This table contains a field called <code>Total_students</code> which we should be able to be used to work out the number of students in the school entering exams in 2018/19. But the data is very messy. For a school’s results <code>Total_students</code>, i.e.&nbsp;total number of students in a cohort, appears for each subject a school entered students for, but not just that, it appears for each individual grade grouping!?</p>
+<p>Let’s look at an example of using the pipe on the <code>results</code> table. If we wanted to know the total number of students obtaining each <code>Grade</code> in our dataset, we could <code>group_by</code> on <code>Grade</code> and pass the grouping to a <code>summarise</code> function where we can sum the total number of <code>Entries</code> and store it in a new column called <code>Grade_total</code>. Finally we pass the results to another function, <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, which returns the top few items. We can see that there were 139698 grade 1s overall compared to 555281 grade 3s.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb86-2"><a href="#cb86-2"></a>  <span class="fu">filter</span>(ID <span class="sc">==</span> <span class="dv">100055</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-3"><a href="#cb86-3"></a>  <span class="fu">select</span>(ID, Total_students, Description, Grade, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb89-2"><a href="#cb89-2"></a>  <span class="fu">group_by</span>(Grade) <span class="sc">%&gt;%</span> </span>
+<span id="cb89-3"><a href="#cb89-3"></a>  <span class="fu">summarise</span>(<span class="at">Grade_total =</span> <span class="fu">sum</span>(Entries, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb89-4"><a href="#cb89-4"></a>  <span class="fu">head</span>(<span class="dv">6</span>) <span class="co"># this returns the first 6 entries.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 x 2
+  Grade Grade_total
+  &lt;chr&gt;       &lt;dbl&gt;
+1 1          139698
+2 11           7905
+3 2          284958
+4 21          14814
+5 22          23228
+6 3          555281</code></pre>
+</div>
+</div>
+<p>Looking at a more complex example: the <code>results</code> table contains a field called <code>Total_students</code> which should be able to be used to work out the number of students in the school entering exams in 2018/19. But the data is very messy. For a school’s results <code>Total_students</code>, i.e.&nbsp;total number of students in a cohort, appears for each subject a school entered students for. But not just that, it appears for each individual grade grouping!?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb91-2"><a href="#cb91-2"></a>  <span class="fu">filter</span>(ID <span class="sc">==</span> <span class="dv">100055</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-3"><a href="#cb91-3"></a>  <span class="fu">select</span>(ID, Total_students, Description, Grade, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 165 x 5
        ID Total_students Description  Grade                Entries
@@ -1375,11 +1438,11 @@ Note
 # ... with 155 more rows</code></pre>
 </div>
 </div>
-<p>It’s no good summing the total number of students in the <code>results</code> table together if the students are counted more than once for each school, e.g.&nbsp;school <code>ID 100055</code> has <em>165</em> entries for<code>Total_students</code>. What we want to do is to get one <code>Total_students</code> for each school, we can do this by grouping the results for each school together, then finding the unique value for <code>Total_students</code>. As each result row for the same school has the same <code>Total_students</code> value, <code>unique(Total_students)</code> will return a single value for each individual school.</p>
+<p>It’s no good summing the total number of students in the <code>results</code> table together if the students are counted more than once for each school, e.g.&nbsp;school <code>ID 100055</code> has <em>165</em> entries for <code>Total_students</code>. What we want to do is to get one <code>Total_students</code> for each school, we can do this by grouping the results for each school together, then finding the unique value for <code>Total_students</code>. As each result row for the same school has the same <code>Total_students</code> value, <code>unique(Total_students)</code> will return a single value for each individual school.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb88-2"><a href="#cb88-2"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
-<span id="cb88-3"><a href="#cb88-3"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">unique</span>(Total_students)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb93-2"><a href="#cb93-2"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb93-3"><a href="#cb93-3"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">unique</span>(Total_students)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4,648 x 2
        ID Total
@@ -1407,16 +1470,16 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>we met the assignment command earlier <code>&lt;-</code>. Within the tidyverse commands we normally use the equals sign instead <code>=</code>, but you can use <code>&lt;-</code> if you like.</p>
+<p>we met the assignment command earlier <code>&lt;-</code>. Within the tidyverse commands we use the equals sign instead <code>=</code>.</p>
 </div>
 </div>
 <p>Knowing that we now have one result for each school, we can now feed the individual school sizes into another <code>summarise</code>, to find the total number of students entered into an exam for the <em>whole</em> country in 2018/19:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb90-2"><a href="#cb90-2"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
-<span id="cb90-3"><a href="#cb90-3"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">unique</span>(Total_students))<span class="sc">%&gt;%</span> </span>
-<span id="cb90-4"><a href="#cb90-4"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb90-5"><a href="#cb90-5"></a>  <span class="fu">summarise</span>(<span class="at">Grand_Total =</span> <span class="fu">sum</span>(Total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb95-2"><a href="#cb95-2"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb95-3"><a href="#cb95-3"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">unique</span>(Total_students)) <span class="sc">%&gt;%</span> </span>
+<span id="cb95-4"><a href="#cb95-4"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb95-5"><a href="#cb95-5"></a>  <span class="fu">summarise</span>(<span class="at">Grand_Total =</span> <span class="fu">sum</span>(Total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 1
   Grand_Total
@@ -1428,26 +1491,26 @@ Note
 <section id="group-and-summarise" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="group-and-summarise">
 <span class="header-section-number">4.2.1</span> Group and summarise</h3>
 <p><code>group_by(&lt;column&gt;, &lt;column&gt;)</code> collects data together using one or more column values, you can then perform calculations using that grouping.</p>
-<p><code>summarise(&lt;col_name&gt; = &lt;calculation&gt;)</code> performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and the given <em>grouping</em> columns.</p>
+<p><code>summarise(&lt;col_name&gt; = &lt;calculation&gt;)</code> performs a calculation on a given grouping, returning the result but dropping all the columns except for the result and any given <em>grouping</em> columns.</p>
 <p><code>ungroup()</code> gets rid of any current grouping.</p>
-<p>Taking another example, we might want to find the number of students taking each subject in the <code>results</code> table, e.g.&nbsp;the number of GCSE CS students entered in 2018/19</p>
+<p>Taking another example, we might want to find the number of students taking each subject in the <code>results</code> table, e.g.&nbsp;the number of GCSE CS students entered in 2018/19 for the whole country.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a>sub_entries <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span></span>
-<span id="cb92-2"><a href="#cb92-2"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
-<span id="cb92-3"><a href="#cb92-3"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
-<span id="cb92-4"><a href="#cb92-4"></a>  <span class="fu">group_by</span>(Description) <span class="sc">%&gt;%</span></span>
-<span id="cb92-5"><a href="#cb92-5"></a>  <span class="fu">summarise</span>(<span class="at">Subject_Total =</span> <span class="fu">sum</span>(Total, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a>sub_entries <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span></span>
+<span id="cb97-2"><a href="#cb97-2"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
+<span id="cb97-3"><a href="#cb97-3"></a>  <span class="fu">summarise</span>(<span class="at">Total =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
+<span id="cb97-4"><a href="#cb97-4"></a>  <span class="fu">group_by</span>(Description) <span class="sc">%&gt;%</span></span>
+<span id="cb97-5"><a href="#cb97-5"></a>  <span class="fu">summarise</span>(<span class="at">Subject_Total =</span> <span class="fu">sum</span>(Total, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol type="1">
-<li><p>gets the <code>results</code> dataframe and <em>pipes</em> it into the next instruction, whatever results from all the piping will be stored <code>&lt;-</code> into the <code>sub_entries</code> object</p></li>
-<li><p>groups the results by individual <em>school</em> (<code>ID</code>) <em>and</em> by <em>subject</em> taken in that school (<code>Description</code>).</p></li>
-<li><p>creates a new column called <code>Total</code> and stores the <em>maximum</em> value from the <code>Entries</code> column, i.e.&nbsp;the total number entered for each subject. As the piped data is currently grouped, this will work out the total number entered for every school and subject combination.</p></li>
-<li><p>as the pipe currently stores the total number of students entered for each subject in each school, we now group on <code>Description</code> <em>only</em> to allow us to look at individual subjects across <em>all</em> schools</p></li>
-<li><p>creates a new column called <code>Subject_Total</code> and stores the sum of all the <code>Total</code> in each <code>Description</code> grouping, i.e.&nbsp;the number of students taking each subject for the whole of England</p></li>
-</ol>
-<p>In the example below, we have assigned the output of the tidyverse pipe calculation into a new object called <code>sub_entries</code>. If you run the code you will be able to access at the results in the <code>Environment</code> panel rather than just the console.</p>
+<ul>
+<li><p>1 - gets the <code>results</code> dataframe and <em>pipes</em> it into the next instruction, whatever comes out of all the piping will be stored <code>&lt;-</code> into the <code>sub_entries</code> object.</p></li>
+<li><p>2 - groups the results by individual <em>school</em> (<code>ID</code>) <em>and</em> by <em>subject</em> taken in that school (<code>Description</code>). I.e. we will be looking at a grouping of individual subjects and school.</p></li>
+<li><p>3 - creates a new column called <code>Total</code> and stores the <em>maximum</em> value from the <code>Entries</code> column, i.e.&nbsp;the total number entered for each subject, all other values will be numbers of students achieving different grades. As the piped data is currently grouped, this will work out the total number entered for every school and subject combination.</p></li>
+<li><p>4 - as the pipe currently stores the total number of students entered for each subject in each school, we now group on <code>Description</code> <em>only</em> to allow us to look at individual subjects across <em>all</em> schools. Note we haven’t <code>ungrouped</code> the data before grouping it again, applying a <code>group_by</code> command to already grouped data, overrides the original grouping.</p></li>
+<li><p>5- creates a new column called <code>Subject_Total</code> and stores the <code>sum</code> of all the <code>Total</code> in each <code>Description</code> grouping, i.e.&nbsp;it adds together the total number of students taking each subject for each school, giving us a figure for the whole of England.</p></li>
+</ul>
+<p>In the example above, we have assigned the output of the tidyverse pipe calculation into a new object called <code>sub_entries</code>. If you run the code you will be able to access all the results in the <code>Environment</code> panel rather than just the console.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a>sub_entries <span class="co"># output the new object to the console</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a><span class="fu">print</span>(sub_entries) <span class="co"># output the new object to the console</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 130 x 2
    Description                    Subject_Total
@@ -1465,15 +1528,11 @@ Note
 # ... with 120 more rows</code></pre>
 </div>
 </div>
-<p>We can also use the <code>n()</code> command to count the number of schools that meet certain criteria. <code>n()</code> returns the number of rows in a table or group.</p>
+<p>We can use the <code>n()</code> command to count the number of schools that meet certain criteria. <code>n()</code> returns the number of rows in a table or group.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb95-2"><a href="#cb95-2"></a>  <span class="fu">group_by</span>(TypeOfEstablishment, Open) <span class="sc">%&gt;%</span></span>
-<span id="cb95-3"><a href="#cb95-3"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'TypeOfEstablishment'. You can override
-using the `.groups` argument.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb100-2"><a href="#cb100-2"></a>  <span class="fu">group_by</span>(TypeOfEstablishment, Open) <span class="sc">%&gt;%</span></span>
+<span id="cb100-3"><a href="#cb100-3"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 84 x 3
 # Groups:   TypeOfEstablishment [37]
@@ -1497,9 +1556,9 @@ using the `.groups` argument.</code></pre>
 <li>Can you spot the <em>six</em> errors in this code:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a>starwars </span>
-<span id="cb98-2"><a href="#cb98-2"></a>  <span class="fu">group_by</span>(<span class="st">"species"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb98-3"><a href="#cb98-3"></a>  <span class="fu">summarise</span>(avg_weight <span class="sc">==</span> <span class="fu">mean</span>(mass, <span class="at">rm.na=</span>true)) <span class="sc">%&gt;%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>starwars </span>
+<span id="cb102-2"><a href="#cb102-2"></a>  <span class="fu">group_by</span>(<span class="st">"species"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb102-3"><a href="#cb102-3"></a>  <span class="fu">summarise</span>(avg_weight <span class="sc">==</span> <span class="fu">mean</span>(mass, <span class="at">rm.na=</span>true)) <span class="sc">%&gt;%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
@@ -1526,7 +1585,7 @@ using the `.groups` argument.</code></pre>
 
 </div>
 <ol start="5" type="1">
-<li>[Extension] Using the <em>results</em> table, find the total number of students entering exams by <code>School_type.</code>
+<li>[Extension] Using the <code>results</code> table, find the total number of students entering exams by <code>School_type.</code>
 </li>
 </ol>
 <div class="cell">
@@ -1540,10 +1599,10 @@ using the `.groups` argument.</code></pre>
 <p><code>mutate(&lt;col_name&gt; = &lt;calculation&gt;)</code> creates a column based on a set value, or one or more other columns. It’s similar to <code>summarise</code>, but it doesn’t get rid of all the other non-grouped columns or reduce the number of rows in a grouping.</p>
 <p>Let’s take another example. Imagine we only want to know details about the schools where they had students entering <code>GCSE Chinese</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb99-2"><a href="#cb99-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb99-3"><a href="#cb99-3"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb99-4"><a href="#cb99-4"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb103-2"><a href="#cb103-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb103-3"><a href="#cb103-3"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb103-4"><a href="#cb103-4"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 458 x 5
        ID School                          Total_students Description Entries
@@ -1561,19 +1620,19 @@ using the `.groups` argument.</code></pre>
 # ... with 448 more rows</code></pre>
 </div>
 </div>
-<ol type="1">
-<li><p>gets the <code>results</code> dataframe and <em>pipes</em> it into the next instruction,</p></li>
-<li><p><code>filter</code> returns only those rows that have “Chinese” in their <code>Description</code> column, i.e.&nbsp;it filters out all of the other subjects</p></li>
-<li><p><code>filter</code> returns only those rows that have “Total number entered” in their <code>Grade</code> column, i.e.&nbsp;it filters out all of the individual grade numbers.</p></li>
-<li><p><code>select</code> gets rid of all the columns other than those listed.</p></li>
-</ol>
+<ul>
+<li><p>1 - gets the <code>results</code> dataframe and <em>pipes</em> it into the next instruction,</p></li>
+<li><p>2 - <code>filter</code> returns only those rows that have “Chinese” in their <code>Description</code> column, i.e.&nbsp;it filters out all of the other subjects</p></li>
+<li><p>3 - <code>filter</code> returns only those rows that have “Total number entered” in their <code>Grade</code> column, i.e.&nbsp;it filters out all of the individual grade numbers.</p></li>
+<li><p>4 - <code>select</code> gets rid of all the columns other than those listed.</p></li>
+</ul>
 <p>We can now add a new column by using <code>mutate</code>, to look at the percentage of each provider taking <code>Chinese</code>, and filter on those with more than <code>0.50</code> (50%) taking it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb101-2"><a href="#cb101-2"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb101-3"><a href="#cb101-3"></a>  <span class="fu">select</span>(ID, School, Total_students,Description, Entries) <span class="sc">%&gt;%</span></span>
-<span id="cb101-4"><a href="#cb101-4"></a>  <span class="fu">mutate</span>(<span class="at">per =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
-<span id="cb101-5"><a href="#cb101-5"></a>  <span class="fu">filter</span>(per <span class="sc">&gt;</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb105-2"><a href="#cb105-2"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb105-3"><a href="#cb105-3"></a>  <span class="fu">select</span>(ID, School, Total_students,Description, Entries) <span class="sc">%&gt;%</span></span>
+<span id="cb105-4"><a href="#cb105-4"></a>  <span class="fu">mutate</span>(<span class="at">per =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
+<span id="cb105-5"><a href="#cb105-5"></a>  <span class="fu">filter</span>(per <span class="sc">&gt;</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 x 6
       ID School                  Total_students Description Entries   per
@@ -1584,10 +1643,10 @@ using the `.groups` argument.</code></pre>
 </div>
 <p>You can see in the last example that we had two <code>filters</code>, one after another. This acts like an <code>AND</code>, i.e.&nbsp;the code <code>filters</code> for <code>Description == "Chinese"</code> <em>AND</em> <code>Grade == "Total number entered"</code>. If you want to <em>AND</em> your filters you can also put them together, as shown below, with a comma separating them <code>,</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb103-2"><a href="#cb103-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>,</span>
-<span id="cb103-3"><a href="#cb103-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb103-4"><a href="#cb103-4"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb107-2"><a href="#cb107-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>,</span>
+<span id="cb107-3"><a href="#cb107-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb107-4"><a href="#cb107-4"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 458 x 5
        ID School                          Total_students Description Entries
@@ -1607,11 +1666,11 @@ using the `.groups` argument.</code></pre>
 </div>
 <p>You might want to <code>OR</code> your filter, for example finding all the results that are either <code>"Chinese"</code> <code>OR</code> <code>"French"</code>. You can do this using the bar <code>|</code> character:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb105-2"><a href="#cb105-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span> <span class="sc">|</span> <span class="co"># the bar character is the same as OR </span></span>
-<span id="cb105-3"><a href="#cb105-3"></a>         Description <span class="sc">==</span> <span class="st">"French"</span>,</span>
-<span id="cb105-4"><a href="#cb105-4"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb105-5"><a href="#cb105-5"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1"></a>results <span class="sc">%&gt;%</span> </span>
+<span id="cb109-2"><a href="#cb109-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span> <span class="sc">|</span> <span class="co"># the bar character is the same as OR </span></span>
+<span id="cb109-3"><a href="#cb109-3"></a>         Description <span class="sc">==</span> <span class="st">"French"</span>,</span>
+<span id="cb109-4"><a href="#cb109-4"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb109-5"><a href="#cb109-5"></a>  <span class="fu">select</span>(ID, School, Total_students, Description, Entries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,760 x 5
        ID School                          Total_students Description Entries
@@ -1643,24 +1702,24 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Remember to include the <code>==</code> signs when looking to filter, <code>&gt;=</code>, <code>&lt;</code> etc also work.</p>
+<p>Remember to include the <code>==</code> sign when looking to filter on equality; <code>!=</code>, <code>&gt;=</code>, <code>&lt;</code> etc also work.</p>
 <p>Remember matching is case sensitive, “chinese” <code>!=</code> “Chinese”</p>
 </div>
 </div>
 <p>Having lots of results can get a little confusing, try to make sure that you comment your code and don’t be afraid to store pipe outputs in separate objects and explore them individually using the Environment panel. You can also use intermediate results in other pipes E.g. we might want to look at the states for open schools, by filtering on <code>Open == "Open"</code> we can store the result in <code>Open_schools</code> and then further analyse this dataset:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1"></a><span class="co"># store details on all the open schools in Open_schools</span></span>
-<span id="cb107-2"><a href="#cb107-2"></a>Open_schools <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>)</span>
-<span id="cb107-3"><a href="#cb107-3"></a></span>
-<span id="cb107-4"><a href="#cb107-4"></a><span class="co"># use Open_schools to find stats only about schools that are open</span></span>
-<span id="cb107-5"><a href="#cb107-5"></a>Open_schools <span class="sc">%&gt;%</span></span>
-<span id="cb107-6"><a href="#cb107-6"></a>  <span class="fu">group_by</span>(LA) <span class="sc">%&gt;%</span></span>
-<span id="cb107-7"><a href="#cb107-7"></a>  <span class="fu">mutate</span>(<span class="at">All_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb107-8"><a href="#cb107-8"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb107-9"><a href="#cb107-9"></a>  <span class="fu">group_by</span>(LA, EstablishmentGroup, All_schools) <span class="sc">%&gt;%</span></span>
-<span id="cb107-10"><a href="#cb107-10"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb107-11"><a href="#cb107-11"></a>  <span class="co"># the round() function allows you to specify the number of significant digits</span></span>
-<span id="cb107-12"><a href="#cb107-12"></a>  <span class="fu">mutate</span>(<span class="at">per =</span> <span class="fu">round</span>(total<span class="sc">/</span>All_schools, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a><span class="co"># store details on all the open schools in Open_schools</span></span>
+<span id="cb111-2"><a href="#cb111-2"></a>Open_schools <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>)</span>
+<span id="cb111-3"><a href="#cb111-3"></a></span>
+<span id="cb111-4"><a href="#cb111-4"></a><span class="co"># use Open_schools to find stats only about schools that are open</span></span>
+<span id="cb111-5"><a href="#cb111-5"></a>Open_schools <span class="sc">%&gt;%</span></span>
+<span id="cb111-6"><a href="#cb111-6"></a>  <span class="fu">group_by</span>(LA) <span class="sc">%&gt;%</span></span>
+<span id="cb111-7"><a href="#cb111-7"></a>  <span class="fu">mutate</span>(<span class="at">All_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb111-8"><a href="#cb111-8"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb111-9"><a href="#cb111-9"></a>  <span class="fu">group_by</span>(LA, EstablishmentGroup, All_schools) <span class="sc">%&gt;%</span></span>
+<span id="cb111-10"><a href="#cb111-10"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb111-11"><a href="#cb111-11"></a>  <span class="co"># the round() function allows you to specify the number of significant digits</span></span>
+<span id="cb111-12"><a href="#cb111-12"></a>  <span class="fu">mutate</span>(<span class="at">per =</span> <span class="fu">round</span>(total<span class="sc">/</span>All_schools, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,049 x 5
 # Groups:   LA, EstablishmentGroup [1,049]
@@ -1681,12 +1740,12 @@ Important
 </div>
 </section><section id="sec-renaming" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="sec-renaming">
 <span class="header-section-number">4.2.3</span> Renaming columns</h3>
-<p>Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g.&nbsp;<em>BCBG10B</em> and <em>BCBG11.</em> To rename columns in the tidyverse we use the <code>rename(&lt;old_name&gt; = &lt;new_name&gt;)</code> command. For example, if you wanted to rename the rather confusing schools column called <code>Open</code> you would do the following:</p>
+<p>Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g.&nbsp;<em>BCBG10B</em> and <em>BCBG11.</em> To rename columns in the tidyverse we use the <code>rename(&lt;old_name&gt; = &lt;new_name&gt;)</code> command. For example, if you wanted to rename the rather confusing school’s column called <code>Open</code> you would do the following:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb109-2"><a href="#cb109-2"></a>  <span class="fu">rename</span>(<span class="at">Status =</span> Open) <span class="sc">%&gt;%</span></span>
-<span id="cb109-3"><a href="#cb109-3"></a>  <span class="fu">select</span>(ID, Status, TypeOfEstablishment) <span class="sc">%&gt;%</span></span>
-<span id="cb109-4"><a href="#cb109-4"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb113-2"><a href="#cb113-2"></a>  <span class="fu">rename</span>(<span class="at">Status =</span> Open) <span class="sc">%&gt;%</span></span>
+<span id="cb113-3"><a href="#cb113-3"></a>  <span class="fu">select</span>(ID, Status, TypeOfEstablishment) <span class="sc">%&gt;%</span></span>
+<span id="cb113-4"><a href="#cb113-4"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 x 3
       ID Status TypeOfEstablishment           
@@ -1702,11 +1761,11 @@ Important
 <span class="header-section-number">4.2.4</span> Arranging results</h3>
 <p>The results returned by pipes can be huge, so it’s a good idea to store them in objects and explore them in the <em>Environment</em> window where you can sort and search within the output. There might also be times when you want to order/<code>arrange</code> the outputs. We can do this quite easily in the tidyverse by using the <code>arrange(&lt;column_name&gt;)</code> function. In the example below we are arranging the output by the <code>desc</code>ending value of the <code>total</code> providers, followed by the school <code>Phase</code> name (this allows the ordering any rows where total is the same; e.g.&nbsp;rows 18 and 19).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb111-2"><a href="#cb111-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb111-3"><a href="#cb111-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb111-4"><a href="#cb111-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb111-5"><a href="#cb111-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total), Phase)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb115-2"><a href="#cb115-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb115-3"><a href="#cb115-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb115-4"><a href="#cb115-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb115-5"><a href="#cb115-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total), Phase)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20 x 3
 # Groups:   Phase [8]
@@ -1736,12 +1795,12 @@ Important
 </div>
 <p>If you want to show the results by <code>Phase</code>, then <code>total</code> schools, we need to change the order within <code>arrange</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb113-2"><a href="#cb113-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb113-3"><a href="#cb113-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb113-4"><a href="#cb113-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb113-5"><a href="#cb113-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Phase), <span class="fu">desc</span>(total)) <span class="sc">%&gt;%</span></span>
-<span id="cb113-6"><a href="#cb113-6"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="co"># returns the top 10 results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb117-2"><a href="#cb117-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb117-3"><a href="#cb117-3"></a>  <span class="fu">group_by</span>(Phase, Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb117-4"><a href="#cb117-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb117-5"><a href="#cb117-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Phase), <span class="fu">desc</span>(total)) <span class="sc">%&gt;%</span></span>
+<span id="cb117-6"><a href="#cb117-6"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="co"># returns the top 10 results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 x 3
 # Groups:   Phase [4]
@@ -1766,23 +1825,23 @@ Important
 <li>Predict what this code does:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1"></a>schools <span class="sc">%&gt;%</span> </span>
-<span id="cb115-2"><a href="#cb115-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb115-3"><a href="#cb115-3"></a>  <span class="fu">filter</span>(TypeOfEstablishment <span class="sc">==</span> <span class="st">"Pupil referral unit"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb115-4"><a href="#cb115-4"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
-<span id="cb115-5"><a href="#cb115-5"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), </span>
-<span id="cb115-6"><a href="#cb115-6"></a>            <span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys <span class="sc">+</span> NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb115-7"><a href="#cb115-7"></a>            <span class="at">average_boys =</span> <span class="fu">mean</span>(NumberOfBoys, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb115-8"><a href="#cb115-8"></a>            <span class="at">average_girls =</span> <span class="fu">mean</span>(NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1"></a>schools <span class="sc">%&gt;%</span> </span>
+<span id="cb119-2"><a href="#cb119-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb119-3"><a href="#cb119-3"></a>  <span class="fu">filter</span>(TypeOfEstablishment <span class="sc">==</span> <span class="st">"Pupil referral unit"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb119-4"><a href="#cb119-4"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb119-5"><a href="#cb119-5"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), </span>
+<span id="cb119-6"><a href="#cb119-6"></a>            <span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys <span class="sc">+</span> NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb119-7"><a href="#cb119-7"></a>            <span class="at">average_boys =</span> <span class="fu">mean</span>(NumberOfBoys, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb119-8"><a href="#cb119-8"></a>            <span class="at">average_girls =</span> <span class="fu">mean</span>(NumberOfGirls, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>What are the 6 errors in this code:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>schools</span>
-<span id="cb116-2"><a href="#cb116-2"></a>  <span class="fu">filter</span>(<span class="at">Gender =</span> <span class="st">"boys"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb116-3"><a href="#cb116-3"></a>  <span class="fu">fitler</span>(TypeOfEstablishment <span class="sc">==</span> Free schools) <span class="sc">%&gt;%</span></span>
-<span id="cb116-4"><a href="#cb116-4"></a>  <span class="fu">summarise</span>(<span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1"></a>schools</span>
+<span id="cb120-2"><a href="#cb120-2"></a>  <span class="fu">filter</span>(<span class="at">Gender =</span> <span class="st">"boys"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb120-3"><a href="#cb120-3"></a>  <span class="fu">fitler</span>(TypeOfEstablishment <span class="sc">==</span> Free schools) <span class="sc">%&gt;%</span></span>
+<span id="cb120-4"><a href="#cb120-4"></a>  <span class="fu">summarise</span>(<span class="at">average =</span> <span class="fu">mean</span>(NumberOfBoys))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
@@ -1830,8 +1889,8 @@ Important
 
 </div>
 </div>
-</section></section><section id="joing-tables" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="joing-tables">
-<span class="header-section-number">4.3</span> Joing tables</h2>
+</section></section><section id="joining-tables" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="joining-tables">
+<span class="header-section-number">4.3</span> Joining tables</h2>
 <p>We currently have two tables of data, the <code>results</code> table and the <code>schools</code> table. Wouldn’t it be great if we could combine the school <em>details</em> with the <em>results</em> of the school? It would then allow us to run models looking at the impact of school demographics on exam entries and results.</p>
 <p>There are several different join commands in R, the command we are interested in <code>left_join(&lt;table_1&gt;, &lt;table_2&gt;, &lt;matching_column&gt;)</code>. In short, this command will take one table, and link it with rows from the other table that match a given column or columns. This matches the <code>left_join</code> diagram shown in the helpsheet below:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1853,15 +1912,15 @@ Note
 </div>
 <p>We want to join each results to matching schools in the schools table, i.e.&nbsp;only include the details about schools where results exist. If school X doesn’t have any results for 2019 we shouldn’t copy it over, as it won’t have any rows in the results table that matches its <code>ID</code> .</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now check it works by running the following command that selects data from the results table (e.g.&nbsp;<code>Description</code>, <code>Grade</code>) and data from the schools table (e.g.&nbsp;<code>FSM</code>, <code>NumberOfBoys</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a>data_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb118-2"><a href="#cb118-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
-<span id="cb118-3"><a href="#cb118-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb118-4"><a href="#cb118-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
-<span id="cb118-5"><a href="#cb118-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a>data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb122-2"><a href="#cb122-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
+<span id="cb122-3"><a href="#cb122-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb122-4"><a href="#cb122-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
+<span id="cb122-5"><a href="#cb122-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 458 x 7
        ID Total_students Description Entries   FSM NumberOfBoys NumberOfGirls
@@ -1884,13 +1943,13 @@ Note
 <p>As we have already noted, with exploratory data analysis it’s useful to store results in objects to use later. We might want to store our findings more permanently to use later or share with others, saving them as <code>CSV</code>, <code>Excel</code> or <code>SPSS</code> files.</p>
 <p>The easiest way to do this in R is to use the <code>write.csv(&lt;table&gt;, &lt;location&gt;)</code> function. This function lets you specify the name of the table object you want to save, along with where you want to save it.:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1"></a>data_output <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb120-2"><a href="#cb120-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
-<span id="cb120-3"><a href="#cb120-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb120-4"><a href="#cb120-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
-<span id="cb120-5"><a href="#cb120-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span>
-<span id="cb120-6"><a href="#cb120-6"></a></span>
-<span id="cb120-7"><a href="#cb120-7"></a><span class="fu">write.csv</span>(data_output, <span class="st">"file location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a>data_output <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb124-2"><a href="#cb124-2"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Chinese"</span>, </span>
+<span id="cb124-3"><a href="#cb124-3"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb124-4"><a href="#cb124-4"></a>  <span class="fu">select</span>(ID, Total_students, Description, </span>
+<span id="cb124-5"><a href="#cb124-5"></a>         Entries, FSM, NumberOfBoys, NumberOfGirls)</span>
+<span id="cb124-6"><a href="#cb124-6"></a></span>
+<span id="cb124-7"><a href="#cb124-7"></a><span class="fu">write.csv</span>(data_output, <span class="st">"file location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -1910,16 +1969,15 @@ Tip
 <p>To check your understanding of this section you will be attempting to analyse a subset of the TIMSS 2019 Grade 8 school questionnaire. This dataset includes data on school locations, facilities, student demographics and teachers.</p>
 <p>You can access the cut down TIMSS school dataset as an Excel file <a href="https://docs.google.com/spreadsheets/d/1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B/edit?usp=sharing&amp;ouid=105471590997842250248">here</a>. Save it to your computer and load it into an object called <code>TIMSS</code> using the <code>read_excel(&lt;location_of_file&gt;, &lt;sheet_name&gt;)</code> command:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1"></a>TIMSS <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:\Users\Peter\Google Drive\Kings\R intro\code\TIMSS.xlsx"</span>, <span class="st">"school_data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1"></a>TIMSS <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"C:\Users\Peter\Google Drive\Kings\R intro\code\TIMSS.xlsx"</span>, <span class="st">"school_data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For help on loading data see <a href="#sec-loading">Section&nbsp;4.1</a>.</p>
-<p>Take a look at the data using the Environment panel, it’s rather confusing as Excel didn’t store the full question names. This data originally comes from SPSS and it is possible to look at the names in R, but here we might need to do some renaming to make the dataset a little more manageable (see <a href="#sec-renaming">Section&nbsp;4.2.3</a>).</p>
-<p><img src="images/exploring_timss.png" class="img-fluid"></p>
-<p>You can find more details on the question mappings in the TIMSS <a href="https://timss2019.org/international-database/downloads/T19_UG_Supp1-international-context-questionnaires.pdf">context document</a>, pages 308-311.</p>
+<p>Take a look at the data using the <em>Environment</em> panel, it’s rather confusing as Excel doesn’t store the full question names. This data originally comes from SPSS and it is possible to load SPSS into R to look at the names, but here we have a cut down dataset and might need to do some renaming to make the table a little more manageable (see <a href="#sec-renaming">Section&nbsp;4.2.3</a>).</p>
+<p><img src="images/exploring_timss.png" class="img-fluid"> You can find more details on the question mappings in the TIMSS <a href="https://timss2019.org/international-database/downloads/T19_UG_Supp1-international-context-questionnaires.pdf">context document</a>, pages 308-311.</p>
 <p>Please attempt the following questions:</p>
 <div class="question">
 <ol type="1">
-<li>Work out how many schools are in each country <code>CNTRY</code>.</li>
+<li>Work out how many schools are in stored in TIMSS for each country <code>CNTRY</code>.</li>
 </ol>
 <div class="cell">
 
@@ -1957,30 +2015,30 @@ Tip
 </div>
 <p>The basic structure of <code>ggplot</code> code is to combine different graphing elements through the use of the <code>+</code> operator. To demonstrate this, let’s look at the relationship between the percentage of males in a school and the percentage of the school taking <code>computer science</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a><span class="co"># join our data</span></span>
-<span id="cb122-2"><a href="#cb122-2"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span>
-<span id="cb122-3"><a href="#cb122-3"></a></span>
-<span id="cb122-4"><a href="#cb122-4"></a><span class="co"># wrangle our data</span></span>
-<span id="cb122-5"><a href="#cb122-5"></a><span class="co"># grepl looks for the word “Comput” in the string Description</span></span>
-<span id="cb122-6"><a href="#cb122-6"></a>computing_test <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span></span>
-<span id="cb122-7"><a href="#cb122-7"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Comput"</span>, Description),</span>
-<span id="cb122-8"><a href="#cb122-8"></a>         Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
-<span id="cb122-9"><a href="#cb122-9"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span></span>
-<span id="cb122-10"><a href="#cb122-10"></a>  <span class="fu">select</span>(ID, Total_students, Entries, </span>
-<span id="cb122-11"><a href="#cb122-11"></a>         FSM, NumberOfBoys, NumberOfGirls) <span class="sc">%&gt;%</span></span>
-<span id="cb122-12"><a href="#cb122-12"></a>  <span class="fu">mutate</span>(<span class="at">per_male =</span></span>
-<span id="cb122-13"><a href="#cb122-13"></a>           NumberOfBoys <span class="sc">/</span> (NumberOfBoys <span class="sc">+</span> NumberOfGirls),</span>
-<span id="cb122-14"><a href="#cb122-14"></a>        <span class="at">per_taking_cs =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
-<span id="cb122-15"><a href="#cb122-15"></a><span class="fu">arrange</span>(<span class="fu">desc</span>(per_taking_cs))</span>
-<span id="cb122-16"><a href="#cb122-16"></a></span>
-<span id="cb122-17"><a href="#cb122-17"></a><span class="co"># display a graph of the results</span></span>
-<span id="cb122-18"><a href="#cb122-18"></a><span class="fu">ggplot</span>(<span class="at">data=</span>computing_test, </span>
-<span id="cb122-19"><a href="#cb122-19"></a>       <span class="fu">aes</span>(<span class="at">x=</span>per_male, <span class="at">y=</span>per_taking_cs)) <span class="sc">+</span></span>
-<span id="cb122-20"><a href="#cb122-20"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb122-21"><a href="#cb122-21"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>) <span class="sc">+</span></span>
-<span id="cb122-22"><a href="#cb122-22"></a>  <span class="fu">ggtitle</span>(<span class="st">"The more boys, the more CS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1"></a><span class="co"># join our data</span></span>
+<span id="cb126-2"><a href="#cb126-2"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb126-3"><a href="#cb126-3"></a></span>
+<span id="cb126-4"><a href="#cb126-4"></a><span class="co"># wrangle our data</span></span>
+<span id="cb126-5"><a href="#cb126-5"></a><span class="co"># grepl looks for the word “Comput” in the string Description</span></span>
+<span id="cb126-6"><a href="#cb126-6"></a>computing_test <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span></span>
+<span id="cb126-7"><a href="#cb126-7"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Comput"</span>, Description),</span>
+<span id="cb126-8"><a href="#cb126-8"></a>         Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
+<span id="cb126-9"><a href="#cb126-9"></a>         Grade <span class="sc">==</span> <span class="st">"Total number entered"</span> ) <span class="sc">%&gt;%</span></span>
+<span id="cb126-10"><a href="#cb126-10"></a>  <span class="fu">select</span>(ID, Total_students, Entries, </span>
+<span id="cb126-11"><a href="#cb126-11"></a>         FSM, NumberOfBoys, NumberOfGirls) <span class="sc">%&gt;%</span></span>
+<span id="cb126-12"><a href="#cb126-12"></a>  <span class="fu">mutate</span>(<span class="at">per_male =</span></span>
+<span id="cb126-13"><a href="#cb126-13"></a>           NumberOfBoys <span class="sc">/</span> (NumberOfBoys <span class="sc">+</span> NumberOfGirls),</span>
+<span id="cb126-14"><a href="#cb126-14"></a>        <span class="at">per_taking_cs =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
+<span id="cb126-15"><a href="#cb126-15"></a><span class="fu">arrange</span>(<span class="fu">desc</span>(per_taking_cs))</span>
+<span id="cb126-16"><a href="#cb126-16"></a></span>
+<span id="cb126-17"><a href="#cb126-17"></a><span class="co"># display a graph of the results</span></span>
+<span id="cb126-18"><a href="#cb126-18"></a><span class="fu">ggplot</span>(<span class="at">data=</span>computing_test, </span>
+<span id="cb126-19"><a href="#cb126-19"></a>       <span class="fu">aes</span>(<span class="at">x=</span>per_male, <span class="at">y=</span>per_taking_cs)) <span class="sc">+</span></span>
+<span id="cb126-20"><a href="#cb126-20"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb126-21"><a href="#cb126-21"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>) <span class="sc">+</span></span>
+<span id="cb126-22"><a href="#cb126-22"></a>  <span class="fu">ggtitle</span>(<span class="st">"The more boys, the more CS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-190-1.png" class="img-fluid" width="672"></p>
+<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-202-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Hopefully you can work out what lines 1-17 do from the previous chapters, let’s focus on the <code>ggplot</code> commands:</p>
@@ -2018,15 +2076,15 @@ Tip
 <p><code>ifelse</code> allow us to <em>recode</em> the data. For the example below, we are going to add a new column to the schools table noting whether a school is a <code>grammar</code> school or not. A school is a grammar school <em>if</em> it is not an <em>Independent</em> school <em>and</em> it is <em>selective</em> in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school.</p>
 <p>You can see how the above if statement is implemented in R on lines 4-7.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
-<span id="cb123-2"><a href="#cb123-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
-<span id="cb123-3"><a href="#cb123-3"></a>         Phase<span class="sc">==</span><span class="st">"Secondary"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb123-4"><a href="#cb123-4"></a>  <span class="fu">mutate</span>(<span class="at">grammar =</span> </span>
-<span id="cb123-5"><a href="#cb123-5"></a>           <span class="fu">ifelse</span>(EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span> <span class="sc">&amp;</span> </span>
-<span id="cb123-6"><a href="#cb123-6"></a>                    AdmissionsPolicy<span class="sc">==</span><span class="st">"Selective"</span>,</span>
-<span id="cb123-7"><a href="#cb123-7"></a>                  <span class="st">"GRAMMAR"</span>,</span>
-<span id="cb123-8"><a href="#cb123-8"></a>                  <span class="st">"NOT GRAMMAR"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb123-9"><a href="#cb123-9"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(grammar))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
+<span id="cb127-2"><a href="#cb127-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
+<span id="cb127-3"><a href="#cb127-3"></a>         Phase<span class="sc">==</span><span class="st">"Secondary"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb127-4"><a href="#cb127-4"></a>  <span class="fu">mutate</span>(<span class="at">grammar =</span> </span>
+<span id="cb127-5"><a href="#cb127-5"></a>           <span class="fu">ifelse</span>(EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span> <span class="sc">&amp;</span> </span>
+<span id="cb127-6"><a href="#cb127-6"></a>                    AdmissionsPolicy<span class="sc">==</span><span class="st">"Selective"</span>,</span>
+<span id="cb127-7"><a href="#cb127-7"></a>                  <span class="st">"GRAMMAR"</span>,</span>
+<span id="cb127-8"><a href="#cb127-8"></a>                  <span class="st">"NOT GRAMMAR"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb127-9"><a href="#cb127-9"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(grammar))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>4 uses mutate to create a new column in the schools table called <code>grammar</code>, this will be given the value of the if statement calculation for each line.</li>
@@ -2043,13 +2101,13 @@ Tip
 <p>Rather unsurprisingly, <code>geom_point</code> allows us to plot a layer of points using x and y coordinates, as shown in the example above. We are now going to look at how <code>geom_point</code>s can be adapted to put more data into our graphs by taking the <code>schools</code> dataset and using the <code>colour</code> and <code>size</code> attributes to display the population and nature of schools.</p>
 <p>Now we have the data recoded to display whether a school is a grammar school or not, we can plot this dataset onto the graph:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data) <span class="sc">+</span></span>
-<span id="cb124-2"><a href="#cb124-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Easting, <span class="at">y=</span>Northing, </span>
-<span id="cb124-3"><a href="#cb124-3"></a>                 <span class="at">size =</span> NumberOfBoys<span class="sc">+</span>NumberOfGirls,</span>
-<span id="cb124-4"><a href="#cb124-4"></a>                 <span class="at">colour=</span>grammar),</span>
-<span id="cb124-5"><a href="#cb124-5"></a>                 <span class="at">alpha=</span><span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data) <span class="sc">+</span></span>
+<span id="cb128-2"><a href="#cb128-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Easting, <span class="at">y=</span>Northing, </span>
+<span id="cb128-3"><a href="#cb128-3"></a>                 <span class="at">size =</span> NumberOfBoys<span class="sc">+</span>NumberOfGirls,</span>
+<span id="cb128-4"><a href="#cb128-4"></a>                 <span class="at">colour=</span>grammar),</span>
+<span id="cb128-5"><a href="#cb128-5"></a>                 <span class="at">alpha=</span><span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-194-1.png" class="img-fluid" width="672"></p>
+<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-206-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
@@ -2092,7 +2150,7 @@ Important
 </div>
 <p>Adding a map to demonstrate layering</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1"></a><span class="fu">library</span>(maps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1"></a><span class="fu">library</span>(maps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'maps' was built under R version 4.1.3</code></pre>
 </div>
@@ -2137,27 +2195,27 @@ Attaching package: 'maps'</code></pre>
 <p>Let’s look at an example to see if poverty (<code>FSM</code>) is related to achieving the highest grade (<code>9</code>) in <code>GCSE Mathematics</code>,</p>
 <p>First we need to <em>wrangle</em> our data, that is get it in a form where we can build a statistical model. We need to mutate a column for <code>per_top</code>, the percentage of a school’s maths class getting the top grade, we will compare this against <code>FSM</code>, the percentage of a school on free school meals</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1"></a><span class="co"># wrangle our data</span></span>
-<span id="cb129-2"><a href="#cb129-2"></a>top_grades <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb129-3"><a href="#cb129-3"></a><span class="fu">filter</span>(Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
-<span id="cb129-4"><a href="#cb129-4"></a>                         Open<span class="sc">==</span><span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb129-5"><a href="#cb129-5"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
-<span id="cb129-6"><a href="#cb129-6"></a>  <span class="fu">mutate</span>(<span class="at">Sub_students =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
-<span id="cb129-7"><a href="#cb129-7"></a>  <span class="fu">filter</span>(Grade <span class="sc">!=</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb129-8"><a href="#cb129-8"></a>  <span class="fu">select</span>(ID, Description, Grade, </span>
-<span id="cb129-9"><a href="#cb129-9"></a>Entries, Sub_students, FSM, Open) <span class="sc">%&gt;%</span></span>
-<span id="cb129-10"><a href="#cb129-10"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(Grade))) <span class="sc">%&gt;%</span></span>
-<span id="cb129-11"><a href="#cb129-11"></a>  <span class="fu">mutate</span>(<span class="at">top_grade =</span> <span class="fu">ifelse</span>(Grade <span class="sc">==</span> <span class="dv">9</span>, Entries, <span class="dv">0</span>),</span>
-<span id="cb129-12"><a href="#cb129-12"></a>         <span class="at">per_top =</span> top_grade <span class="sc">/</span> Sub_students)</span>
-<span id="cb129-13"><a href="#cb129-13"></a></span>
-<span id="cb129-14"><a href="#cb129-14"></a><span class="co">#filter to select only the maths results</span></span>
-<span id="cb129-15"><a href="#cb129-15"></a>top_maths <span class="ot">&lt;-</span> top_grades <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Mathematics"</span>)</span>
-<span id="cb129-16"><a href="#cb129-16"></a></span>
-<span id="cb129-17"><a href="#cb129-17"></a><span class="co"># Build the model</span></span>
-<span id="cb129-18"><a href="#cb129-18"></a>result_maths <span class="ot">&lt;-</span> <span class="fu">lm</span>(per_top <span class="sc">~</span> FSM, top_maths)</span>
-<span id="cb129-19"><a href="#cb129-19"></a></span>
-<span id="cb129-20"><a href="#cb129-20"></a><span class="co"># Output the result</span></span>
-<span id="cb129-21"><a href="#cb129-21"></a><span class="fu">summary</span>(result_maths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1"></a><span class="co"># wrangle our data</span></span>
+<span id="cb133-2"><a href="#cb133-2"></a>top_grades <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb133-3"><a href="#cb133-3"></a><span class="fu">filter</span>(Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
+<span id="cb133-4"><a href="#cb133-4"></a>                         Open<span class="sc">==</span><span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb133-5"><a href="#cb133-5"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
+<span id="cb133-6"><a href="#cb133-6"></a>  <span class="fu">mutate</span>(<span class="at">Sub_students =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
+<span id="cb133-7"><a href="#cb133-7"></a>  <span class="fu">filter</span>(Grade <span class="sc">!=</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb133-8"><a href="#cb133-8"></a>  <span class="fu">select</span>(ID, Description, Grade, </span>
+<span id="cb133-9"><a href="#cb133-9"></a>Entries, Sub_students, FSM, Open) <span class="sc">%&gt;%</span></span>
+<span id="cb133-10"><a href="#cb133-10"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(Grade))) <span class="sc">%&gt;%</span></span>
+<span id="cb133-11"><a href="#cb133-11"></a>  <span class="fu">mutate</span>(<span class="at">top_grade =</span> <span class="fu">ifelse</span>(Grade <span class="sc">==</span> <span class="dv">9</span>, Entries, <span class="dv">0</span>),</span>
+<span id="cb133-12"><a href="#cb133-12"></a>         <span class="at">per_top =</span> top_grade <span class="sc">/</span> Sub_students)</span>
+<span id="cb133-13"><a href="#cb133-13"></a></span>
+<span id="cb133-14"><a href="#cb133-14"></a><span class="co">#filter to select only the maths results</span></span>
+<span id="cb133-15"><a href="#cb133-15"></a>top_maths <span class="ot">&lt;-</span> top_grades <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Mathematics"</span>)</span>
+<span id="cb133-16"><a href="#cb133-16"></a></span>
+<span id="cb133-17"><a href="#cb133-17"></a><span class="co"># Build the model</span></span>
+<span id="cb133-18"><a href="#cb133-18"></a>result_maths <span class="ot">&lt;-</span> <span class="fu">lm</span>(per_top <span class="sc">~</span> FSM, top_maths)</span>
+<span id="cb133-19"><a href="#cb133-19"></a></span>
+<span id="cb133-20"><a href="#cb133-20"></a><span class="co"># Output the result</span></span>
+<span id="cb133-21"><a href="#cb133-21"></a><span class="fu">summary</span>(result_maths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:

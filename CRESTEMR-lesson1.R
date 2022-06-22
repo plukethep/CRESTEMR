@@ -77,6 +77,10 @@ unique()
 # remove NA
 mean(schools$NumberOfBoys)
 
+
+mean height of characters by sex
+max mass per homeworld
+
 ################################################################
 # 4.2 group_by summarise
 # find the max number of boys in a given primary or secondary grouping

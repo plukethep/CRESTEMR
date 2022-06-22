@@ -482,7 +482,15 @@ focus_year <- 1970
 
 # The tidyverse
 
-## Loading data
+## Working with datasets
+
+### Loading data from the web 
+
+### Loading data from your computer
+
+### Exploring dataframes
+
+### Questions
 
 ::: question
 1.  Can you spot the *five* errors in this code:
