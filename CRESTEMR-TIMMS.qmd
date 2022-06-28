@@ -66,6 +66,15 @@ school_data %>% filter(!is.na(BCDGTIHY)) %>%
 
 BCDGTIHY
 
+BCBG06A - days open a year
+BCBG07 - number of computers
+BCBGEAS - School Emph on Acad Success
+BCBGDAS - School Discipline Problems
+BCDGDAS - School Discipline Problems
+`BCBG07` number of computers
+
+`BCBGMRS` Instruction Affected Resource Shortage (Mathematics)
+`BCBGMRS` Instruction Affected Resource Shortage (Science)
 
 names(school_data)
 

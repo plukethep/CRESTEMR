@@ -697,6 +697,7 @@ Adjust the above code to find all schools where over 60% of students take German
 results %>% 
   filter(Description == "German" | Description == "Italian") %>%
   filter(Grade == "Total number entered") %>%
+  filter(Qualification == "GCSE (9-1) Full Course") %>%
   select(ID, School, Total_students,Description, Entries) %>%
   mutate(per = Entries/Total_students) %>%
   filter(per > 0.6)

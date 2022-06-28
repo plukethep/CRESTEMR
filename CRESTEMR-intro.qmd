@@ -1024,7 +1024,7 @@ With R there are three ways to get around the problem of backslashes in file loc
 
 ### Exploring dataframes
 
-When you load the tables you will get some warnings:
+When you load the tables you might get some warnings:
 
 ::: callout-warning
 Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, : Expecting numeric in I27750 / R27750C9: got 'SUPP'
@@ -1038,13 +1038,13 @@ You can check that the tables have loaded correctly by typing the object names a
 results
 ```
 
-Alternatively, click on the `Environment panel` and the table icon ![](images/icon_table.png) to explore each table:
+We can see from this that the `tibble` (another word for _dataframe_, basically a spreadsheet table) is 677784 rows, with 11 columns. The data shown in the console window is only the top few rows and first few columns. To see the whole table click on the `Environment panel` and the table icon ![](images/icon_table.png) to explore each table:
 
 ![](images/explorer_panel.png)
 
 ![](images/table_view.png)
 
-Alternatively, you can also hold down `command`\|`control` and click on the table name in your R Script to view the table.
+Alternatively, you can also hold down `command`\|`control` and click on the table name in your R Script to view the table. You can also type `view(<table_name>)`.
 
 ::: callout-note
 To learn more about loading data from in other formats, e.g. SPSS and STATA, look at the tidyverse documentation for [haven](https://haven.tidyverse.org/).
@@ -1392,6 +1392,7 @@ Let's take another example. Imagine we only want to know details about the schoo
 results %>% 
   filter(Description == "Chinese") %>%
   filter(Grade == "Total number entered") %>%
+  filter(Qualification == "GCSE (9-1) Full Course") %>%
   select(ID, School, Total_students, Description, Entries)
 ```
 
@@ -1399,9 +1400,11 @@ results %>%
 
 - 2 - `filter` returns only those rows that have "Chinese" in their `Description` column, i.e. it filters out all of the other subjects
 
-- 3 - `filter` returns only those rows that have "Total number entered" in their `Grade` column, i.e. it filters out all of the individual grade numbers.
+- 3 - `filter` returns only those rows that have "Total number entered" in their `Grade` column, i.e. it gets the total number of students entered for each qualification in each school.
 
-- 4 - `select` gets rid of all the columns other than those listed.
+- 4 - `filter` returns only those rows that have "GCSE (9-1) Full Course" in their `Qualification` column, i.e. it filters out any A-levels or BTECs. You can also do this by using the `grepl` command: `filter(grepl("GCSE", Qualification))`, which searches for the string "GCSE" in the `Qualification` and returns any row where it exists. 
+
+- 5 - `select` gets rid of all the columns other than those listed.
 
 We can now add a new column by using `mutate`, to look at the percentage of each provider taking `Chinese`, and filter on those with more than `0.50` (50%) taking it:
 
@@ -1409,6 +1412,7 @@ We can now add a new column by using `mutate`, to look at the percentage of each
 #| eval: true
 results %>% filter(Description == "Chinese") %>%
   filter(Grade == "Total number entered") %>%
+  filter(Qualification == "GCSE (9-1) Full Course") %>%
   select(ID, School, Total_students,Description, Entries) %>%
   mutate(per = Entries/Total_students) %>%
   filter(per > 0.5)
@@ -1420,7 +1424,8 @@ You can see in the last example that we had two `filters`, one after another. Th
 #| eval: true
 results %>% 
   filter(Description == "Chinese",
-         Grade == "Total number entered") %>%
+         Grade == "Total number entered",
+         Qualification == "GCSE (9-1) Full Course") %>%
   select(ID, School, Total_students, Description, Entries)
 ```
 
@@ -1562,7 +1567,7 @@ schools %>%
   filter(NumberOfGirls == 400)
 ```
 
-5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`, and arrange them by descending `FSM`.
+5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`.
 
 ```{r}
 #| eval: false
@@ -1679,40 +1684,72 @@ data_joined %>%
 
 As we have already noted, with exploratory data analysis it's useful to store results in objects to use later. We might want to store our findings more permanently to use later or share with others, saving them as `CSV`, `Excel` or `SPSS` files. 
 
-The easiest way to do this in R is to use the `write.csv(<table>, <location>)` function. This function lets you specify the name of the table object you want to save, along with where you want to save it.:
+The easiest way to do this in R is to use the `write.csv(<table>, <location>)` function. This function lets you specify the name of the table object you want to save, along with the name you want to call the output.
+
+The default location that the file will save to is your _working directory_. You can find out where this is by running `getwd()`. To change this, use the `setwd(<folder_location>)` command.
 
 ```{r}
 #| eval: false
 
-data_output <- data_joined %>% 
+# set the working directory
+# this is where all files will save to
+setwd("C:/Users/Peter/Google Drive/Kings")
+
+chinese_uptake <- data_joined %>% 
   filter(Description == "Chinese", 
          Grade == "Total number entered" ) %>% 
   select(ID, Total_students, Description, 
          Entries, FSM, NumberOfBoys, NumberOfGirls)
 
-write.csv(data_output, "file location")
+# This will save to your "working directory", where you have saved 
+write.csv(chinese_uptake, "chinese_entries.csv", row.names = FALSE)
 ```
 
 ::: callout-tip
-You can write excel files using the `openxlsx` package, more information [here](https://www.rdocumentation.org/packages/openxlsx/versions/4.2.5)
+You can write excel files using the `openxlsx` package. This allows you to write multiple sheets to the same file. 
+
+```{r}
+#| eval: false
+library(openxlsx)
+
+# create a blank workbook to add sheets to
+wb <- createWorkbook()
+
+# add then write separate worksheets
+addWorksheet(wb, sheetName="Chinese")
+writeData(wb, sheet="Chinese", chinese_uptake)
+
+addWorksheet(wb, sheetName="German")
+writeData(wb, sheet="German", german_uptake)
+
+# save workbook
+saveWorkbook(wb, "subject_uptake.xlsx")
+```
+
+For more information on how to create excel spreadsheets, format cells, add colour etc, see  [here](https://www.rdocumentation.org/packages/openxlsx/versions/4.2.5)
 :::
 
-## Summary questions
+## Summary questions {#sec-TIMSS}
 
 To check your understanding of this section you will be attempting to analyse a subset of the TIMSS 2019 Grade 8 school questionnaire. This dataset includes data on school locations, facilities, student demographics and teachers.
 
-You can access the cut down TIMSS school dataset as an Excel file [here](https://docs.google.com/spreadsheets/d/1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B/edit?usp=sharing&ouid=105471590997842250248). Save it to your computer and load it into an object called `TIMSS` using the `read_excel(<location_of_file>, <sheet_name>)` command:
+You can access the cut down TIMSS school dataset as an Excel file [here](https://docs.google.com/spreadsheets/d/1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B/edit?usp=sharing&ouid=105471590997842250248). Load it into an object called `TIMSS`. For help on loading data see @sec-loading:
 
 ```{r}
 #| eval: false
 #| echo: true
 #| warning: false
-TIMSS <- read_excel("C:\Users\Peter\Google Drive\Kings\R intro\code\TIMSS.xlsx", "school_data")
+# How to load TIMSS provider data into R
+library(readxl)
+TIMSS <- read_excel("C:/Users/Peter/Google Drive/Kings/R intro/code/TIMSS.xlsx", "school_data")
+
+## OR ##
+
+library(openxlsx)
+TIMSS <- read.xlsx("https://drive.google.com/uc?export=download&id=1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B", "school_data")
 ```
 
-For help on loading data see @sec-loading.
-
-Take a look at the data using the _Environment_ panel, it's rather confusing as Excel doesn't store the full question names. This data originally comes from SPSS and it is possible to load SPSS into R to look at the names, but here we have a cut down dataset and might need to do some renaming to make the table a little more manageable (see @sec-renaming).
+Take a look at the data using the _Environment_ panel, it's rather confusing as Excel doesn't store the full question names. This data originally comes from SPSS and it is possible to load SPSS into R to look at the names, but here we have a cut down dataset and you might want to do some renaming to make the table a little more manageable (see @sec-renaming).
 
 ![](images/exploring_timss.png)
 You can find more details on the question mappings in the TIMSS [context document](https://timss2019.org/international-database/downloads/T19_UG_Supp1-international-context-questionnaires.pdf), pages 308-311.
@@ -1743,7 +1780,7 @@ TIMSS %>%
   summarise(avg_years = mean(BCBG19, na.rm=TRUE))
 ```
 
-3. For the students in each country: What is the average and median instructional time in hours, in a typical day? Can you arrange the results so we find the hardest working country? You need to use `BCBG06B`, and hint, this column might not be `as.numeric()` just yet. (You might want to use `mutate` and @sec-datatypes to help you)
+3. For the students in each country: What is the mean and median instructional time in hours, in a typical school day? Can you arrange the results so we find the hardest working country? You need to use `BCBG06B`, and hint, this column might not be `as.numeric()` just yet. (You might want to use `mutate` and @sec-datatypes to help you)
 
 ```{r}
 #| eval: false
@@ -1796,7 +1833,7 @@ setdiff(unique(TIMSS$CNTRY), unique(very_high$CNTRY))
 
 :::
 
-# Graphing
+# Graphing  {#sec-graphing}
 
 The tidyverse includes the incredibly powerful `ggplot2` package. This package is pretty much the industry standard for making graphs for publication. `ggplot2` is built on the _grammar of graphics_ where you build graphs by specifying underlying attributes and layering geometric objects on top of each other. In the diagram below you can see how a graph is built from _geometric objects_ (the things that are plotted such as points and bars) a _scale_, and _plot annotations_ (e.g. a key, title etc). You can then apply _faceting_ to the graph to automatically split one graph into multiple plots, allowing you to easily compare different groupings.
 
@@ -1815,7 +1852,7 @@ computing_test <- data_joined %>%
   filter(grepl("Comput", Description),
          Qualification == "GCSE (9-1) Full Course",
          Grade == "Total number entered" ) %>%
-  select(ID, Total_students, Entries, 
+  select(ID, Total_students, Entries, Gender, 
          FSM, NumberOfBoys, NumberOfGirls) %>%
   mutate(per_male =
            NumberOfBoys / (NumberOfBoys + NumberOfGirls),
@@ -1832,9 +1869,9 @@ ggplot(data=computing_test,
 
 Hopefully you can work out what lines 1-17 do from the previous chapters, let's focus on the `ggplot` commands:
 
-- 18-19 these lines set up the `ggplot` giving it the table object `computing_test` as its data input and setting up the aesthetics for the rest of the graph elements using columns from `computing_test`. The `aes(<attribute>, <attribute>, ...)` command allows us to specify aesthetic elements of the graph that will change dependent on the dataset we use. `x=per_male` and `y=per_taking_cs` define the x and y coordinates, defining `aes()` in ggplot means we will pass down these values to the subsequent geometric objects so we don't have to define these `x` and `y` axis items again.
-- 20 using the data and `aes` values defined on lines 18-19, `geom_point` uses the set `x` and `y` values to draw a point for each school in our dataset. There are lots of different parameters we could give `geom_point`, but here we are content with using the defaults.
-- 21 we add another geometric object on top of points, this time we add a line of best fit `geom_smooth`, again this geometric object uses the values specified on lines 18-19, and we define the `method` as `lm`, to calculate a linear model line of best fit.
+- 18-19 these lines set up the `ggplot` giving it the table object `computing_test` as its data input and setting up the aesthetics for the rest of the graph elements using columns from `computing_test`. The `aes(<attribute>, <attribute>, ...)` command allows us to specify aesthetic elements of the graph that will change dependent on the dataset we use. `x=per_male` and `y=per_taking_cs` define the x and y coordinates, defining `aes()` inside `ggplot()` means we will pass down these values to subsequent geometric objects so we don't have to define these `x` and `y` axis items again and again.
+- 20 using the data and `aes` values defined on lines 18-19, `geom_point` uses the `x` and `y` values defined on line 19 to draw a point for each school in our dataset. There are lots of different parameters we could give `geom_point`, but here we are content with using the defaults.
+- 21 we add another geometric object on top of the points, this time we add a line of best fit `geom_smooth`, again this geometric object uses the values specified on lines 18-19, and we define the `method` as `lm`, to calculate a _linear model_ line of best fit.
 - 22 finally we customise the title of the graph, `ggtitle`, ready for display.
 
 ## Geoms
@@ -1848,8 +1885,93 @@ There are about 40 different geometric objects in ggplot, allowing you to create
 - [geom_boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for representing the range of data
 - [geom_hex](https://ggplot2.tidyverse.org/reference/geom_hex.html) for creating heat maps
 - [geom_map](https://ggplot2.tidyverse.org/reference/geom_map.html) for adding geographic maps
+- [geom_smooth](https://ggplot2.tidyverse.org/reference/geom_smooth.html) for adding lines of best fit
 
-### ifelse
+### geom_point
+Rather unsurprisingly, `geom_point` allows us to plot a layer of _points_ using x and y coordinates. The below example shows how we can specify within the `ggplot` function `data=school_plot_data`. We then define the `aes`thetic attributes of the graph, passing the x `x=NumberOfBoys` and y `y=NumberOfGirls` values.
+
+```{r}
+#| warning: false
+# to make things a little faster we are going to focus on open secondary schools
+# plotting 40k+ data points can be slow
+school_plot_data <- schools %>% 
+  filter(Open == "Open", 
+         Phase=="Secondary")
+
+ggplot(data=school_plot_data, 
+       aes(x=NumberOfBoys, y=NumberOfGirls)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+::: callout-important
+Switching between the pipes and ggplot can get rather confusing. A very common mistake in using ggplot is to try and link together the `geom_` elements with a pipe command `%>%` rather than the `+`.
+:::
+
+### Questions
+
+::: question
+
+1. Spot the three errors in this graph code
+
+```{r}
+#| eval: false
+#| class.source: "none"
+ggplot(adta=diamonds, x=depth, y=price) +
+  geom_point()
+  ggtitle("diamond graph")
+```
+
+```{r}
+#| eval: false
+#| echo: false
+# 1-data not adta, 2-x and y need to be inside aes
+ggplot(data=diamonds, aes(x=depth, y=price)) +
+  geom_point() + #3 missing +
+  ggtitle("diamond graph")
+```
+
+2. Using the TIMSS dataset (see @sec-TIMSS), plot a graph to help your work out whether there is a relationship between _School Emphasis on Academic Success_ `BCBGEAS` and _School Discipline_ `BCBGDAS`. Give the graph sensible x and y labels (e.g. `xlab`). More details [here](https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf).
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: false
+ggplot(TIMSS,
+       aes(x=as.numeric(BCBGEAS),
+           y=as.numeric(BCBGDAS))) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  xlab("School Emphasis on Academic Success") +
+  ylab("School Discipline")
+```
+
+3. Using the schools dataset, plot the size of an open state primary `school` against the `FSM` grade. Are larger primary schools generally serving poorer communities?
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: false
+
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Primary",
+         EstablishmentGroup != "Independent schools")
+
+# display a graph of the results
+ggplot(data=plot_data, 
+       aes(x=NumberOfGirls + NumberOfBoys, 
+           y=FSM)) +
+  geom_point() +
+  geom_smooth(method='lm')
+  
+```
+:::
+
+
+, as shown in the example above. We are now going to look at how `geom_point`s can be adapted to put more data into our graphs by taking the `schools` dataset and using the `colour` and `size` attributes to display the population and nature of schools.
+
+### Recoding data (ifelse) {#sec-ifelse}
 
 Before we start graphing we need to look at how we can _recode_ values. Recoding is very useful when you have a column with multiple items that you want to change to just a few. A common way to recode values is through:
 
@@ -1857,7 +1979,7 @@ Before we start graphing we need to look at how we can _recode_ values. Recoding
 
 `ifelse` allow us to _recode_ the data. For the example below, we are going to add a new column to the schools table noting whether a school is a `grammar` school or not. A school is a grammar school _if_ it is not an _Independent_ school _and_ it is _selective_ in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school. 
 
-You can see how the above if statement is implemented in R on lines 4-7.
+You can see how the above if statement is implemented in R on lines 4-8.
 
 ```{r}
 #| warning: false
@@ -1873,16 +1995,29 @@ plot_data <- schools %>%
 ```
 
 - 4 uses mutate to create a new column in the schools table called `grammar`, this will be given the value of the if statement calculation for each line.
-- 5 the `if` statement to be evaluated as `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
-- 6 is the value that will be returned if the above statement(s) are _TRUE_
-- 7 is the value that will be returned if the above statement(s) are _FALSE_
+- 5 the `if` statement to be evaluated as either `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
+- 6 is the value that will be returned if the statements on line 5 are _TRUE_
+- 7 is the value that will be returned if the statements on line 5 are _FALSE_
 
 Additionally, on line 8 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other schools to make them stand out.
 
-Let's move on to looking at `geom_` elements:
+::: callout-tip
 
-### Geom_point
-Rather unsurprisingly, `geom_point` allows us to plot a layer of points using x and y coordinates, as shown in the example above. We are now going to look at how `geom_point`s can be adapted to put more data into our graphs by taking the `schools` dataset and using the `colour` and `size` attributes to display the population and nature of schools. 
+It's possible to nest our ifelse statements, for example we might want to give a little more information on the school type:
+
+```{r}
+#| eval: false
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Secondary") %>%
+  mutate(sch_type = 
+           ifelse(grepl("Special", EstablishmentGroup), "Special",
+                  ifelse(EstablishmentGroup == "Independent schools", "Independent",
+                         ifelse(AdmissionsPolicy=="Selective", 
+                                "Grammar", "Comprehensive"))))
+
+```
+:::
 
 Now we have the data recoded to display whether a school is a grammar school or not, we can plot this dataset onto the graph:
 
@@ -1907,43 +2042,30 @@ If you define the `colour`, `size` and `alpha` attributes _outside_ the `aes()` 
 
 ### Questions
 
-::: .question
+::: question
 
-1. Errors in this graph code
-
-2. ifelse question
-
-1. Plot the size of an open primary `school` against the `FSM` grade. Are larger primary schools generally serving poorer communities?
+1. Using the TIMSS dataset, only using schools from England, Finland and USA plot to see how the _number of computers_ `BCBG07` is related to the _Instruction Affected Resource Shortage (Mathematics)_ `BCBGMRS`. Colour the points in using the country `CNTRY`.
 
 ```{r}
-#| warning: false
-#| echo: false
 #| eval: false
+#| echo: false
+plot_data <- TIMSS %>% filter(CNTRY == "ENG" |
+                              CNTRY == "FIN" |
+                              CNTRY == "USA" )
 
-plot_data <- schools %>% 
-  filter(Open=="Open", 
-         Phase=="Primary")
+# you can also use:
+plot_data <- TIMSS %>% filter(CNTRY %in% c("ENG", "FIN", "USA"))
 
-# display a graph of the results
-ggplot(data=plot_data, 
-       aes(x=NumberOfGirls + NumberOfBoys, 
-           y=FSM)) +
-  geom_point() +
-  geom_smooth(method='lm')
+ggplot(data=plot_data,
+       aes(x=as.numeric(BCBGMRS), y=as.numeric(BCBG07))) +
+  geom_point(aes(colour=CNTRY))
+
 ```
 
-2. plot involving size and colour
-
-3. plot involving ifelse
-
+2. plot involving ifelse
 :::
 
-Adding a map to demonstrate layering
-
-```{r}
-library(maps)
-
-```
+Let's move on to looking at some other `geom_` elements:
 
 ### geom_bar
 groups
@@ -1956,7 +2078,6 @@ count
 
 ## Scales
 
-## Facets
 
 ## Questions
 
@@ -1965,6 +2086,37 @@ count
 
 
 ## Faceting
+
+Let's return to the dataset, `computing_test`, we had built in @sec-graphing. We might speculate that it is the boys only schools influencing the data that  in a school predicting 
+
+```{r}
+
+# unique(data_joined$EstablishmentGroup)
+# 
+# ggplot(data=computing_test, 
+#        aes(x=per_male, y=per_taking_cs)) +
+#   geom_point() +
+#   geom_smooth(method='lm') +
+#   ggtitle("The more boys, the more CS") +
+#   facet_grid(Gender ~ EstablishmentGroup)
+# 
+# 
+# # grepl looks for the word “Comput” in the string Description
+# computing_test <- data_joined %>%
+#   filter(grepl("Comput", Description),
+#          Qualification == "GCSE (9-1) Full Course",
+#          Grade == "Total number entered" ) %>%
+#   select(ID, Total_students, Entries, 
+#          FSM, NumberOfBoys, NumberOfGirls, EstablishmentGroup, Gender) %>%
+#   mutate(per_male =
+#            NumberOfBoys / (NumberOfBoys + NumberOfGirls),
+#         per_taking_cs = Entries/Total_students) %>%
+# arrange(desc(per_taking_cs))
+
+
+```
+
+
 Additionally `facet`s
 
 
@@ -2001,6 +2153,8 @@ Let’s look at an example to see if poverty (`FSM`) is related to achieving the
 
 First we need to _wrangle_ our data, that is get it in a form where we can build a statistical model. We need to mutate a column for `per_top`, the percentage of a school’s maths class getting the top grade, we will compare this against `FSM`, the percentage of a school on free school meals
 
+`lm(<model~formula>, <data>, <method>)`
+
 ```{r}
 #| warning: false
 # wrangle our data
@@ -2020,17 +2174,31 @@ Entries, Sub_students, FSM, Open) %>%
 top_maths <- top_grades %>% filter(Description == "Mathematics")
 
 # Build the model
-result_maths <- lm(per_top ~ FSM, top_maths)
+result_maths <- lm(per_top ~ FSM, data=top_maths)
 
 # Output the result
 summary(result_maths)
+
 ```
 
 logistic regression
 
+Does being a grammar school make it more likely that students sit geography?
+
+lm(geography_uptake ~ grammar + gender)
+
 t-test
 
+TIMSS which country has the most swearing in class
+
 anova
+
+TODO:
+- recode columns as numeric
+- finish questions
+- nested if example
+- bar chart example
+- text
 
 
 

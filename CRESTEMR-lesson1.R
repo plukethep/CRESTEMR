@@ -1,3 +1,20 @@
+install.packages("openxlsx")
+library(openxlsx)
+library(tidyverse)
+
+results <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
+                     sheet="Results")
+results %>%
+  group_by(Grade) %>%
+  summarise(Grade_total = sum(Entries, na.rm = TRUE)) %>%
+  head(6) 
+
+str(results)
+
+ # %>% mutate()
+
+grepl("SUPP", unique(results$Entries))
+
 ################################################################
 #### Intro:
 
@@ -98,33 +115,117 @@ sub_entries <- results %>%
   group_by(Description) %>%
   summarise(Subject_Total = sum(Total, na.rm=TRUE))
 
+results %>% select(ID, Description, Grade, Entries)
+
 # total number of schools by school type
 schools %>% 
   group_by(TypeOfEstablishment, Open) %>%
   summarise(total = n())
 
-# 4.2 Piping - filter and select
-# filter results to find schools teaching Chinese
 
+########################
+# 4.2 Piping - filter and select
+
+# add simple example
+# want to find where the most impoverished areas of England are for secondary children
+
+schools %>%
+  filter(Open == "Open", ## NOTE: ==
+         Phase == "Secondary", 
+         FSM > 0.5) %>%
+  select(ID, LA, Name, FSM) %>%
+  mutate(FSM = 100 * FSM)
+
+
+# filter results to find schools teaching Chinese
 results %>% 
   filter(Description == "Chinese") %>%
-  filter(Grade == "Total number entered") %>%
+  filter(Grade == "Total number entered") %>% 
+  filter(Qualification == "GCSE (9-1) Full Course") %>% 
   select(ID, School, Total_students, Description, Entries)
 
 # mutate to add % of school taking subject
 # filter on this
 
-results %>% filter(Description == "Chinese") %>%
+results %>% 
+  filter(Description == "Chinese") %>%
   filter(Grade == "Total number entered") %>%
+  filter(Qualification == "GCSE (9-1) Full Course") %>% 
   select(ID, School, Total_students,Description, Entries) %>%
   mutate(per = Entries/Total_students) %>%
   filter(per > 0.5)
 
 
-## arrange
+# 4.4 save
+# talk about working directories
+getwd()
+setwd("C:/Users/Peter/Google Drive/Kings")
+
+chinese_uptake <- data_joined %>% 
+  filter(Description == "Chinese", 
+         Grade == "Total number entered",
+         Qualification == "GCSE (9-1) Full Course") %>% 
+  select(ID, Total_students, Description, 
+         Entries, FSM, NumberOfBoys, NumberOfGirls)
+
+# This will save to your "working directory", where you have saved 
+write.csv(chinese_uptake, "chinese_entries.csv", row.names = FALSE)
+
+#### TIMSS dataset
+library(openxlsx)
+TIMSS <- read.xlsx("https://drive.google.com/uc?export=download&id=1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B", "school_data")
+
+#############################
+######## GGPLOT
+school_plot_data <- schools %>% 
+  filter(Open == "Open", 
+         Phase=="Secondary")
+
+
+ggplot(data=school_plot_data, 
+       aes(x=NumberOfBoys, y=NumberOfGirls)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  ggtitle("What is the gender split of schools") +
+  xlab("Boys in school") +
+  ylab("Girls in school")
+
+###### plot computing 
+data_joined <- left_join(results, schools, by="ID")
+
+# wrangle our data
+# grepl looks for the word “Comput” in the string Description
+computing_test <- data_joined %>%
+  filter(grepl("Comput", Description),
+         Qualification == "GCSE (9-1) Full Course",
+         Grade == "Total number entered" ) %>%
+  select(ID, Total_students, Entries, Gender, 
+         FSM, NumberOfBoys, NumberOfGirls) %>%
+  mutate(per_male =
+           NumberOfBoys / (NumberOfBoys + NumberOfGirls),
+         per_taking_cs = Entries/Total_students) %>%
+  arrange(desc(per_taking_cs))
+
+
+ggplot(data=computing_test, 
+       aes(x=per_male, y=per_taking_cs)) +
+  # geom_point(aes(size = FSM, colour=Gender)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  ggtitle("The more boys, the more CS")
+
+#### Questions
+
+
+## ifelse for Grammar schools
+
+
+## Questions
 
 
 
+BCBGEAS - School Emph on Acad Success
+BCBGDAS
 
 
 
