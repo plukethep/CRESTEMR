@@ -131,7 +131,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#questions-5" id="toc-questions-5" class="nav-link" data-scroll-target="#questions-5"> <span class="header-section-number">3.6.1</span> Questions</a></li>
   </ul>
 </li>
-  <li><a href="#summary-questions" id="toc-summary-questions" class="nav-link" data-scroll-target="#summary-questions"> <span class="header-section-number">3.7</span> Summary questions</a></li>
+  <li><a href="#sec-TIMSS" id="toc-sec-TIMSS" class="nav-link" data-scroll-target="#sec-TIMSS"> <span class="header-section-number">3.7</span> Summary questions</a></li>
   </ul>
 </li>
   <li>
@@ -158,13 +158,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
   <li><a href="#joing-tables" id="toc-joing-tables" class="nav-link" data-scroll-target="#joing-tables"> <span class="header-section-number">4.3</span> Joing tables</a></li>
   <li><a href="#saving-data" id="toc-saving-data" class="nav-link" data-scroll-target="#saving-data"> <span class="header-section-number">4.4</span> Saving data</a></li>
-  <li><a href="#summary-questions-1" id="toc-summary-questions-1" class="nav-link" data-scroll-target="#summary-questions-1"> <span class="header-section-number">4.5</span> Summary questions</a></li>
+  <li><a href="#summary-questions" id="toc-summary-questions" class="nav-link" data-scroll-target="#summary-questions"> <span class="header-section-number">4.5</span> Summary questions</a></li>
   </ul>
 </li>
   <li>
 <a href="#graphing" id="toc-graphing" class="nav-link" data-scroll-target="#graphing"> <span class="header-section-number">5</span> Graphing</a>
   <ul class="collapse">
-<li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.1</span> exporting plots</a></li>
+<li>
+<a href="#geoms" id="toc-geoms" class="nav-link" data-scroll-target="#geoms"> <span class="header-section-number">5.1</span> Geoms</a>
+  <ul class="collapse">
+<li><a href="#geom_point" id="toc-geom_point" class="nav-link" data-scroll-target="#geom_point"> <span class="header-section-number">5.1.1</span> geom_point</a></li>
+  <li><a href="#questions-8" id="toc-questions-8" class="nav-link" data-scroll-target="#questions-8"> <span class="header-section-number">5.1.2</span> Questions</a></li>
+  <li><a href="#sec-ifelse" id="toc-sec-ifelse" class="nav-link" data-scroll-target="#sec-ifelse"> <span class="header-section-number">5.1.3</span> Recoding data (ifelse)</a></li>
+  <li><a href="#sec-ifelse-questions" id="toc-sec-ifelse-questions" class="nav-link" data-scroll-target="#sec-ifelse-questions"> <span class="header-section-number">5.1.4</span> Questions</a></li>
+  <li><a href="#geom_bar" id="toc-geom_bar" class="nav-link" data-scroll-target="#geom_bar"> <span class="header-section-number">5.1.5</span> geom_bar</a></li>
+  </ul>
+</li>
+  <li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.2</span> exporting plots</a></li>
   </ul>
 </li>
   <li><a href="#statistical-analysis-in-r" id="toc-statistical-analysis-in-r" class="nav-link" data-scroll-target="#statistical-analysis-in-r"> <span class="header-section-number">6</span> Statistical analysis in R</a></li>
@@ -528,7 +538,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-</section></section><section id="summary-questions" class="level2" data-number="3.7"><h2 data-number="3.7" class="anchored" data-anchor-id="summary-questions">
+</section></section><section id="sec-TIMSS" class="level2" data-number="3.7"><h2 data-number="3.7" class="anchored" data-anchor-id="sec-TIMSS">
 <span class="header-section-number">3.7</span> Summary questions</h2>
 <div class="question">
 <ol type="1">
@@ -1071,9 +1081,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb102-2"><a href="#cb102-2"></a>results <span class="sc">%&gt;%</span> </span>
 <span id="cb102-3"><a href="#cb102-3"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"German"</span> <span class="sc">|</span> Description <span class="sc">==</span> <span class="st">"Italian"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb102-4"><a href="#cb102-4"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb102-5"><a href="#cb102-5"></a>  <span class="fu">select</span>(ID, School, Total_students,Description, Entries) <span class="sc">%&gt;%</span></span>
-<span id="cb102-6"><a href="#cb102-6"></a>  <span class="fu">mutate</span>(<span class="at">per =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
-<span id="cb102-7"><a href="#cb102-7"></a>  <span class="fu">filter</span>(per <span class="sc">&gt;</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb102-5"><a href="#cb102-5"></a>  <span class="fu">filter</span>(Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb102-6"><a href="#cb102-6"></a>  <span class="fu">select</span>(ID, School, Total_students,Description, Entries) <span class="sc">%&gt;%</span></span>
+<span id="cb102-7"><a href="#cb102-7"></a>  <span class="fu">mutate</span>(<span class="at">per =</span> Entries<span class="sc">/</span>Total_students) <span class="sc">%&gt;%</span></span>
+<span id="cb102-8"><a href="#cb102-8"></a>  <span class="fu">filter</span>(per <span class="sc">&gt;</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="question">
 <ol type="1">
@@ -1596,7 +1607,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="header-section-number">4.3</span> Joing tables</h2>
 </section><section id="saving-data" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="saving-data">
 <span class="header-section-number">4.4</span> Saving data</h2>
-</section><section id="summary-questions-1" class="level2" data-number="4.5"><h2 data-number="4.5" class="anchored" data-anchor-id="summary-questions-1">
+</section><section id="summary-questions" class="level2" data-number="4.5"><h2 data-number="4.5" class="anchored" data-anchor-id="summary-questions">
 <span class="header-section-number">4.5</span> Summary questions</h2>
 <div class="question">
 <ol type="1">
@@ -1624,17 +1635,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <ol start="2" type="1">
-<li>For only those headteachers that have a masters or equivalent degree qualification (<code>BCBG21B</code>), what is the average number of years they have been a principal (<code>BCBG18</code>)?</li>
+<li>For only those headteachers that have a masters or equivalent degree qualification (<code>BCBG21B</code>), what is the average number of years they have been in their school (<code>BCBG19</code>)?</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb157"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
 <span id="cb157-2"><a href="#cb157-2"></a>  <span class="fu">filter</span>(BCBG21B <span class="sc">==</span> <span class="st">"Yes"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb157-3"><a href="#cb157-3"></a>  <span class="fu">summarise</span>(<span class="at">avg_years =</span> <span class="fu">mean</span>(BCBG18, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb157-3"><a href="#cb157-3"></a>  <span class="fu">summarise</span>(<span class="at">avg_years =</span> <span class="fu">mean</span>(BCBG19, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 1
   avg_years
       &lt;dbl&gt;
-1        NA</code></pre>
+1      5.80</code></pre>
 </div>
 </div>
 <ol start="3" type="1">
@@ -1725,14 +1736,151 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <ol start="5" type="1">
-<li><p>Save the results of one of the above questions using <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>.</p></li>
+<li><p>Save the results of one of the above questions using <code>write_csv()</code>.</p></li>
 <li><p>[EXTENSION] explore the data for “To what degree is each of the following a problem among eighth grade students in your school?” <code>BCBG16E</code> - Profanity; <code>BCBG16J</code> - Intimidation or verbal abuse of teachers or staff.</p></li>
 </ol>
 </div>
 </section></section><section id="graphing" class="level1" data-number="5"><h1 data-number="5">
 <span class="header-section-number">5</span> Graphing</h1>
-<section id="exporting-plots" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="exporting-plots">
-<span class="header-section-number">5.1</span> exporting plots</h2>
+<section id="geoms" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="geoms">
+<span class="header-section-number">5.1</span> Geoms</h2>
+<section id="geom_point" class="level3" data-number="5.1.1"><h3 data-number="5.1.1" class="anchored" data-anchor-id="geom_point">
+<span class="header-section-number">5.1.1</span> geom_point</h3>
+</section><section id="questions-8" class="level3" data-number="5.1.2"><h3 data-number="5.1.2" class="anchored" data-anchor-id="questions-8">
+<span class="header-section-number">5.1.2</span> Questions</h3>
+<div class="question">
+<ol type="1">
+<li>Spot the three errors in this graph code</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1"></a><span class="fu">ggplot</span>(<span class="at">adta=</span>diamonds, <span class="at">x=</span>depth, <span class="at">y=</span>price) <span class="sc">+</span></span>
+<span id="cb167-2"><a href="#cb167-2"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb167-3"><a href="#cb167-3"></a>  <span class="fu">ggtitle</span>(<span class="st">"diamond graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1"></a><span class="co"># 1-data not adta, 2-x and y need to be inside aes</span></span>
+<span id="cb168-2"><a href="#cb168-2"></a><span class="fu">ggplot</span>(<span class="at">data=</span>diamonds, <span class="fu">aes</span>(<span class="at">x=</span>depth, <span class="at">y=</span>price)) <span class="sc">+</span></span>
+<span id="cb168-3"><a href="#cb168-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="co">#3 missing +</span></span>
+<span id="cb168-4"><a href="#cb168-4"></a>  <span class="fu">ggtitle</span>(<span class="st">"diamond graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Using the TIMSS dataset (see <a href="#sec-TIMSS">Section&nbsp;3.7</a>), plot a graph to help your work out whether there is a relationship between <em>School Emphasis on Academic Success</em> <code>BCBGEAS</code> and <em>School Discipline</em> <code>BCBGDAS</code>. Give the graph sensible x and y labels (e.g.&nbsp;<code>xlab</code>). <strong>HINT</strong>: you might need to turn the x and y values into <code>as.numeric</code>. More details on what the fields contain <a href="https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf">here</a>.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1"></a><span class="fu">ggplot</span>(TIMSS,</span>
+<span id="cb169-2"><a href="#cb169-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCBGEAS),</span>
+<span id="cb169-3"><a href="#cb169-3"></a>           <span class="at">y=</span><span class="fu">as.numeric</span>(BCBGDAS))) <span class="sc">+</span></span>
+<span id="cb169-4"><a href="#cb169-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb169-5"><a href="#cb169-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>) <span class="sc">+</span></span>
+<span id="cb169-6"><a href="#cb169-6"></a>  <span class="fu">xlab</span>(<span class="st">"School Emphasis on Academic Success"</span>) <span class="sc">+</span></span>
+<span id="cb169-7"><a href="#cb169-7"></a>  <span class="fu">ylab</span>(<span class="st">"School Discipline"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-144-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Using the schools dataset, plot the size of an open state primary <code>school</code> against the <code>FSM</code> grade. Are larger primary schools generally serving poorer communities?</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
+<span id="cb170-2"><a href="#cb170-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
+<span id="cb170-3"><a href="#cb170-3"></a>         Phase<span class="sc">==</span><span class="st">"Primary"</span>,</span>
+<span id="cb170-4"><a href="#cb170-4"></a>         EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span>)</span>
+<span id="cb170-5"><a href="#cb170-5"></a></span>
+<span id="cb170-6"><a href="#cb170-6"></a><span class="co"># display a graph of the results</span></span>
+<span id="cb170-7"><a href="#cb170-7"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, </span>
+<span id="cb170-8"><a href="#cb170-8"></a>       <span class="fu">aes</span>(<span class="at">x=</span>NumberOfGirls <span class="sc">+</span> NumberOfBoys, </span>
+<span id="cb170-9"><a href="#cb170-9"></a>           <span class="at">y=</span>FSM)) <span class="sc">+</span></span>
+<span id="cb170-10"><a href="#cb170-10"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb170-11"><a href="#cb170-11"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-146-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</section><section id="sec-ifelse" class="level3" data-number="5.1.3"><h3 data-number="5.1.3" class="anchored" data-anchor-id="sec-ifelse">
+<span class="header-section-number">5.1.3</span> Recoding data (ifelse)</h3>
+</section><section id="sec-ifelse-questions" class="level3" data-number="5.1.4"><h3 data-number="5.1.4" class="anchored" data-anchor-id="sec-ifelse-questions">
+<span class="header-section-number">5.1.4</span> Questions</h3>
+<div class="question">
+<ol type="1">
+<li>Using the TIMSS dataset, only using schools from England, Finland and USA plot to see how the <em>number of computers</em> <code>BCBG07</code> is related to the <em>Instruction Affected Resource Shortage (Mathematics)</em> <code>BCBGMRS</code>. Colour the points in using the country <code>CNTRY</code>.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(CNTRY <span class="sc">==</span> <span class="st">"ENG"</span> <span class="sc">|</span></span>
+<span id="cb171-2"><a href="#cb171-2"></a>                              CNTRY <span class="sc">==</span> <span class="st">"FIN"</span> <span class="sc">|</span></span>
+<span id="cb171-3"><a href="#cb171-3"></a>                              CNTRY <span class="sc">==</span> <span class="st">"USA"</span> )</span>
+<span id="cb171-4"><a href="#cb171-4"></a></span>
+<span id="cb171-5"><a href="#cb171-5"></a><span class="co"># you can also use:</span></span>
+<span id="cb171-6"><a href="#cb171-6"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ENG"</span>, <span class="st">"FIN"</span>, <span class="st">"USA"</span>))</span>
+<span id="cb171-7"><a href="#cb171-7"></a></span>
+<span id="cb171-8"><a href="#cb171-8"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
+<span id="cb171-9"><a href="#cb171-9"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCBGMRS), <span class="at">y=</span><span class="fu">as.numeric</span>(BCBG07))) <span class="sc">+</span></span>
+<span id="cb171-10"><a href="#cb171-10"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>CNTRY))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-148-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Using <code>ifelse</code>, add a column to TIMSS called <code>region</code>, recode “NOR”, “SWE” and “FIN” to be “Nordic” and everyone else “RestOfWorld”.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb172-2"><a href="#cb172-2"></a>  <span class="fu">mutate</span>(<span class="at">region =</span></span>
+<span id="cb172-3"><a href="#cb172-3"></a>           <span class="fu">ifelse</span>(CNTRY <span class="sc">==</span> <span class="st">"NOR"</span> <span class="sc">|</span> CNTRY <span class="sc">==</span> <span class="st">"SWE"</span> <span class="sc">|</span> CNTRY <span class="sc">==</span> <span class="st">"FIN"</span>,</span>
+<span id="cb172-4"><a href="#cb172-4"></a>                  <span class="st">"Nordic"</span>, <span class="st">"RestOfWorld"</span>))</span>
+<span id="cb172-5"><a href="#cb172-5"></a></span>
+<span id="cb172-6"><a href="#cb172-6"></a><span class="co"># you can also use:</span></span>
+<span id="cb172-7"><a href="#cb172-7"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb172-8"><a href="#cb172-8"></a>  <span class="fu">mutate</span>(<span class="at">region =</span></span>
+<span id="cb172-9"><a href="#cb172-9"></a>           <span class="fu">ifelse</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"NOR"</span>, <span class="st">"SWE"</span>, <span class="st">"FIN"</span>),</span>
+<span id="cb172-10"><a href="#cb172-10"></a>                  <span class="st">"Nordic"</span>, <span class="st">"RestOfWorld"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Using the dataset from Q2, Count the number of schools in each of the two regions and the median number of taught hours <code>BCDGTIHY</code>.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1"></a>plot_data  <span class="sc">%&gt;%</span></span>
+<span id="cb173-2"><a href="#cb173-2"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span></span>
+<span id="cb173-3"><a href="#cb173-3"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb173-4"><a href="#cb173-4"></a>            <span class="at">med =</span> <span class="fu">median</span>(BCDGTIHY, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 3
+  region          n   med
+  &lt;chr&gt;       &lt;int&gt; &lt;dbl&gt;
+1 Nordic        461  896.
+2 RestOfWorld  1386 1002 </code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li>Using the data from Q2 (take a look at the answers if you couldn’t work it out), plot a graph of:
+<ul>
+<li>school’s teaching time per year <code>BCDGTIHY</code> against the behavioural issues that they have <code>BCBGDAS</code>.</li>
+<li>
+<code>colour</code> the points to show the difference between “Nordic” and “RestOfWorld” schools.</li>
+<li>Provide sensible labels for the <code>x</code> and <code>y</code> axis</li>
+<li>change the <code>alpha</code> of each point so schools don’t blot each other out</li>
+<li>add a line of best fit to see how the two axis are related</li>
+</ul>
+</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb175"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, </span>
+<span id="cb175-2"><a href="#cb175-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCDGTIHY), </span>
+<span id="cb175-3"><a href="#cb175-3"></a>           <span class="at">y=</span><span class="fu">as.numeric</span>(BCBGDAS))) <span class="sc">+</span> </span>
+<span id="cb175-4"><a href="#cb175-4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>region), <span class="at">alpha=</span><span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb175-5"><a href="#cb175-5"></a>  <span class="fu">xlab</span>(<span class="st">"teaching time per year"</span>) <span class="sc">+</span></span>
+<span id="cb175-6"><a href="#cb175-6"></a>  <span class="fu">ylab</span>(<span class="st">"behavioural issues"</span>) <span class="sc">+</span></span>
+<span id="cb175-7"><a href="#cb175-7"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-154-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</section><section id="geom_bar" class="level3" data-number="5.1.5"><h3 data-number="5.1.5" class="anchored" data-anchor-id="geom_bar">
+<span class="header-section-number">5.1.5</span> geom_bar</h3>
+</section></section><section id="exporting-plots" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="exporting-plots">
+<span class="header-section-number">5.2</span> exporting plots</h2>
 <div class="cell">
 
 </div>

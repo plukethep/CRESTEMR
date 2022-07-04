@@ -33,9 +33,6 @@ schools <- read_excel(paste0(data_folder, "dfe_data.xlsx"), "Schools")
 
 # load TIMSS data
 TIMSS <- read_excel(paste0(data_folder, "TIMSS.xlsx"), "school_data")
-
-
-
 ```
 
 # Introduction
@@ -358,7 +355,7 @@ mean(english_grade[genders == "F"])
 ```
 :::
 
-## Summary questions
+## Summary questions {#sec-TIMSS}
 
 ::: question
 1.  Describe three datatypes that you can use in your program?
@@ -1007,7 +1004,7 @@ TIMSS %>%
   summarise(n = n())
 ```
 
-2. For only those headteachers that have a masters or equivalent degree qualification (`BCBG21B`), what is the average number of years they have been a principal (`BCBG18`)?
+2. For only those headteachers that have a masters or equivalent degree qualification (`BCBG21B`), what is the average number of years they have been in their school (`BCBG19`)?
 
 ```{r}
 #| eval: true
@@ -1015,7 +1012,7 @@ TIMSS %>%
 #| warning: false
 TIMSS %>% 
   filter(BCBG21B == "Yes") %>%
-  summarise(avg_years = mean(BCBG18, na.rm=TRUE))
+  summarise(avg_years = mean(BCBG19, na.rm=TRUE))
 ```
 
 3. For the students in each country: What is the average and median instructional time in hours (calculated from `BCBG06B`), in a typical day? Can you arrange the results so we find the hardest working country? HINT, you might want to mutate `BCBG06B` to make it `as.numeric()`.
@@ -1063,13 +1060,160 @@ very_high <- TIMSS %>%
 setdiff(unique(TIMSS$CNTRY), unique(very_high$CNTRY))
 ```
 
-5. Save the results of one of the above questions using `write.csv()`.
+5. Save the results of one of the above questions using `write_csv()`.
 
 6. [EXTENSION] explore the data for "To what degree is each of the following a problem among eighth grade students in your school?" `BCBG16E` - Profanity; `BCBG16J` - Intimidation or verbal abuse of teachers or staff.
 
 :::
 
 # Graphing
+
+## Geoms
+
+### geom_point
+
+### Questions
+
+::: question
+
+1. Spot the three errors in this graph code
+
+```{r}
+#| eval: false
+#| class.source: "none"
+ggplot(adta=diamonds, x=depth, y=price) +
+  geom_point()
+  ggtitle("diamond graph")
+```
+
+```{r}
+#| eval: false
+#| echo: true
+# 1-data not adta, 2-x and y need to be inside aes
+ggplot(data=diamonds, aes(x=depth, y=price)) +
+  geom_point() + #3 missing +
+  ggtitle("diamond graph")
+```
+
+2. Using the TIMSS dataset (see @sec-TIMSS), plot a graph to help your work out whether there is a relationship between _School Emphasis on Academic Success_ `BCBGEAS` and _School Discipline_ `BCBGDAS`. Give the graph sensible x and y labels (e.g. `xlab`). **HINT**: you might need to turn the x and y values into `as.numeric`. More details on what the fields contain [here](https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf).
+
+```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+ggplot(TIMSS,
+       aes(x=as.numeric(BCBGEAS),
+           y=as.numeric(BCBGDAS))) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  xlab("School Emphasis on Academic Success") +
+  ylab("School Discipline")
+```
+
+3. Using the schools dataset, plot the size of an open state primary `school` against the `FSM` grade. Are larger primary schools generally serving poorer communities?
+
+```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Primary",
+         EstablishmentGroup != "Independent schools")
+
+# display a graph of the results
+ggplot(data=plot_data, 
+       aes(x=NumberOfGirls + NumberOfBoys, 
+           y=FSM)) +
+  geom_point() +
+  geom_smooth(method='lm')
+  
+```
+:::
+
+### Recoding data (ifelse) {#sec-ifelse}
+
+
+### Questions {#sec-ifelse-questions}
+
+::: question
+
+1. Using the TIMSS dataset, only using schools from England, Finland and USA plot to see how the _number of computers_ `BCBG07` is related to the _Instruction Affected Resource Shortage (Mathematics)_ `BCBGMRS`. Colour the points in using the country `CNTRY`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+plot_data <- TIMSS %>% filter(CNTRY == "ENG" |
+                              CNTRY == "FIN" |
+                              CNTRY == "USA" )
+
+# you can also use:
+plot_data <- TIMSS %>% filter(CNTRY %in% c("ENG", "FIN", "USA"))
+
+ggplot(data=plot_data,
+       aes(x=as.numeric(BCBGMRS), y=as.numeric(BCBG07))) +
+  geom_point(aes(colour=CNTRY))
+
+```
+
+2.  Using `ifelse`, add a column to TIMSS called `region`, recode "NOR", "SWE" and "FIN" to be "Nordic" and everyone else "RestOfWorld". 
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+
+plot_data <- TIMSS %>% 
+  mutate(region =
+           ifelse(CNTRY == "NOR" | CNTRY == "SWE" | CNTRY == "FIN",
+                  "Nordic", "RestOfWorld"))
+
+# you can also use:
+plot_data <- TIMSS %>% 
+  mutate(region =
+           ifelse(CNTRY %in% c("NOR", "SWE", "FIN"),
+                  "Nordic", "RestOfWorld"))
+```
+
+3.  Using the dataset from Q2, Count the number of schools in each of the two regions and the median number of taught hours `BCDGTIHY`. 
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+plot_data  %>%
+  group_by(region) %>%
+  summarise(n = n(),
+            med = median(BCDGTIHY, na.rm = TRUE))
+```
+
+4. Using the data from Q2 (take a look at the answers if you couldn't work it out), plot a graph of:
+    - school's teaching time per year `BCDGTIHY` against the behavioural issues that they have `BCBGDAS`.
+    - `colour` the points to show the difference between "Nordic" and "RestOfWorld" schools.
+    - Provide sensible labels for the `x` and `y` axis
+    - change the `alpha` of each point so schools don't blot each other out
+    - add a line of best fit to see how the two axis are related
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+
+ggplot(data=plot_data, 
+       aes(x=as.numeric(BCDGTIHY), 
+           y=as.numeric(BCBGDAS))) + 
+  geom_point(aes(colour=region), alpha=0.4) +
+  xlab("teaching time per year") +
+  ylab("behavioural issues") +
+  geom_smooth(method="lm")
+
+```
+
+:::
+
+### geom_bar
 
 
 ## exporting plots

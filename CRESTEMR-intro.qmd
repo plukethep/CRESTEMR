@@ -597,7 +597,7 @@ paste(nums, mask)
 nums[mask]
 ```
 
-This might not seem very useful, but it comes in very handy when we want to perform a single calculation across a whole vector. For example, we want to find all the students who achieved grade 5 in english, the below code creates a vector of `5`s the same size as `english_grade`:
+This might not seem very useful, but it comes in very handy when we want to perform a single calculation across a whole vector. For example, we want to find all the students who achieved grade 5 in English, the below code creates a vector of `5`s the same size as `english_grade`:
 
 ```{r}
 # this can also be rewritten english_grade >= c(5)
@@ -1472,7 +1472,7 @@ Open_schools %>%
 ```
 
 ### Renaming columns {#sec-renaming}
-Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g. _BCBG10B_ and _BCBG11._ To rename columns in the tidyverse we use the `rename(<old_name> = <new_name>)` command. For example, if you wanted to rename the rather confusing school's column called `Open` you would do the following:
+Very often when dealing with datasets such as TIMSS or PISA, the column names can be very confusing without a reference key, e.g. _BCBG10B_ and _BCBG11._ To rename columns in the tidyverse we use the `rename(<new_name> = <old_name>)` command. For example, if you wanted to rename the rather confusing school's column called `Open` you would do the following:
 
 ```{r}
 #| eval: true
@@ -1549,7 +1549,7 @@ schools %>% #1 missing pipe
   summarise(average = mean(NumberOfBoys, na.rm = TRUE)) #6 missing na.rm = TRUE
 ```
 
-3.  Display (`Select`) only the `ID`, `LA`, `Gender`, `OfstedRating` from a school
+3.  Display (`select`) only the `ID`, `LA`, `Gender`, `OfstedRating` from a school
 
 ```{r}
 #| eval: false
@@ -1684,7 +1684,7 @@ data_joined %>%
 
 As we have already noted, with exploratory data analysis it's useful to store results in objects to use later. We might want to store our findings more permanently to use later or share with others, saving them as `CSV`, `Excel` or `SPSS` files. 
 
-The easiest way to do this in R is to use the `write.csv(<table>, <location>)` function. This function lets you specify the name of the table object you want to save, along with the name you want to call the output.
+The easiest way to do this in R is to use the `write_csv(<table>, <location>)` function. This function lets you specify the name of the table object you want to save, along with the name you want to call the output.
 
 The default location that the file will save to is your _working directory_. You can find out where this is by running `getwd()`. To change this, use the `setwd(<folder_location>)` command.
 
@@ -1702,7 +1702,7 @@ chinese_uptake <- data_joined %>%
          Entries, FSM, NumberOfBoys, NumberOfGirls)
 
 # This will save to your "working directory", where you have saved 
-write.csv(chinese_uptake, "chinese_entries.csv", row.names = FALSE)
+write_csv(chinese_uptake, "chinese_entries.csv")
 ```
 
 ::: callout-tip
@@ -1749,6 +1749,15 @@ library(openxlsx)
 TIMSS <- read.xlsx("https://drive.google.com/uc?export=download&id=1Sgyw1tLbPGsl4HeyhpNGLhJwTNIriE-B", "school_data")
 ```
 
+```{r}
+#| eval: true
+#| echo: false
+#| warning: false
+# How to load TIMSS provider data into R
+library(readxl)
+TIMSS <- read_excel("C:/Users/Peter/Google Drive/Kings/R intro/code/TIMSS.xlsx", "school_data")
+```
+
 Take a look at the data using the _Environment_ panel, it's rather confusing as Excel doesn't store the full question names. This data originally comes from SPSS and it is possible to load SPSS into R to look at the names, but here we have a cut down dataset and you might want to do some renaming to make the table a little more manageable (see @sec-renaming).
 
 ![](images/exploring_timss.png)
@@ -1778,6 +1787,7 @@ TIMSS %>%
 TIMSS %>% 
   filter(BCBG21B == "Yes") %>%
   summarise(avg_years = mean(BCBG19, na.rm=TRUE))
+
 ```
 
 3. For the students in each country: What is the mean and median instructional time in hours, in a typical school day? Can you arrange the results so we find the hardest working country? You need to use `BCBG06B`, and hint, this column might not be `as.numeric()` just yet. (You might want to use `mutate` and @sec-datatypes to help you)
@@ -1827,7 +1837,7 @@ setdiff(unique(TIMSS$CNTRY), unique(very_high$CNTRY))
 
 ```
 
-5. Save the results of one of the above questions using `write.csv()`.
+5. Save the results of one of the above questions using `write_csv()`.
 
 6. [EXTENSION] explore the data for "To what degree is each of the following a problem among <eighth grade> students in your school?" `BCBG16E` - Profanity; `BCBG16J` - Intimidation or verbal abuse of teachers or staff
 
@@ -1931,7 +1941,7 @@ ggplot(data=diamonds, aes(x=depth, y=price)) +
   ggtitle("diamond graph")
 ```
 
-2. Using the TIMSS dataset (see @sec-TIMSS), plot a graph to help your work out whether there is a relationship between _School Emphasis on Academic Success_ `BCBGEAS` and _School Discipline_ `BCBGDAS`. Give the graph sensible x and y labels (e.g. `xlab`). More details [here](https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf).
+2. Using the TIMSS dataset (see @sec-TIMSS), plot a graph to help your work out whether there is a relationship between _School Emphasis on Academic Success_ `BCBGEAS` and _School Discipline_ `BCBGDAS`. Give the graph sensible x and y labels (e.g. `xlab`). **HINT**: you might need to turn the x and y values into numbers using `as.numeric()`. More details [here](https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf).
 
 ```{r}
 #| warning: false
@@ -1950,7 +1960,7 @@ ggplot(TIMSS,
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: false
 
 plot_data <- schools %>% 
@@ -1968,18 +1978,15 @@ ggplot(data=plot_data,
 ```
 :::
 
-
-, as shown in the example above. We are now going to look at how `geom_point`s can be adapted to put more data into our graphs by taking the `schools` dataset and using the `colour` and `size` attributes to display the population and nature of schools.
-
 ### Recoding data (ifelse) {#sec-ifelse}
 
-Before we start graphing we need to look at how we can _recode_ values. Recoding is very useful when you have a column with multiple items that you want to change to just a few. A common way to recode values is through:
+Often we want to plot values in groupings that don't yet exist, for example might want to give all schools over a certain size a different _colour_ from others schools. To do this we need to look at how we can _recode_ values. A common way to recode values is through an if statement:
 
 > `ifelse(<statement(s)>, <value_if_true>, <value_if_false>)`
 
-`ifelse` allow us to _recode_ the data. For the example below, we are going to add a new column to the schools table noting whether a school is a `grammar` school or not. A school is a grammar school _if_ it is not an _Independent_ school _and_ it is _selective_ in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school. 
+`ifelse` allow us to _recode_ the data. In the example below, we are going to add a new column to the schools table (using `mutate`) noting whether a school is a `grammar` school or not. A school is a grammar school _if_ it is not an _Independent_ school _and_ it is _selective_ in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school. 
 
-You can see how the above if statement is implemented in R on lines 4-8.
+You can see how the above logic is is implemented in an R `ifelse` statement on lines 4-8.
 
 ```{r}
 #| warning: false
@@ -1994,32 +2001,30 @@ plot_data <- schools %>%
   arrange(desc(grammar))
 ```
 
-- 4 uses mutate to create a new column in the schools table called `grammar`, this will be given the value of the if statement calculation for each line.
-- 5 the `if` statement to be evaluated as either `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
-- 6 is the value that will be returned if the statements on line 5 are _TRUE_
-- 7 is the value that will be returned if the statements on line 5 are _FALSE_
+- 4 uses mutate to create a new column in the schools table called `grammar`, this will be given the value of the `ifelse` statement calculation for each line.
+- 5 - 6 the `if` statement to be evaluated as either `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
+- 7 is the value that will be returned `if` the statements on line 5 and 6 are both _TRUE_
+- 8 is the value that will be returned if the combined statements on line 5 and 6 are _FALSE_, i.e. _else_ the values on line 5 and 6 are true
 
-Additionally, on line 8 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other schools to make them stand out.
+Additionally, on line 9 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other school types to make them stand out.
 
 ::: callout-tip
 
-It's possible to nest our ifelse statements, for example we might want to give a little more information on the school type:
+It's possible to nest our `ifelse` statements, for example we might want to give a little more information on the school type:
 
 ```{r}
 #| eval: false
 plot_data <- schools %>% 
-  filter(Open=="Open", 
-         Phase=="Secondary") %>%
+  filter(Open=="Open") %>%
   mutate(sch_type = 
            ifelse(grepl("Special", EstablishmentGroup), "Special",
                   ifelse(EstablishmentGroup == "Independent schools", "Independent",
                          ifelse(AdmissionsPolicy=="Selective", 
                                 "Grammar", "Comprehensive"))))
-
 ```
 :::
 
-Now we have the data recoded to display whether a school is a grammar school or not, we can plot this dataset onto the graph:
+Now we have _recoded_ the data to display whether a school is a grammar school or not, we can plot this dataset onto the graph:
 
 ```{r}
 #| warning: false
@@ -2031,20 +2036,20 @@ ggplot(data=plot_data) +
 ```
 
 - 1 we pass the custom table `plot_data` to the ggplot command, this means this data will be available in subsequent `geom_`
-- 2 we define the `x` and `y` `aes`theic values here, we could have done this on line one, but this shows that this can be done separately for each `geom_`
-- 3 `size` is also inside `aes()` and takes the `NumberOfBoys+NumberOfGirls` as a parameter, i.e. the population of the school will change the size of the point on the graph
-- 4 `colour` takes the newly coded `grammar` values, this means that grammar schools will be a different colour from non-grammar schools
+- 2 we define the `x` and `y` `aes`theic values here for the `geom_point`s, we could have done this on line one, but this shows that this can be done separately for each `geom_`
+- 3 `size` is also inside `aes()` and takes the `NumberOfBoys+NumberOfGirls` as a parameter, i.e. the population of the school will change the size of the points on the graph
+- 4 `colour` is also inside `aes()` and takes the newly coded `grammar` values, this means that grammar schools will be a different colour from non-grammar schools
 - 5 to stop the schools blotting each other out, we set the `alpha` (transparency) of each point to `0.4`. This is done outside the `aes` as we want all points to have the same transparency.
 
 ::: callout-important
-If you define the `colour`, `size` and `alpha` attributes _outside_ the `aes()` function you will hard code the values and they won't change when your dataset changes. Placing these attributes inside `aes` allows them to be dynamically changed by your dataset
+If you define the `colour`, `size` and `alpha` attributes _outside_ the `aes()` function, you will hard code the values and they won't change when your dataset changes. Placing these attributes inside `aes` allows them to be dynamically changed by your dataset values
 :::
 
 ### Questions
 
 ::: question
 
-1. Using the TIMSS dataset, only using schools from England, Finland and USA plot to see how the _number of computers_ `BCBG07` is related to the _Instruction Affected Resource Shortage (Mathematics)_ `BCBGMRS`. Colour the points in using the country `CNTRY`.
+1. Using the TIMSS dataset, and only using schools from England, Finland and USA, plot to see how the _number of computers_ `BCBG07` is related to the _Instruction Affected Resource Shortage (Mathematics)_ `BCBGMRS`. `colour` the points in using the country `CNTRY`.
 
 ```{r}
 #| eval: false
@@ -2062,14 +2067,225 @@ ggplot(data=plot_data,
 
 ```
 
-2. plot involving ifelse
+2.  Using `ifelse`, add a column to TIMSS called `region`, recode "NOR", "SWE" and "FIN" to be "Nordic" and everyone else "RestOfWorld". 
+
+```{r}
+#| eval: false
+#| echo: false
+
+plot_data <- TIMSS %>% 
+  mutate(region =
+           ifelse(CNTRY == "NOR" | CNTRY == "SWE" | CNTRY == "FIN",
+                  "Nordic", "RestOfWorld"))
+
+# you can also use:
+plot_data <- TIMSS %>% 
+  mutate(region =
+           ifelse(CNTRY %in% c("NOR", "SWE", "FIN"),
+                  "Nordic", "RestOfWorld"))
+```
+
+3.  Using the dataset from Q2, Count the number of schools in each of the two regions and the median number of taught hours `BCDGTIHY`. 
+
+```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+plot_data  %>%
+  group_by(region) %>%
+  summarise(n = n(),
+            med = median(BCDGTIHY, na.rm = TRUE))
+```
+
+4. Using the data from Q2  (take a look at the [answers](CRESTEMR-answers.html#sec-ifelse-questions) if you couldn't work it out), plot a graph of:
+    - school's teaching time per year `BCDGTIHY` against the behavioural issues that they have `BCBGDAS`.
+    - `colour` the points to show the difference between "Nordic" and "RestOfWorld" schools.
+    - Provide sensible labels for the `x` and `y` axis
+    - change the `alpha` of each point so schools don't blot each other out
+    - add a line of best fit to see how the two axis are related
+
+
+```{r}
+#| eval: false
+#| echo: false
+
+ggplot(data=plot_data, 
+       aes(x=as.numeric(BCDGTIHY), 
+           y=as.numeric(BCBGDAS))) + 
+  geom_point(aes(colour=region), alpha=0.4) +
+  xlab("teaching time per year") +
+  ylab("behavioural issues") +
+  geom_smooth(method="lm")
+
+```
 :::
 
-Let's move on to looking at some other `geom_` elements:
-
 ### geom_bar
+
+The `geom_bar` function is versatile, allowing the creation of bar, multiple bar, stacked bar charts and histograms. This first example shows how we can use bar charts to represent the quality ratings given by the Office of Standards in Education (Ofsted) to schools in different parts of the country:
+
+```{r}
+#| warning: false
+plot_schools <- schools %>% 
+  filter(Open == "Open",
+         Region != "Not Applicable",
+         OfstedRating %in% c("Outstanding", "Good", "Requires improvement", "Inadequate"))
+
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar()
+```
+<!--the `is.na(OfstedRating)` command selects only those rows from _OfstedRating_ that have an `NA` value. By putting the `!` mark in front of this we `NOT` or reverse the result. In this case `!is.na(OfstedRating)` returns all the rows that don't contain `NA` in OfstedRating.-->
+
+- 1 to 3 gets the schools dataset and filters it to only include schools that are _Open_, which are in recognised _Region_.
+- 4 filters only those rows containing the _OfstedRating_ listed, removing any `NA` or other values.
+- 6 to 7 we pass the `plot_schools` dataset created on lines 1 to 4 to ggplot and set the `x` axis to the be the _Region_. Note, we don't set the `y` axis, as geom_bar will calculate this for us
+- 8 we pass the `plot_schools` and `x=Region` to `geom_bar`, which counts the number of rows (schools) in each Region and creates a bar of that height.
+
+The graph above gives us a feel for the data, but it doesn't tell us the Ofsted ratings for each Region and the a axis labels are a mess. We need to add a `fill` to the `geom_bar` and adjust the `theme`:
+
+```{r}
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar(aes(fill=OfstedRating)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+- 3 using the `fill` attribute `aes(fill=OfstedRating)` will create a stacked and coloured bar to show the number of schools gaining each _OftstedRating_ in each _Region_
+- 4 the `theme` function and `axis.text.x` adjust the x axis labels, rotating them 90 degrees
+
+We can now make rough comparisons between the different number of each Ofsted rating. But it remains hard to compare the percentage split. For example the number of _Good_ and _Outstanding_ schools in London is hard to compare with the North East, as the total number of schools in the North East is much smaller than the number of schools in London. Additionally, the order of the bars seems random, we want to have _Outstanding_ at the top and _Inadequate_ at the bottom, not next to each other:
+
+```{r}
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar(aes(fill=factor(OfstedRating, 
+                           levels = c("Outstanding", "Good", "Requires improvement", "Inadequate"))),
+           position="fill") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_fill_discrete(name = "Ofsted Ratings")
+
+```
+
+- 3 to 4 converts _OfstedRating_ from the _character_ datatype to a _factor_. Factors allow us to categorise the data we store, limiting the number of values a column can hold, in this case we are limiting it to the _levels_ specified, with the order given to levels specifying the order that this column's data will be displayed in graphs.
+- 5 `position` tells ggplot what to do when a bar on the x axis is made up of multiple elements, in this case `position="fill"` will take each x axis bar grouping and work out the fractional value of each Ofsted rating for each  Region.
+- 7 when we created the factor on lines 3-4 to pass to the fill command, it also created a really inconvenient title for the graph legend: _factor(OfstedRating, levels = c("Outstanding", "Good", "Requires improvement", "Inadequate"))_. `scale_fill_discrete` let's us provide a more sensible title for the key.
+
+We might also want to look at this graph on a Region by Region basis, at the moment it's very hard to tell if the East Midlands have more schools that are _Outstanding_, or more schools that _Require improvement_. To do compare the bars in each x axis group we can use the position command, setting it to `position="dodge"`:
+
+```{r}
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar(aes(fill=factor(OfstedRating, 
+                           levels = c("Outstanding", "Good", "Requires improvement", "Inadequate"))),
+           position="dodge") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_fill_discrete(name = "Ofsted Ratings")
+
+```
+
+### Questions
+
+::: questions
+
+1. Can you spot the 4 errors in this code
+
+```{r}
+#| eval: false
+#| echo: true
+#| class.source: "none"
+ggplot(data=schools %>% filter(Phase == "Secondary"), 
+       x=Region +
+  geom_bar(aes(fill=Gender) position="full") # missing comma # 4 position="full" rather than fill 
+```
+
+```{r}
+#| eval: false
+#| echo: false
+ggplot(data=schools %>% filter(Phase == "Secondary"), 
+       aes(x=Region)) + # 1 no aes() around the x value # 2 missing close brackets
+  geom_bar(aes(fill=Gender), position="fill") +
+```
+
+2. 
+
+```{r}
+
+plot_data <- TIMSS %>% 
+  filter(CNTRY %in% c("USA", "ENG"),
+         !is.na(BCBG14G))
+  
+
+ggplot(data=plot_data,
+       aes(x=BCBG14G
+           )) +
+  geom_bar()
+```
+
+
+:::
+
+
+### Setting bar heights yourself
+
+ggplot can do a lot of the hard work when putting together bar charts, but there might also be times when you want to use pipes to calculate summary values that you then want plot. That is, you want to specify the heights of the bars yourself. To do this we _will_ specify the y axis in the aes and use `stat="indentity"` to tell ggplot that's what we're doing. Take the example where you 
+
+```{r}
+
+results %>%
+  filter(Description %in% c("Chinese", "French", "German", "Spanish"),
+         Qualification == "GCSE (9-1) Full Course",
+         Grade == "Total number entered" | 
+        Grade == "9") %>%
+  group_by(ID, )
+  mutate(per_top = max(Entries) / )
+%>%
+  
+         
+
+```
+
+
+ggplot(data=plot_data,
+       aes(x=factor(BCBG14G, levels = c("Very low", "Low", "Medium", "High", "Very high"))
+           )) +
+  geom_bar() +
+  facet_wrap(.~CNTRY)
+
+
+ggplot(data=plot_data,
+       aes(x=BCBG14G
+           )) +
+  geom_bar(aes(fill=CNTRY))
+
+ggplot(data=plot_data,
+       aes(x=BCBG14G
+           )) +
+  geom_bar(aes(fill=CNTRY), position="dodge") # , stat="percentage"
+
+plot_data <- plot_data %>% 
+  group_by(CNTRY, BCBG14G) %>%
+  summarise(n=n())
+  
+
+ggplot(data=plot_data,
+       aes(x=factor(BCBG14G, 
+                    levels = c("Very low", "Low", "Medium", "High", "Very high")),
+           y=n
+           )) +
+  geom_bar(stat="identity") +
+  facet_wrap(.~CNTRY)
+
+  
+  "Teachers’ ability to inspire students"
+  bcbg14D
+  
+  "Parental expectations for student achievement"
+ BCBG14G
+
+
 groups
-stacking
+stacking dodge
 count
 
 
@@ -2120,13 +2336,13 @@ Let's return to the dataset, `computing_test`, we had built in @sec-graphing. We
 Additionally `facet`s
 
 
-
-## Themes
-
-
-
 ## Exporting plots
+`ggsave(<file_name_and_extension>, <object_type>)`
 
+
+```{r}
+# ggsave("poverty_size.pdf", graph_poverty_size)
+```
 as png
 
 as svg and pdf

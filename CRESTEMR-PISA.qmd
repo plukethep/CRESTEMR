@@ -1,0 +1,192 @@
+
+# https://webfs.oecd.org/pisa2018
+# https://github.com/eldafani/intsvy
+
+# 2018 | 2015 | 2012 | 2009
+
+library(haven)
+library(glue)
+library(labelled)
+
+# PC
+datafolder <- "D:/Data/PISR/"
+mapping_folder <- "C:/Users/Peter/Google Drive/Kings/Code/PISR/Mappings/"
+ref_folder <- r"(C:\Users\Peter\Google Drive\Kings\Code\PISR\Docs\2018\Questionnaire\bkg\)"
+
+# Teacher questionnaire data
+# SPSS_TCH_QQQ/TCH/CY07_MSU_TCH_QQQ.sav
+
+# Student questionnaire data
+# SPSS_STU_QQQ
+
+# Student cognitive data
+# SPSS_STU_COG
+
+# School questionnaire data
+# SPSS_SCH_QQQ/TCH/CY07_MSU_SCH_QQQ.sav
+
+# Laptop
+datafolder <- r"(C:\Users\k1926273\Documents\R Projects\PISR\Data\)"
+mapping_folder <- "C:/Users/w1926273/Google Drive/Kings/Code/PISR/Mappings/"
+
+#download data from PISA website
+download_PISR_data <- function(name="SPSS_SCH_QQQ", datafolder, year=2018){
+  webname = paste0(name,".zip")
+  finalname = paste0(name,".zip")
+  webadd = paste0("https://webfs.oecd.org/pisa",year,"/")
+  loc = paste0(webadd, webname)
+  dest = paste0(datafolder, webname)
+  
+  #check that file exists
+  if(file.exists(dest)){
+    warning("skipping download ", dest, " - it already exists")
+  }else{
+    message("downloading file")
+    download.file(url = loc, destfile = dest, method='auto')
+  }
+  
+  message("decompressing file")
+  #decompress file
+  # unzip(zipfile = dest, list=TRUE)
+  unzip(zipfile = dest, 
+        exdir = substr(datafolder, 1,nchar(datafolder)-1), 
+        junkpaths = TRUE)
+  message("File decompressed")
+}
+
+# loads the large PISA spss files, and, if asked, filters them on specified fields and renames fields
+load_PISR_data <- function(datafolder, file = "CY07_MSU_STU_QQQ", mapping=TRUE, 
+                           sheet="mappings", mapping_folder){
+  df <- read_sav(paste0(datafolder, file, ".sav"))
+  
+  if(mapping){
+    maps <- load_field_mappings(mapping_folder, 
+                                mapping_file = "PISA_mappings.xlsx",
+                                sheet = sheet,
+                                PISR_file = file,
+                                Year = "PISA2018",
+                                File_Type = "*")
+    chosen <- maps$PISA_ID
+    df <- df %>% select(chosen)
+    
+    names(df) <- maps$Easy_ID
+  }
+  return(df)
+}
+
+
+dat_school <- load_PISR_data(datafolder, "CY07_MSU_SCH_QQQ", mapping=FALSE)
+# hindrance questions - SCO17Q
+# digital tech - SC155Q
+# diversity - SC165Q
+# CLSIZE
+# SCHSIZE
+# STRATIO - staff ratio
+# TOTAT - total teachers
+# PROATCE - teachers fully certified
+# CNT
+# CNTSCHID
+# CREACTIV - creative extra curricular activities
+
+pisa_sch <- dat_school %>% select(
+    starts_with(
+      c("CNT", "CNTSCHID", "PRIVATESCH", "CLSIZE", "SCHSIZE", "STRATIO", "TOTAT", "PROATCE", "CREACTIV", "SC155Q", "SCO17Q", "SC165Q"))) %>%
+  mutate(
+    across(
+      starts_with(
+        c("SC165Q", "CLSIZE", "SCHSIZE", "STRATIO", "TOTAT", "PROATCE", "CREACTIV", "SC155Q", "SCO17Q")),
+      ~ as.numeric(.x)))
+  # mutate(across(everything(), ~ as.factor(.x)))
+
+############
+############
+############
+# Fetching attributes from SPSS
+############
+attributes(pisa_sch$CLSIZE)$labels
+attributes(pisa_sch$SCHSIZE)$labels
+max(unique(pisa_sch$SCHSIZE), na.rm = TRUE)
+############
+############
+############
+############
+view(pisa_sch)
+pisa_sch <- pisa_sch %>% 
+  # mutate(
+  #   across(
+  #     starts_with(
+  #       c("SC165Q", "CLSIZE", "SCHSIZE", "STRATIO", "TOTAT", "PROATCE",  "CREACTIV", "SC155Q", "SCO17Q")),
+  #     ~ as.numeric(.x))) %>%
+  mutate(cultural = rowMeans(
+    select(., starts_with("SC165Q")), na.rm = TRUE))
+
+pisa_staff_stats <- pisa_sch %>% 
+  group_by(CNT) %>% #, PRIVATESCH) %>% 
+  summarise(n = n(),
+            avg_class = mean(CLSIZE, na.rm=TRUE), # mean class size
+             avg_sch = mean(SCHSIZE, na.rm=TRUE), # mean school size
+             avg_str = mean(STRATIO, na.rm=TRUE), # staff ratio
+             avg_qual = mean(PROATCE, na.rm=TRUE), # teachers fully certified
+             avg_cult = mean(cultural, na.rm=TRUE)) # diversity questions SC165Q*
+
+str(pisa_staff_stats)
+
+# plot school size versus average class size
+ggplot(data=pisa_staff_stats, aes(x=avg_sch, y=avg_class)) +
+  geom_point()
+
+# filter to show XYZ countries
+# create box plots of class size
+
+
+
+dat_teacher <- load_PISR_data(datafolder, "CY07_MSU_TCH_QQQ", mapping=FALSE)
+dat_student <- load_PISR_data(datafolder, "CY07_MSU_STU_QQQ", mapping=TRUE, sheet="student_questionnaire", mapping_folder)
+
+
+
+# fetch the school data for any given set of countries
+school_data <- 
+  map_dfr(c("ENG", "FIN", "RUS", "FRA", "HKG", "SWE", "USA", "IRL", "ISR", "NOR", "TUR"),
+         ~ {
+           low_name <- tolower(.x)
+           get_country(.x, file=glue("bcg{low_name}m7")) %>%
+             map_dfc(function(y) to_factor(y)) %>% 
+             mutate(CNTRY = .x)}
+        )
+
+# convert everything to factors
+# school_data <- school_data %>% 
+#   map_dfc(~ to_factor(.x))
+
+# how long are the school days?
+school_data %>% filter(!is.na(BCDGTIHY)) %>%
+  mutate(BCDGTIHY = as.numeric(levels(BCDGTIHY)[BCDGTIHY])) %>%
+  #group_by(CNTRY) %>% count()
+  ggplot(aes(x=CNTRY, y=BCDGTIHY)) +
+  geom_boxplot(outlier.shape = NA)+
+  scale_y_continuous(limits = 
+                       quantile(as.numeric(levels(school_data$BCDGTIHY)[school_data$BCDGTIHY]), 
+                                c(0.1, 0.9),
+                                na.rm=TRUE))
+
+BCDGTIHY
+
+
+names(school_data)
+
+school_data$BCDGTIHY
+
+# gets the label for a given column rather than values
+dat %>% pull(BCBG03A) %>%
+  map(~ val_label(dat %>% pull(BCBG03A), .x)[[1]]) %>% unlist()
+
+val_label(school_data[,3], school_data[5,3][[1]])
+
+# converts the column to a factor
+dput(to_factor(school_data$BCBG03A))
+
+school_data <- school_data %>% 
+  map_dfc(~ to_factor(.x))
+
+```
