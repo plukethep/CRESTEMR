@@ -4,10 +4,16 @@ library(tidyverse)
 
 results <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
                      sheet="Results")
-results %>%
+
+schools <- read.xlsx("https://drive.google.com/uc?export=download&id=1tp9xe3dS__eg7RrXf0T_oMxcrz_TbMdM",
+                                sheet="Schools")
+
+temp_data <- results %>%
   group_by(Grade) %>%
   summarise(Grade_total = sum(Entries, na.rm = TRUE)) %>%
   head(6) 
+
+view(temp_data)
 
 str(results)
 
@@ -190,6 +196,12 @@ ggplot(data=school_plot_data,
   xlab("Boys in school") +
   ylab("Girls in school")
 
+
+
+##### Session 3
+
+# starter to look at the code below and work out what it does
+
 ###### plot computing 
 data_joined <- left_join(results, schools, by="ID")
 
@@ -214,39 +226,93 @@ ggplot(data=computing_test,
   geom_smooth(method='lm') +
   ggtitle("The more boys, the more CS")
 
+## ifelse
+
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Secondary") %>%
+  mutate(grammar = 
+           ifelse(EstablishmentGroup != "Independent schools" & 
+                    AdmissionsPolicy=="Selective",
+                  "GRAMMAR",
+                  "NOT GRAMMAR")) %>%
+  arrange(desc(grammar))
+
+ggplot(data=plot_data) +
+  geom_point(aes(x=Easting, y=Northing, 
+                 size = NumberOfBoys+NumberOfGirls,
+                 colour=grammar),
+             alpha=0.4)
+
 #### Questions
 
 
-## ifelse for Grammar schools
+
+### Geom_bar
+plot_schools <- schools %>% 
+  filter(Open == "Open",
+         Region != "Not Applicable",
+         OfstedRating %in% c("Outstanding", "Good", "Requires improvement", "Inadequate"))
+
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar()
 
 
-## Questions
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar(aes(fill=OfstedRating)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
+### FACTORS
+
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar(aes(fill=factor(OfstedRating, 
+                           levels = c("Outstanding", "Good", "Requires improvement", "Inadequate"))),
+           position="fill") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_fill_discrete(name = "Ofsted Ratings")
+
+
+ggplot(data = plot_schools, 
+       aes(x=Region)) + 
+  geom_bar(aes(fill=factor(OfstedRating, 
+                           levels = c("Outstanding", "Good", "Requires improvement", "Inadequate"))),
+           position="dodge") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_fill_discrete(name = "Ofsted Ratings")
+
+
+#### Questions
+
+### facets
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Secondary") %>%
+  mutate(sch_type = 
+           ifelse(EstablishmentGroup != "Independent schools" & 
+                    AdmissionsPolicy=="Selective",
+                  "GRAMMAR",
+                  "NOT GRAMMAR")) %>%
+  arrange(desc(sch_type))
+
+ggplot(data=plot_data, aes(x=FSM, y=NumberOfBoys + NumberOfGirls)) + 
+  geom_point(aes(colour=sch_type)) +
+  geom_smooth(method ="lm") +
+  theme(legend.position="bottom")
+
+### save graph
+
+## stats
+
+
 
 
 
 BCBGEAS - School Emph on Acad Success
 BCBGDAS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

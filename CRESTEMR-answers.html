@@ -172,6 +172,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#sec-ifelse" id="toc-sec-ifelse" class="nav-link" data-scroll-target="#sec-ifelse"> <span class="header-section-number">5.1.3</span> Recoding data (ifelse)</a></li>
   <li><a href="#sec-ifelse-questions" id="toc-sec-ifelse-questions" class="nav-link" data-scroll-target="#sec-ifelse-questions"> <span class="header-section-number">5.1.4</span> Questions</a></li>
   <li><a href="#geom_bar" id="toc-geom_bar" class="nav-link" data-scroll-target="#geom_bar"> <span class="header-section-number">5.1.5</span> geom_bar</a></li>
+  <li><a href="#questions-9" id="toc-questions-9" class="nav-link" data-scroll-target="#questions-9"> <span class="header-section-number">5.1.6</span> Questions</a></li>
   </ul>
 </li>
   <li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.2</span> exporting plots</a></li>
@@ -1438,60 +1439,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <ol start="5" type="1">
-<li>Filter all the schools that got <code>Outstanding</code> as an <code>OfstedRating</code>, display the <code>ID</code>, <code>Name</code>, <code>FSM</code> and <code>TypeOfEstablishment</code>, and arrange them by descending <code>FSM</code>.</li>
+<li>Filter all the schools that got <code>Outstanding</code> as an <code>OfstedRating</code>, display the <code>ID</code>, <code>Name</code>, <code>FSM</code> and <code>TypeOfEstablishment</code>.</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1"></a>schools <span class="sc">%&gt;%</span></span>
 <span id="cb137-2"><a href="#cb137-2"></a>  <span class="fu">filter</span>(OfstedRating <span class="sc">==</span> <span class="st">"Outstanding"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb137-3"><a href="#cb137-3"></a>  <span class="fu">select</span>(ID, Name, FSM, TypeOfEstablishment) <span class="sc">%&gt;%</span></span>
-<span id="cb137-4"><a href="#cb137-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(FSM))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb137-3"><a href="#cb137-3"></a>  <span class="fu">select</span>(ID, Name, FSM, TypeOfEstablishment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4,586 x 4
-       ID Name                                          FSM TypeOfEstablishment 
-    &lt;dbl&gt; &lt;chr&gt;                                       &lt;dbl&gt; &lt;chr&gt;               
- 1 135010 Sutton Tuition and Reintegration Service    1     Pupil referral unit 
- 2 139541 Courtyard AP Academy                        0.929 Academy alternative~
- 3 100643 Turney Primary and Secondary Special School 0.875 Foundation special ~
- 4 131598 Ian Mikardo School                          0.811 Community special s~
- 5 107589 William Henry Smith School                  0.778 Non-maintained spec~
- 6 102957 The Limes College                           0.759 Pupil referral unit 
- 7 115450 Wells Park School                           0.736 Community special s~
- 8 135558 Hawkswood Primary PRU                       0.692 Pupil referral unit 
- 9 141582 St Silas Church of England Primary School   0.692 Academy converter   
-10 100469 Samuel Rhodes MLD School                    0.677 Community special s~
+       ID Name                                              FSM TypeOfEstablish~
+    &lt;dbl&gt; &lt;chr&gt;                                           &lt;dbl&gt; &lt;chr&gt;           
+ 1 100000 Sir John Cass's Foundation Primary School       0.112 Voluntary aided~
+ 2 100005 Thomas Coram Centre                             0.338 Local authority~
+ 3 100020 Primrose Hill School                            0.238 Community school
+ 4 100022 Richard Cobden Primary School                   0.357 Community school
+ 5 100023 Torriano Primary School                         0.298 Community school
+ 6 100025 Gospel Oak Primary School                       0.266 Community school
+ 7 100027 Eleanor Palmer Primary School                   0.085 Community school
+ 8 100028 Christ Church Primary School, Hampstead         0.041 Voluntary aided~
+ 9 100033 Holy Trinity and Saint Silas CofE Primary Scho~ 0.181 Voluntary aided~
+10 100034 Kentish Town Church of England Primary School   0.278 Voluntary aided~
 # ... with 4,576 more rows</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1"></a><span class="co"># optionally, you could add an arrange to put things in order</span></span>
+<span id="cb139-2"><a href="#cb139-2"></a><span class="co"># arrange(desc(FSM))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="6" type="1">
 <li>Count the number (<code>n()</code>) of <code>Open</code> schools that have an <code>FSM</code> number of over <code>0.95</code> (You don’t have to use <code>summarise</code>, but it helps)</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb139-2"><a href="#cb139-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb139-3"><a href="#cb139-3"></a>  <span class="fu">filter</span>(FSM <span class="sc">&gt;</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb139-4"><a href="#cb139-4"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb140-2"><a href="#cb140-2"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb140-3"><a href="#cb140-3"></a>  <span class="fu">filter</span>(FSM <span class="sc">&gt;</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb140-4"><a href="#cb140-4"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 1
+  total
+  &lt;int&gt;
+1     7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a><span class="co"># alternatively:</span></span>
+<span id="cb142-2"><a href="#cb142-2"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb142-3"><a href="#cb142-3"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb142-4"><a href="#cb142-4"></a>  <span class="fu">filter</span>(FSM <span class="sc">&gt;</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb142-5"><a href="#cb142-5"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 1
       n
   &lt;int&gt;
 1     7</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1"></a><span class="co"># alternatively:</span></span>
-<span id="cb141-2"><a href="#cb141-2"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb141-3"><a href="#cb141-3"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb141-4"><a href="#cb141-4"></a>  <span class="fu">filter</span>(FSM <span class="sc">&gt;</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb141-5"><a href="#cb141-5"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 x 1
-      n
-  &lt;int&gt;
-1     7</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1"></a><span class="co"># alternatively:</span></span>
-<span id="cb143-2"><a href="#cb143-2"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb143-3"><a href="#cb143-3"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb143-4"><a href="#cb143-4"></a>  <span class="fu">filter</span>(FSM <span class="sc">&gt;</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb143-5"><a href="#cb143-5"></a>  <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1"></a><span class="co"># alternatively:</span></span>
+<span id="cb144-2"><a href="#cb144-2"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb144-3"><a href="#cb144-3"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb144-4"><a href="#cb144-4"></a>  <span class="fu">filter</span>(FSM <span class="sc">&gt;</span> <span class="fl">0.95</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb144-5"><a href="#cb144-5"></a>  <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7</code></pre>
 </div>
@@ -1500,14 +1502,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>How many <code>Open</code> schools in each (<code>group_by</code>) <code>Region</code> have more than <code>2000</code> students?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1"></a><span class="co"># the order of mutate and filter doesn't matter here,</span></span>
-<span id="cb145-2"><a href="#cb145-2"></a><span class="co"># but group_by and summarise do!</span></span>
-<span id="cb145-3"><a href="#cb145-3"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb145-4"><a href="#cb145-4"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
-<span id="cb145-5"><a href="#cb145-5"></a>  <span class="fu">mutate</span>(<span class="at">total_students =</span> NumberOfBoys <span class="sc">+</span> NumberOfGirls) <span class="sc">%&gt;%</span></span>
-<span id="cb145-6"><a href="#cb145-6"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>,</span>
-<span id="cb145-7"><a href="#cb145-7"></a>         total_students <span class="sc">&gt;</span> <span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb145-8"><a href="#cb145-8"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1"></a><span class="co"># the order of mutate and filter doesn't matter here,</span></span>
+<span id="cb146-2"><a href="#cb146-2"></a><span class="co"># but group_by and summarise do!</span></span>
+<span id="cb146-3"><a href="#cb146-3"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb146-4"><a href="#cb146-4"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb146-5"><a href="#cb146-5"></a>  <span class="fu">mutate</span>(<span class="at">total_students =</span> NumberOfBoys <span class="sc">+</span> NumberOfGirls) <span class="sc">%&gt;%</span></span>
+<span id="cb146-6"><a href="#cb146-6"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>,</span>
+<span id="cb146-7"><a href="#cb146-7"></a>         total_students <span class="sc">&gt;</span> <span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb146-8"><a href="#cb146-8"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 x 2
   Region                       n
@@ -1521,12 +1523,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 7 West Midlands                2
 8 Yorkshire and the Humber     6</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1"></a><span class="co"># alternatively, we can do without the mutate: </span></span>
-<span id="cb147-2"><a href="#cb147-2"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb147-3"><a href="#cb147-3"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
-<span id="cb147-4"><a href="#cb147-4"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>,</span>
-<span id="cb147-5"><a href="#cb147-5"></a>         NumberOfBoys <span class="sc">+</span> NumberOfGirls <span class="sc">&gt;</span> <span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb147-6"><a href="#cb147-6"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1"></a><span class="co"># alternatively, we can do without the mutate: </span></span>
+<span id="cb148-2"><a href="#cb148-2"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb148-3"><a href="#cb148-3"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb148-4"><a href="#cb148-4"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>,</span>
+<span id="cb148-5"><a href="#cb148-5"></a>         NumberOfBoys <span class="sc">+</span> NumberOfGirls <span class="sc">&gt;</span> <span class="dv">2000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb148-6"><a href="#cb148-6"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 x 2
   Region                       n
@@ -1545,11 +1547,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Count (<code>summarise</code>) the number of schools, grouped as both <code>Open</code> and <code>Closed</code> under each <code>OfstedRating</code>, make the <code>Open</code> results appear at the top of the table. Output the result to an object and explore it in the Environment area.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb149-2"><a href="#cb149-2"></a>  <span class="fu">group_by</span>(OfstedRating, Open) <span class="sc">%&gt;%</span></span>
-<span id="cb149-3"><a href="#cb149-3"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb149-4"><a href="#cb149-4"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb149-5"><a href="#cb149-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Open))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb150-2"><a href="#cb150-2"></a>  <span class="fu">group_by</span>(OfstedRating, Open) <span class="sc">%&gt;%</span></span>
+<span id="cb150-3"><a href="#cb150-3"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb150-4"><a href="#cb150-4"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb150-5"><a href="#cb150-5"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Open))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'OfstedRating'. You can override using the
 `.groups` argument.</code></pre>
@@ -1575,12 +1577,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>[Extension] What’s the average <code>FSM</code> rating for each <code>Gender</code> of school in each <code>Region</code>? <code>arrange</code> the results so the most impoverished area appears first.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1"></a>schools <span class="sc">%&gt;%</span></span>
-<span id="cb152-2"><a href="#cb152-2"></a>  <span class="fu">group_by</span>(Region, Gender) <span class="sc">%&gt;%</span></span>
-<span id="cb152-3"><a href="#cb152-3"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb152-4"><a href="#cb152-4"></a>  <span class="fu">summarise</span>(<span class="at">mean_FSM =</span> <span class="fu">mean</span>(FSM, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb152-5"><a href="#cb152-5"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb152-6"><a href="#cb152-6"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_FSM))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1"></a>schools <span class="sc">%&gt;%</span></span>
+<span id="cb153-2"><a href="#cb153-2"></a>  <span class="fu">group_by</span>(Region, Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb153-3"><a href="#cb153-3"></a>  <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb153-4"><a href="#cb153-4"></a>  <span class="fu">summarise</span>(<span class="at">mean_FSM =</span> <span class="fu">mean</span>(FSM, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb153-5"><a href="#cb153-5"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb153-6"><a href="#cb153-6"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_FSM))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'Region'. You can override using the
 `.groups` argument.</code></pre>
@@ -1614,9 +1616,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Work out how many schools are in each country <code>CNTRY</code>.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb155-2"><a href="#cb155-2"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
-<span id="cb155-3"><a href="#cb155-3"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb156-2"><a href="#cb156-2"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
+<span id="cb156-3"><a href="#cb156-3"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 x 2
    CNTRY     n
@@ -1638,9 +1640,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>For only those headteachers that have a masters or equivalent degree qualification (<code>BCBG21B</code>), what is the average number of years they have been in their school (<code>BCBG19</code>)?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb157-2"><a href="#cb157-2"></a>  <span class="fu">filter</span>(BCBG21B <span class="sc">==</span> <span class="st">"Yes"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb157-3"><a href="#cb157-3"></a>  <span class="fu">summarise</span>(<span class="at">avg_years =</span> <span class="fu">mean</span>(BCBG19, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb158-2"><a href="#cb158-2"></a>  <span class="fu">filter</span>(BCBG21B <span class="sc">==</span> <span class="st">"Yes"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb158-3"><a href="#cb158-3"></a>  <span class="fu">summarise</span>(<span class="at">avg_years =</span> <span class="fu">mean</span>(BCBG19, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 1
   avg_years
@@ -1652,12 +1654,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>For the students in each country: What is the average and median instructional time in hours (calculated from <code>BCBG06B</code>), in a typical day? Can you arrange the results so we find the hardest working country? HINT, you might want to mutate <code>BCBG06B</code> to make it <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric()</a></code>.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb159-2"><a href="#cb159-2"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
-<span id="cb159-3"><a href="#cb159-3"></a>  <span class="fu">mutate</span>(<span class="at">BCBG06B =</span> <span class="fu">as.numeric</span>(BCBG06B)) <span class="sc">%&gt;%</span></span>
-<span id="cb159-4"><a href="#cb159-4"></a>  <span class="fu">summarise</span>(<span class="at">mean_teaching =</span> <span class="fu">mean</span>(BCBG06B<span class="sc">/</span><span class="dv">60</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
-<span id="cb159-5"><a href="#cb159-5"></a>            <span class="at">median_teaching =</span> <span class="fu">median</span>(BCBG06B<span class="sc">/</span><span class="dv">60</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb159-6"><a href="#cb159-6"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(median_teaching))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb160-2"><a href="#cb160-2"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
+<span id="cb160-3"><a href="#cb160-3"></a>  <span class="fu">mutate</span>(<span class="at">BCBG06B =</span> <span class="fu">as.numeric</span>(BCBG06B)) <span class="sc">%&gt;%</span></span>
+<span id="cb160-4"><a href="#cb160-4"></a>  <span class="fu">summarise</span>(<span class="at">mean_teaching =</span> <span class="fu">mean</span>(BCBG06B<span class="sc">/</span><span class="dv">60</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb160-5"><a href="#cb160-5"></a>            <span class="at">median_teaching =</span> <span class="fu">median</span>(BCBG06B<span class="sc">/</span><span class="dv">60</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb160-6"><a href="#cb160-6"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(median_teaching))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 x 3
    CNTRY mean_teaching median_teaching
@@ -1679,11 +1681,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>For each country, what percentage of their schools have students with a <code>Very high</code> desire to do well in school (<code>BCBG14I</code>)? One of the countries is missing, why?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb161-2"><a href="#cb161-2"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
-<span id="cb161-3"><a href="#cb161-3"></a>  <span class="fu">mutate</span>(<span class="at">total_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb161-4"><a href="#cb161-4"></a>  <span class="fu">filter</span>(BCBG14I <span class="sc">==</span> <span class="st">"Very high"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb161-5"><a href="#cb161-5"></a>  <span class="fu">summarise</span>(<span class="at">do_well =</span> <span class="dv">100</span><span class="sc">*</span>(<span class="fu">n</span>() <span class="sc">/</span> <span class="fu">unique</span>(total_schools)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1"></a>TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb162-2"><a href="#cb162-2"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
+<span id="cb162-3"><a href="#cb162-3"></a>  <span class="fu">mutate</span>(<span class="at">total_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb162-4"><a href="#cb162-4"></a>  <span class="fu">filter</span>(BCBG14I <span class="sc">==</span> <span class="st">"Very high"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb162-5"><a href="#cb162-5"></a>  <span class="fu">summarise</span>(<span class="at">do_well =</span> <span class="dv">100</span><span class="sc">*</span>(<span class="fu">n</span>() <span class="sc">/</span> <span class="fu">unique</span>(total_schools)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 x 2
    CNTRY do_well
@@ -1699,12 +1701,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  9 TUR      8.29
 10 USA      8.06</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1"></a><span class="co"># we can also work out the percentage for all the responses to this question</span></span>
-<span id="cb163-2"><a href="#cb163-2"></a>TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb163-3"><a href="#cb163-3"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
-<span id="cb163-4"><a href="#cb163-4"></a>  <span class="fu">mutate</span>(<span class="at">total_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb163-5"><a href="#cb163-5"></a>  <span class="fu">group_by</span>(CNTRY, BCBG14I) <span class="sc">%&gt;%</span></span>
-<span id="cb163-6"><a href="#cb163-6"></a>  <span class="fu">summarise</span>(<span class="at">do_well =</span> <span class="dv">100</span><span class="sc">*</span>(<span class="fu">n</span>() <span class="sc">/</span> <span class="fu">unique</span>(total_schools)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1"></a><span class="co"># we can also work out the percentage for all the responses to this question</span></span>
+<span id="cb164-2"><a href="#cb164-2"></a>TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb164-3"><a href="#cb164-3"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
+<span id="cb164-4"><a href="#cb164-4"></a>  <span class="fu">mutate</span>(<span class="at">total_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb164-5"><a href="#cb164-5"></a>  <span class="fu">group_by</span>(CNTRY, BCBG14I) <span class="sc">%&gt;%</span></span>
+<span id="cb164-6"><a href="#cb164-6"></a>  <span class="fu">summarise</span>(<span class="at">do_well =</span> <span class="dv">100</span><span class="sc">*</span>(<span class="fu">n</span>() <span class="sc">/</span> <span class="fu">unique</span>(total_schools)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 54 x 3
 # Groups:   CNTRY [11]
@@ -1722,15 +1724,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 10 FIN   &lt;NA&gt;        0.649
 # ... with 44 more rows</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb165"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1"></a><span class="co"># Russia is missing as there were no schools that gave "Very high" as a response to BCBG14I.</span></span>
-<span id="cb165-2"><a href="#cb165-2"></a><span class="co"># You can work this out by using the set difference command setdiff:</span></span>
-<span id="cb165-3"><a href="#cb165-3"></a>very_high <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb165-4"><a href="#cb165-4"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
-<span id="cb165-5"><a href="#cb165-5"></a>  <span class="fu">mutate</span>(<span class="at">total_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb165-6"><a href="#cb165-6"></a>  <span class="fu">filter</span>(BCBG14I <span class="sc">==</span> <span class="st">"Very high"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb165-7"><a href="#cb165-7"></a>  <span class="fu">summarise</span>(<span class="at">do_well =</span> <span class="dv">100</span><span class="sc">*</span>(<span class="fu">n</span>() <span class="sc">/</span> <span class="fu">unique</span>(total_schools)))</span>
-<span id="cb165-8"><a href="#cb165-8"></a></span>
-<span id="cb165-9"><a href="#cb165-9"></a><span class="fu">setdiff</span>(<span class="fu">unique</span>(TIMSS<span class="sc">$</span>CNTRY), <span class="fu">unique</span>(very_high<span class="sc">$</span>CNTRY))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1"></a><span class="co"># Russia is missing as there were no schools that gave "Very high" as a response to BCBG14I.</span></span>
+<span id="cb166-2"><a href="#cb166-2"></a><span class="co"># You can work this out by using the set difference command setdiff:</span></span>
+<span id="cb166-3"><a href="#cb166-3"></a>very_high <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb166-4"><a href="#cb166-4"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
+<span id="cb166-5"><a href="#cb166-5"></a>  <span class="fu">mutate</span>(<span class="at">total_schools =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb166-6"><a href="#cb166-6"></a>  <span class="fu">filter</span>(BCBG14I <span class="sc">==</span> <span class="st">"Very high"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb166-7"><a href="#cb166-7"></a>  <span class="fu">summarise</span>(<span class="at">do_well =</span> <span class="dv">100</span><span class="sc">*</span>(<span class="fu">n</span>() <span class="sc">/</span> <span class="fu">unique</span>(total_schools)))</span>
+<span id="cb166-8"><a href="#cb166-8"></a></span>
+<span id="cb166-9"><a href="#cb166-9"></a><span class="fu">setdiff</span>(<span class="fu">unique</span>(TIMSS<span class="sc">$</span>CNTRY), <span class="fu">unique</span>(very_high<span class="sc">$</span>CNTRY))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "RUS"</code></pre>
 </div>
@@ -1753,27 +1755,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Spot the three errors in this graph code</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1"></a><span class="fu">ggplot</span>(<span class="at">adta=</span>diamonds, <span class="at">x=</span>depth, <span class="at">y=</span>price) <span class="sc">+</span></span>
-<span id="cb167-2"><a href="#cb167-2"></a>  <span class="fu">geom_point</span>()</span>
-<span id="cb167-3"><a href="#cb167-3"></a>  <span class="fu">ggtitle</span>(<span class="st">"diamond graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1"></a><span class="fu">ggplot</span>(<span class="at">adta=</span>diamonds, <span class="at">x=</span>depth, <span class="at">y=</span>price) <span class="sc">+</span></span>
+<span id="cb168-2"><a href="#cb168-2"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb168-3"><a href="#cb168-3"></a>  <span class="fu">ggtitle</span>(<span class="st">"diamond graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1"></a><span class="co"># 1-data not adta, 2-x and y need to be inside aes</span></span>
-<span id="cb168-2"><a href="#cb168-2"></a><span class="fu">ggplot</span>(<span class="at">data=</span>diamonds, <span class="fu">aes</span>(<span class="at">x=</span>depth, <span class="at">y=</span>price)) <span class="sc">+</span></span>
-<span id="cb168-3"><a href="#cb168-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="co">#3 missing +</span></span>
-<span id="cb168-4"><a href="#cb168-4"></a>  <span class="fu">ggtitle</span>(<span class="st">"diamond graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1"></a><span class="co"># 1-data not adta, 2-x and y need to be inside aes</span></span>
+<span id="cb169-2"><a href="#cb169-2"></a><span class="fu">ggplot</span>(<span class="at">data=</span>diamonds, <span class="fu">aes</span>(<span class="at">x=</span>depth, <span class="at">y=</span>price)) <span class="sc">+</span></span>
+<span id="cb169-3"><a href="#cb169-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="co">#3 missing +</span></span>
+<span id="cb169-4"><a href="#cb169-4"></a>  <span class="fu">ggtitle</span>(<span class="st">"diamond graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>Using the TIMSS dataset (see <a href="#sec-TIMSS">Section&nbsp;3.7</a>), plot a graph to help your work out whether there is a relationship between <em>School Emphasis on Academic Success</em> <code>BCBGEAS</code> and <em>School Discipline</em> <code>BCBGDAS</code>. Give the graph sensible x and y labels (e.g.&nbsp;<code>xlab</code>). <strong>HINT</strong>: you might need to turn the x and y values into <code>as.numeric</code>. More details on what the fields contain <a href="https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf">here</a>.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1"></a><span class="fu">ggplot</span>(TIMSS,</span>
-<span id="cb169-2"><a href="#cb169-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCBGEAS),</span>
-<span id="cb169-3"><a href="#cb169-3"></a>           <span class="at">y=</span><span class="fu">as.numeric</span>(BCBGDAS))) <span class="sc">+</span></span>
-<span id="cb169-4"><a href="#cb169-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb169-5"><a href="#cb169-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>) <span class="sc">+</span></span>
-<span id="cb169-6"><a href="#cb169-6"></a>  <span class="fu">xlab</span>(<span class="st">"School Emphasis on Academic Success"</span>) <span class="sc">+</span></span>
-<span id="cb169-7"><a href="#cb169-7"></a>  <span class="fu">ylab</span>(<span class="st">"School Discipline"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1"></a><span class="fu">ggplot</span>(TIMSS,</span>
+<span id="cb170-2"><a href="#cb170-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCBGEAS),</span>
+<span id="cb170-3"><a href="#cb170-3"></a>           <span class="at">y=</span><span class="fu">as.numeric</span>(BCBGDAS))) <span class="sc">+</span></span>
+<span id="cb170-4"><a href="#cb170-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb170-5"><a href="#cb170-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>) <span class="sc">+</span></span>
+<span id="cb170-6"><a href="#cb170-6"></a>  <span class="fu">xlab</span>(<span class="st">"School Emphasis on Academic Success"</span>) <span class="sc">+</span></span>
+<span id="cb170-7"><a href="#cb170-7"></a>  <span class="fu">ylab</span>(<span class="st">"School Discipline"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-144-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1782,17 +1784,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Using the schools dataset, plot the size of an open state primary <code>school</code> against the <code>FSM</code> grade. Are larger primary schools generally serving poorer communities?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
-<span id="cb170-2"><a href="#cb170-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
-<span id="cb170-3"><a href="#cb170-3"></a>         Phase<span class="sc">==</span><span class="st">"Primary"</span>,</span>
-<span id="cb170-4"><a href="#cb170-4"></a>         EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span>)</span>
-<span id="cb170-5"><a href="#cb170-5"></a></span>
-<span id="cb170-6"><a href="#cb170-6"></a><span class="co"># display a graph of the results</span></span>
-<span id="cb170-7"><a href="#cb170-7"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, </span>
-<span id="cb170-8"><a href="#cb170-8"></a>       <span class="fu">aes</span>(<span class="at">x=</span>NumberOfGirls <span class="sc">+</span> NumberOfBoys, </span>
-<span id="cb170-9"><a href="#cb170-9"></a>           <span class="at">y=</span>FSM)) <span class="sc">+</span></span>
-<span id="cb170-10"><a href="#cb170-10"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb170-11"><a href="#cb170-11"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
+<span id="cb171-2"><a href="#cb171-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
+<span id="cb171-3"><a href="#cb171-3"></a>         Phase<span class="sc">==</span><span class="st">"Primary"</span>,</span>
+<span id="cb171-4"><a href="#cb171-4"></a>         EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span>)</span>
+<span id="cb171-5"><a href="#cb171-5"></a></span>
+<span id="cb171-6"><a href="#cb171-6"></a><span class="co"># display a graph of the results</span></span>
+<span id="cb171-7"><a href="#cb171-7"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, </span>
+<span id="cb171-8"><a href="#cb171-8"></a>       <span class="fu">aes</span>(<span class="at">x=</span>NumberOfGirls <span class="sc">+</span> NumberOfBoys, </span>
+<span id="cb171-9"><a href="#cb171-9"></a>           <span class="at">y=</span>FSM)) <span class="sc">+</span></span>
+<span id="cb171-10"><a href="#cb171-10"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb171-11"><a href="#cb171-11"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-146-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1807,16 +1809,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Using the TIMSS dataset, only using schools from England, Finland and USA plot to see how the <em>number of computers</em> <code>BCBG07</code> is related to the <em>Instruction Affected Resource Shortage (Mathematics)</em> <code>BCBGMRS</code>. Colour the points in using the country <code>CNTRY</code>.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(CNTRY <span class="sc">==</span> <span class="st">"ENG"</span> <span class="sc">|</span></span>
-<span id="cb171-2"><a href="#cb171-2"></a>                              CNTRY <span class="sc">==</span> <span class="st">"FIN"</span> <span class="sc">|</span></span>
-<span id="cb171-3"><a href="#cb171-3"></a>                              CNTRY <span class="sc">==</span> <span class="st">"USA"</span> )</span>
-<span id="cb171-4"><a href="#cb171-4"></a></span>
-<span id="cb171-5"><a href="#cb171-5"></a><span class="co"># you can also use:</span></span>
-<span id="cb171-6"><a href="#cb171-6"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ENG"</span>, <span class="st">"FIN"</span>, <span class="st">"USA"</span>))</span>
-<span id="cb171-7"><a href="#cb171-7"></a></span>
-<span id="cb171-8"><a href="#cb171-8"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
-<span id="cb171-9"><a href="#cb171-9"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCBGMRS), <span class="at">y=</span><span class="fu">as.numeric</span>(BCBG07))) <span class="sc">+</span></span>
-<span id="cb171-10"><a href="#cb171-10"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>CNTRY))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(CNTRY <span class="sc">==</span> <span class="st">"ENG"</span> <span class="sc">|</span></span>
+<span id="cb172-2"><a href="#cb172-2"></a>                              CNTRY <span class="sc">==</span> <span class="st">"FIN"</span> <span class="sc">|</span></span>
+<span id="cb172-3"><a href="#cb172-3"></a>                              CNTRY <span class="sc">==</span> <span class="st">"USA"</span> )</span>
+<span id="cb172-4"><a href="#cb172-4"></a></span>
+<span id="cb172-5"><a href="#cb172-5"></a><span class="co"># you can also use:</span></span>
+<span id="cb172-6"><a href="#cb172-6"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ENG"</span>, <span class="st">"FIN"</span>, <span class="st">"USA"</span>))</span>
+<span id="cb172-7"><a href="#cb172-7"></a></span>
+<span id="cb172-8"><a href="#cb172-8"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
+<span id="cb172-9"><a href="#cb172-9"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCBGMRS), <span class="at">y=</span><span class="fu">as.numeric</span>(BCBG07))) <span class="sc">+</span></span>
+<span id="cb172-10"><a href="#cb172-10"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>CNTRY))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-148-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1825,25 +1827,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Using <code>ifelse</code>, add a column to TIMSS called <code>region</code>, recode “NOR”, “SWE” and “FIN” to be “Nordic” and everyone else “RestOfWorld”.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb172-2"><a href="#cb172-2"></a>  <span class="fu">mutate</span>(<span class="at">region =</span></span>
-<span id="cb172-3"><a href="#cb172-3"></a>           <span class="fu">ifelse</span>(CNTRY <span class="sc">==</span> <span class="st">"NOR"</span> <span class="sc">|</span> CNTRY <span class="sc">==</span> <span class="st">"SWE"</span> <span class="sc">|</span> CNTRY <span class="sc">==</span> <span class="st">"FIN"</span>,</span>
-<span id="cb172-4"><a href="#cb172-4"></a>                  <span class="st">"Nordic"</span>, <span class="st">"RestOfWorld"</span>))</span>
-<span id="cb172-5"><a href="#cb172-5"></a></span>
-<span id="cb172-6"><a href="#cb172-6"></a><span class="co"># you can also use:</span></span>
-<span id="cb172-7"><a href="#cb172-7"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb172-8"><a href="#cb172-8"></a>  <span class="fu">mutate</span>(<span class="at">region =</span></span>
-<span id="cb172-9"><a href="#cb172-9"></a>           <span class="fu">ifelse</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"NOR"</span>, <span class="st">"SWE"</span>, <span class="st">"FIN"</span>),</span>
-<span id="cb172-10"><a href="#cb172-10"></a>                  <span class="st">"Nordic"</span>, <span class="st">"RestOfWorld"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb173-2"><a href="#cb173-2"></a>  <span class="fu">mutate</span>(<span class="at">region =</span></span>
+<span id="cb173-3"><a href="#cb173-3"></a>           <span class="fu">ifelse</span>(CNTRY <span class="sc">==</span> <span class="st">"NOR"</span> <span class="sc">|</span> CNTRY <span class="sc">==</span> <span class="st">"SWE"</span> <span class="sc">|</span> CNTRY <span class="sc">==</span> <span class="st">"FIN"</span>,</span>
+<span id="cb173-4"><a href="#cb173-4"></a>                  <span class="st">"Nordic"</span>, <span class="st">"RestOfWorld"</span>))</span>
+<span id="cb173-5"><a href="#cb173-5"></a></span>
+<span id="cb173-6"><a href="#cb173-6"></a><span class="co"># you can also use:</span></span>
+<span id="cb173-7"><a href="#cb173-7"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb173-8"><a href="#cb173-8"></a>  <span class="fu">mutate</span>(<span class="at">region =</span></span>
+<span id="cb173-9"><a href="#cb173-9"></a>           <span class="fu">ifelse</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"NOR"</span>, <span class="st">"SWE"</span>, <span class="st">"FIN"</span>),</span>
+<span id="cb173-10"><a href="#cb173-10"></a>                  <span class="st">"Nordic"</span>, <span class="st">"RestOfWorld"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="3" type="1">
 <li>Using the dataset from Q2, Count the number of schools in each of the two regions and the median number of taught hours <code>BCDGTIHY</code>.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1"></a>plot_data  <span class="sc">%&gt;%</span></span>
-<span id="cb173-2"><a href="#cb173-2"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span></span>
-<span id="cb173-3"><a href="#cb173-3"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb173-4"><a href="#cb173-4"></a>            <span class="at">med =</span> <span class="fu">median</span>(BCDGTIHY, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb174"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1"></a>plot_data  <span class="sc">%&gt;%</span></span>
+<span id="cb174-2"><a href="#cb174-2"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span></span>
+<span id="cb174-3"><a href="#cb174-3"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb174-4"><a href="#cb174-4"></a>            <span class="at">med =</span> <span class="fu">median</span>(BCDGTIHY, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 x 3
   region          n   med
@@ -1865,13 +1867,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb175"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, </span>
-<span id="cb175-2"><a href="#cb175-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCDGTIHY), </span>
-<span id="cb175-3"><a href="#cb175-3"></a>           <span class="at">y=</span><span class="fu">as.numeric</span>(BCBGDAS))) <span class="sc">+</span> </span>
-<span id="cb175-4"><a href="#cb175-4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>region), <span class="at">alpha=</span><span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb175-5"><a href="#cb175-5"></a>  <span class="fu">xlab</span>(<span class="st">"teaching time per year"</span>) <span class="sc">+</span></span>
-<span id="cb175-6"><a href="#cb175-6"></a>  <span class="fu">ylab</span>(<span class="st">"behavioural issues"</span>) <span class="sc">+</span></span>
-<span id="cb175-7"><a href="#cb175-7"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb176"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, </span>
+<span id="cb176-2"><a href="#cb176-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(BCDGTIHY), </span>
+<span id="cb176-3"><a href="#cb176-3"></a>           <span class="at">y=</span><span class="fu">as.numeric</span>(BCBGDAS))) <span class="sc">+</span> </span>
+<span id="cb176-4"><a href="#cb176-4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>region), <span class="at">alpha=</span><span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb176-5"><a href="#cb176-5"></a>  <span class="fu">xlab</span>(<span class="st">"teaching time per year"</span>) <span class="sc">+</span></span>
+<span id="cb176-6"><a href="#cb176-6"></a>  <span class="fu">ylab</span>(<span class="st">"behavioural issues"</span>) <span class="sc">+</span></span>
+<span id="cb176-7"><a href="#cb176-7"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-154-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1879,6 +1881,90 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </section><section id="geom_bar" class="level3" data-number="5.1.5"><h3 data-number="5.1.5" class="anchored" data-anchor-id="geom_bar">
 <span class="header-section-number">5.1.5</span> geom_bar</h3>
+</section><section id="questions-9" class="level3" data-number="5.1.6"><h3 data-number="5.1.6" class="anchored" data-anchor-id="questions-9">
+<span class="header-section-number">5.1.6</span> Questions</h3>
+<div class="question">
+<ol type="1">
+<li>Can you spot the 4 errors in this code.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Phase <span class="sc">==</span> <span class="st">"Secondary"</span>), </span>
+<span id="cb177-2"><a href="#cb177-2"></a>       <span class="at">x=</span>Region <span class="sc">+</span></span>
+<span id="cb177-3"><a href="#cb177-3"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Gender) <span class="at">position=</span><span class="st">"full"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb178"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Phase <span class="sc">==</span> <span class="st">"Secondary"</span>), </span>
+<span id="cb178-2"><a href="#cb178-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span>Region)) <span class="sc">+</span> <span class="co"># 1 no aes() around the x value # 2 missing close brackets</span></span>
+<span id="cb178-3"><a href="#cb178-3"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Gender), <span class="at">position=</span><span class="st">"fill"</span>) <span class="co"># 3 missing comma # 4 position="full" rather than fill </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Create a bar chart showing the total number of open Independent schools for each Gender</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Open <span class="sc">==</span> <span class="st">"Open"</span>,</span>
+<span id="cb179-2"><a href="#cb179-2"></a>                                EstablishmentGroup <span class="sc">==</span> <span class="st">"Independent schools"</span>)</span>
+<span id="cb179-3"><a href="#cb179-3"></a></span>
+<span id="cb179-4"><a href="#cb179-4"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
+<span id="cb179-5"><a href="#cb179-5"></a>       <span class="fu">aes</span>(<span class="at">x=</span>Gender)) <span class="sc">+</span></span>
+<span id="cb179-6"><a href="#cb179-6"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb179-7"><a href="#cb179-7"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-160-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Using the TIMSS dataset:
+<ul>
+<li>
+<code>filter</code> to only look at the USA and ENG</li>
+<li>make a graph to show the overall picture of <em>Parental expectations for student achievement</em> (<code>BCBG14G</code>).</li>
+<li>Make the <code>x</code> axis a <code>factor</code> so the graph makes sense</li>
+<li>
+<code>fill</code> the bars in to show how many schools each bar came from each country</li>
+<li>
+<code>position</code> bars so they aren’t stacked on top of each other</li>
+</ul>
+</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb180"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb180-2"><a href="#cb180-2"></a>  <span class="fu">filter</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"ENG"</span>),</span>
+<span id="cb180-3"><a href="#cb180-3"></a>         <span class="sc">!</span><span class="fu">is.na</span>(BCBG14G))</span>
+<span id="cb180-4"><a href="#cb180-4"></a></span>
+<span id="cb180-5"><a href="#cb180-5"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
+<span id="cb180-6"><a href="#cb180-6"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(BCBG14G,</span>
+<span id="cb180-7"><a href="#cb180-7"></a>                    <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Very low"</span>, <span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span>, <span class="st">"Very high"</span>)))) <span class="sc">+</span></span>
+<span id="cb180-8"><a href="#cb180-8"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>CNTRY), <span class="at">position=</span><span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-162-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="4" type="1">
+<li>Repeat Q3, but this time work out the percentage of responses for each option in <code>BCBG14G</code> by country. Display a graph showing this “indentity”.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb181-2"><a href="#cb181-2"></a>  <span class="fu">filter</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"ENG"</span>),</span>
+<span id="cb181-3"><a href="#cb181-3"></a>         <span class="sc">!</span><span class="fu">is.na</span>(BCBG14G)) <span class="sc">%&gt;%</span></span>
+<span id="cb181-4"><a href="#cb181-4"></a>  <span class="fu">group_by</span>(CNTRY) <span class="sc">%&gt;%</span></span>
+<span id="cb181-5"><a href="#cb181-5"></a>  <span class="fu">mutate</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb181-6"><a href="#cb181-6"></a>  <span class="fu">group_by</span>(CNTRY, BCBG14G) <span class="sc">%&gt;%</span></span>
+<span id="cb181-7"><a href="#cb181-7"></a>  <span class="fu">summarise</span>(<span class="at">per =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="fu">max</span>(total))</span>
+<span id="cb181-8"><a href="#cb181-8"></a>  </span>
+<span id="cb181-9"><a href="#cb181-9"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
+<span id="cb181-10"><a href="#cb181-10"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(BCBG14G,</span>
+<span id="cb181-11"><a href="#cb181-11"></a>                    <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Very low"</span>, <span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span>, <span class="st">"Very high"</span>)),</span>
+<span id="cb181-12"><a href="#cb181-12"></a>           <span class="at">y=</span>per)) <span class="sc">+</span></span>
+<span id="cb181-13"><a href="#cb181-13"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>CNTRY), <span class="at">position=</span><span class="st">"dodge"</span>, <span class="at">stat=</span><span class="st">"identity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-answers_files/figure-html/unnamed-chunk-164-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="5" type="1">
+<li>[Extension] Explore other patterns in: “Teachers’ ability to inspire students” <code>BCBG14D</code> and “Parental expectations for student achievement” <code>BCBG14G</code>
+</li>
+</ol>
+</div>
 </section></section><section id="exporting-plots" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="exporting-plots">
 <span class="header-section-number">5.2</span> exporting plots</h2>
 <div class="cell">

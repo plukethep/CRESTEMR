@@ -1149,7 +1149,7 @@ schools <- read_excel("testdata.xlsx", "Schools") #4 missing tail on the assignm
 sum(results$Entries, na.rm=TRUE) #5 £ used instead of a dollar
 ```
 
-2.  What is the largest `Total_students` size?
+2.  Using the `results` table what is the largest `Total_students` size?
 
 ```{r}
 #| eval: false
@@ -1157,7 +1157,7 @@ sum(results$Entries, na.rm=TRUE) #5 £ used instead of a dollar
 max(results$Total_students)
 ```
 
-3.  How many different types of subject `Description` are there?
+3.   Using the `results` table, how many different types of subject `Description` are there?
 
 ```{r}
 #| eval: false
@@ -1167,7 +1167,7 @@ unique(results$Description)
 length(unique(results$Description))
 ```
 
-4.  What's the average value for free school meals (`FSM`)?
+4.  Using the `schools` table, what is the average value for free school meals (`FSM`)?
 
 ```{r}
 #| eval: false
@@ -1574,8 +1574,7 @@ schools %>%
 #| echo: false
 schools %>%
   filter(OfstedRating == "Outstanding") %>%
-  select(ID, Name, FSM, TypeOfEstablishment) %>%
-  arrange(desc(FSM))
+  select(ID, Name, FSM, TypeOfEstablishment)
 ```
 
 6.  Count the number (`n()`) of `Open` schools that have an `FSM` number of over `0.95` (You don't have to use `summarise`, but it helps)
@@ -1853,7 +1852,7 @@ The basic structure of `ggplot` code is to combine different graphing elements t
 
 ```{r}
 #| warning: false
-# join our data
+# join our results to their matching schools
 data_joined <- left_join(results, schools, by="ID")
 
 # wrangle our data
@@ -1941,7 +1940,7 @@ ggplot(data=diamonds, aes(x=depth, y=price)) +
   ggtitle("diamond graph")
 ```
 
-2. Using the TIMSS dataset (see @sec-TIMSS), plot a graph to help your work out whether there is a relationship between _School Emphasis on Academic Success_ `BCBGEAS` and _School Discipline_ `BCBGDAS`. Give the graph sensible x and y labels (e.g. `xlab`). **HINT**: you might need to turn the x and y values into numbers using `as.numeric()`. More details [here](https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf).
+2. Using the TIMSS dataset (see @sec-TIMSS), plot a graph to help you work out whether there is a relationship between _School Emphasis on Academic Success_ `BCBGEAS` and _School Discipline_ `BCBGDAS`. Give the graph sensible x and y labels (e.g. `xlab`). **HINT**: you might need to turn the x and y values into numbers using `as.numeric()`. More details [here](https://timssandpirls.bc.edu/timss2019/methods/pdf/T19_MP_Ch16-context-questionnaire-scales.pdf).
 
 ```{r}
 #| warning: false
@@ -1984,7 +1983,7 @@ Often we want to plot values in groupings that don't yet exist, for example migh
 
 > `ifelse(<statement(s)>, <value_if_true>, <value_if_false>)`
 
-`ifelse` allow us to _recode_ the data. In the example below, we are going to add a new column to the schools table (using `mutate`) noting whether a school is a `grammar` school or not. A school is a grammar school _if_ it is not an _Independent_ school _and_ it is _selective_ in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school. 
+`ifelse` allow us to _recode_ the data. In the example below, we are going to add a new column to the schools table (using `mutate`) noting whether a school is a _grammar_ school or not. A school is a grammar school _if_ it is not an _Independent_ school _and_ it is _selective_ in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school. 
 
 You can see how the above logic is is implemented in an R `ifelse` statement on lines 4-8.
 
@@ -1993,18 +1992,18 @@ You can see how the above logic is is implemented in an R `ifelse` statement on 
 plot_data <- schools %>% 
   filter(Open=="Open", 
          Phase=="Secondary") %>%
-  mutate(grammar = 
+  mutate(sch_type = 
            ifelse(EstablishmentGroup != "Independent schools" & 
                     AdmissionsPolicy=="Selective",
                   "GRAMMAR",
                   "NOT GRAMMAR")) %>%
-  arrange(desc(grammar))
+  arrange(desc(sch_type))
 ```
 
-- 4 uses mutate to create a new column in the schools table called `grammar`, this will be given the value of the `ifelse` statement calculation for each line.
+- 4 uses mutate to create a new column in the schools table called `sch_type`, this will be given the value of the `ifelse` statement calculation for each line.
 - 5 - 6 the `if` statement to be evaluated as either `true` or `false` has two parts, separated by the ampersand symbol `&` instead of the word _and_ (as we have seen above, _or_ is implemented using a bar `|`).
-- 7 is the value that will be returned `if` the statements on line 5 and 6 are both _TRUE_
-- 8 is the value that will be returned if the combined statements on line 5 and 6 are _FALSE_, i.e. _else_ the values on line 5 and 6 are true
+- 7 "GRAMMAR" will be returned `if` the statements on line 5 and 6 are both _TRUE_
+- 8 "NOT GRAMMAR" will be returned if the combined statements on line 5 and 6 are _FALSE_, i.e. _else_ the values on line 5 and 6 are true
 
 Additionally, on line 9 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other school types to make them stand out.
 
@@ -2031,14 +2030,14 @@ Now we have _recoded_ the data to display whether a school is a grammar school o
 ggplot(data=plot_data) +
   geom_point(aes(x=Easting, y=Northing, 
                  size = NumberOfBoys+NumberOfGirls,
-                 colour=grammar),
+                 colour=sch_type),
                  alpha=0.4)
 ```
 
 - 1 we pass the custom table `plot_data` to the ggplot command, this means this data will be available in subsequent `geom_`
 - 2 we define the `x` and `y` `aes`theic values here for the `geom_point`s, we could have done this on line one, but this shows that this can be done separately for each `geom_`
 - 3 `size` is also inside `aes()` and takes the `NumberOfBoys+NumberOfGirls` as a parameter, i.e. the population of the school will change the size of the points on the graph
-- 4 `colour` is also inside `aes()` and takes the newly coded `grammar` values, this means that grammar schools will be a different colour from non-grammar schools
+- 4 `colour` is also inside `aes()` and takes the newly coded `sch_type` values, this means that grammar schools will be a different colour from non-grammar schools
 - 5 to stop the schools blotting each other out, we set the `alpha` (transparency) of each point to `0.4`. This is done outside the `aes` as we want all points to have the same transparency.
 
 ::: callout-important
@@ -2184,11 +2183,39 @@ ggplot(data = plot_schools,
 
 ```
 
+#### Raising the bars yourself
+
+`ggplot` can do a lot of the hard work when putting together bar charts, but there might also be times when you want to use pipes to calculate summary values that you then want plot. That is, you want to specify the heights of the bars yourself. To do this we _will_ specify the y axis in the `aes` and use `stat="indentity"` to tell ggplot that's what we're doing. Take the example where you want to find the overall percentages of each grade given to the _four_ single sciences in one year (can we say one is harder than another?): 
+
+```{r}
+#| warning: false
+#| echo: true
+plot_data <- results %>%
+  filter(Description %in% c("Physics", "Biology", "Chemistry", "Computer Studies/Computing"),
+         Qualification == "GCSE (9-1) Full Course") %>%
+  group_by(Description, Grade) %>%
+  summarise(total_grade = sum(Entries, na.rm=TRUE)) %>%
+  mutate(total_entries = max(total_grade, na.rm=TRUE),
+         per_entries = total_grade/total_entries) %>%
+  filter(Grade != "Total number entered")
+
+ggplot(data=plot_data, aes(x=Grade, y=per_entries)) +
+  geom_bar(aes(fill=Description), 
+           position="dodge",
+           stat="identity")
+```
+
+- 1 to 8 creates a dataframe `plot_data` that calculates the percentage of entries for each science subject achieving each grade, this is called `per_entries`
+- 10 as we are setting the heights of the bars ourselves, we need to give the ggplot aes command a y value, in this case `y=per_entries`
+- 11 the geom_bar is given a fill value of `Description`, this will allow us to see the plots of different subjects
+- 12 we use `position="dodge"` as we want the perctange grades of each subject to be next to each other so we can look for differences in heights
+- 13 `stat="identity"` tells `geom_bar` that you have defined your own bar heights in the `y` attribute and not to count the number of rows.
+
 ### Questions
 
-::: questions
+::: question
 
-1. Can you spot the 4 errors in this code
+1. Can you spot the 4 errors in this code.
 
 ```{r}
 #| eval: false
@@ -2196,7 +2223,7 @@ ggplot(data = plot_schools,
 #| class.source: "none"
 ggplot(data=schools %>% filter(Phase == "Secondary"), 
        x=Region +
-  geom_bar(aes(fill=Gender) position="full") # missing comma # 4 position="full" rather than fill 
+  geom_bar(aes(fill=Gender) position="full") 
 ```
 
 ```{r}
@@ -2204,149 +2231,241 @@ ggplot(data=schools %>% filter(Phase == "Secondary"),
 #| echo: false
 ggplot(data=schools %>% filter(Phase == "Secondary"), 
        aes(x=Region)) + # 1 no aes() around the x value # 2 missing close brackets
-  geom_bar(aes(fill=Gender), position="fill") +
+  geom_bar(aes(fill=Gender), position="fill") # 3 missing comma # 4 position="full" rather than fill 
 ```
 
-2. 
+2. Create a bar chart showing the total number of open Independent schools for each Gender
 
 ```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+plot_data <- schools %>% filter(Open == "Open",
+                                EstablishmentGroup == "Independent schools")
 
+ggplot(data=plot_data,
+       aes(x=Gender)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+3. Using the TIMSS dataset:
+    - `filter` to only look at the USA and ENG
+    - make a graph to show the overall picture of _Parental expectations for student achievement_ (`BCBG14G`).
+    - Make the `x` axis a `factor` so the graph makes sense
+    - `fill` the bars in to show how many schools  each bar came from each country
+    - `position` bars so they aren't stacked on top of each other
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: false
 plot_data <- TIMSS %>% 
   filter(CNTRY %in% c("USA", "ENG"),
          !is.na(BCBG14G))
-  
 
 ggplot(data=plot_data,
-       aes(x=BCBG14G
-           )) +
-  geom_bar()
+       aes(x=factor(BCBG14G,
+                    levels=c("Very low", "Low", "Medium", "High", "Very high")))) +
+  geom_bar(aes(fill=CNTRY), position="dodge")
 ```
 
+4. Repeat Q3, but this time work out the percentage of responses for each option in `BCBG14G` by country. Display a graph showing this "indentity".
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: false
+plot_data <- TIMSS %>% 
+  filter(CNTRY %in% c("USA", "ENG"),
+         !is.na(BCBG14G)) %>%
+  group_by(CNTRY) %>%
+  mutate(total = n()) %>%
+  group_by(CNTRY, BCBG14G) %>%
+  summarise(per = n()/max(total))
+  
+ggplot(data=plot_data,
+       aes(x=factor(BCBG14G,
+                    levels=c("Very low", "Low", "Medium", "High", "Very high")),
+           y=per)) +
+  geom_bar(aes(fill=CNTRY), position="dodge", stat="identity")
+```
+
+5. [Extension] Explore other patterns in: "Teachers’ ability to inspire students" `BCBG14D` and "Parental expectations for student achievement" `BCBG14G`
 
 :::
 
 
-### Setting bar heights yourself
+### geom_text
+TODO: if time
 
-ggplot can do a lot of the hard work when putting together bar charts, but there might also be times when you want to use pipes to calculate summary values that you then want plot. That is, you want to specify the heights of the bars yourself. To do this we _will_ specify the y axis in the aes and use `stat="indentity"` to tell ggplot that's what we're doing. Take the example where you 
+## Faceting
+
+Faceting allows you to easily create multiple graphs from one dataset and one graph definition by splitting the data on different factors. By defining 
+
+`facet_wrap(<factor_to_split> ~ .)`
+
+Let's return to grammar school dataset from @sec-ifelse, we can easily plot this to show the relationship between poverty and school size, showing that grammar schools tend to serve quite affluent cohorts and that larger secondary schools tend to serve poorer cohorts:
 
 ```{r}
+#| warning: false
+plot_data <- schools %>% 
+  filter(Open=="Open", 
+         Phase=="Secondary") %>%
+  mutate(sch_type = 
+           ifelse(EstablishmentGroup != "Independent schools" & 
+                    AdmissionsPolicy=="Selective",
+                  "GRAMMAR",
+                  "NOT GRAMMAR")) %>%
+  arrange(desc(sch_type))
 
-results %>%
-  filter(Description %in% c("Chinese", "French", "German", "Spanish"),
-         Qualification == "GCSE (9-1) Full Course",
-         Grade == "Total number entered" | 
-        Grade == "9") %>%
-  group_by(ID, )
-  mutate(per_top = max(Entries) / )
-%>%
-  
-         
+ggplot(data=plot_data, aes(x=FSM, y=NumberOfBoys + NumberOfGirls)) + 
+  geom_point(aes(colour=sch_type)) +
+  geom_smooth(method ="lm") +
+  theme(legend.position="bottom")
 
 ```
 
+What isn't clear about the above is how this changes on a regional basis. We might be tempted to filter on each region and create separate charts for each regional name. But this would take a considerable amount of time and effort. Another way to do this is using `facet_wrap(Region ~ .)`. The below example uses the `Region` column to create the same chart for each Region, only using the data that is recorded as being in that region:
 
-ggplot(data=plot_data,
-       aes(x=factor(BCBG14G, levels = c("Very low", "Low", "Medium", "High", "Very high"))
-           )) +
-  geom_bar() +
-  facet_wrap(.~CNTRY)
-
-
-ggplot(data=plot_data,
-       aes(x=BCBG14G
-           )) +
-  geom_bar(aes(fill=CNTRY))
-
-ggplot(data=plot_data,
-       aes(x=BCBG14G
-           )) +
-  geom_bar(aes(fill=CNTRY), position="dodge") # , stat="percentage"
-
-plot_data <- plot_data %>% 
-  group_by(CNTRY, BCBG14G) %>%
-  summarise(n=n())
-  
-
-ggplot(data=plot_data,
-       aes(x=factor(BCBG14G, 
-                    levels = c("Very low", "Low", "Medium", "High", "Very high")),
-           y=n
-           )) +
-  geom_bar(stat="identity") +
-  facet_wrap(.~CNTRY)
-
-  
-  "Teachers’ ability to inspire students"
-  bcbg14D
-  
-  "Parental expectations for student achievement"
- BCBG14G
+```{r}
+#| warning: false
+ggplot(data=plot_data, aes(x=FSM, y=NumberOfBoys + NumberOfGirls)) + 
+  geom_point(aes(colour=sch_type)) +
+  geom_smooth(method ="lm") +
+  theme(legend.position="bottom") +
+  facet_wrap(Region ~ .)
+```
 
 
-groups
-stacking dodge
-count
+## Exporting plots
 
+ggplot can export data in a variety of formats suitable for printing, publication and the web. Once you have created a graph and stored it in an object, the command to save the graph to your hard drive is:
 
+`ggsave(<file_name_and_extension>, <object_name>)`
 
-### geom_text
+```{r}
+#| echo: true
+#| eval: false
+ggsave("poverty_size.pdf", graph_poverty_size)
+```
 
-## Scales
+If you want to change the output format, just change the extension of the file you are saving:
+
+- "poverty_size.pdf" perfect for publication and printing, large size
+- "poverty_size.svg" the same as pdf, also suitable for putting on webpages
+- "poverty_size.png" smaller file size, suitable for websites and presentations
+- "poverty_size.jpg" same as the png
+
+# Statistical analysis
+
+There are probably statistical libraries in R to do every sort of test you will ever need, from the typical ANOVA to cutting edge machine learning. The full list of R packages sits on the (cran server)[https://cran.r-project.org/web/packages/available_packages_by_name.html] and you can load packages as and when you need them at no cost. R comes pre-packaged with some common statistical tools, for example, the `t.test()` and linear model regression `lm()`.
+
+Let’s look at a quick example to see how the poverty of a school (`FSM`) is related to achieving the highest grade (`9`) in `GCSE Mathematics`, 
+
+First we need to _wrangle_ our data, that is get it in a form where we can build a statistical model. We need to mutate a column for `per_top`, the percentage of a school’s maths class getting the top grade, we will compare this against `FSM`, the percentage of a school on free school meals. 
+
+```{r}
+#| warning: false
+# join our results to their matching schools
+data_joined <- left_join(results, schools, by="ID")
+
+# wrangle our data
+top_grades <- data_joined %>% 
+  filter(Description == "Mathematics") %>%
+  filter(Qualification == "GCSE (9-1) Full Course",
+                         Open=="Open") %>%
+  group_by(ID, Description) %>%
+  mutate(Sub_students = max(Entries)) %>%
+  filter(Grade != "Total number entered") %>%
+  select(ID, School, Description, Grade, 
+         Entries, Sub_students, FSM, Open) %>%
+  filter(Grade == max(as.numeric(Grade))) %>%
+  mutate(top_grade = ifelse(Grade == 9, Entries, 0),
+         per_top = top_grade / Sub_students)
+```
+
+## linear models
+
+The linear model function has the following format
+
+`fit <- lm(<model~formula>, <data>)`
+
+For this example we will set the `per_top` as our _dependent_ variable, and `FSM` as our _independent_ variable, making the formula: `per_top ~ FSM`. One you run the model, we then need to use the `summary(<mdl>)` command to print out the analyse the bits we are interested in:
+
+```{r}
+#| warning: false
+
+# Build the model
+result_maths <- lm(per_top ~ FSM, data=top_grades)
+
+# Output the result
+summary(result_maths)
+
+```
+```{r}
+#| warning: false
+#| echo: false
+
+# Output the result
+mdl_maths <- summary(result_maths)
+```
+The results show that FSM has statistical significance (0.00) in predicting the number of top grades, but the adjusted R^2^ value is very small (`r round(mdl_maths[["adj.r.squared"]],4)`). We might want to add some other factors to see if we can increase the effect size. Maybe the size of the math's cohort `Sub_students` in a school has a part to play, e.g. they might support each other better in class? To add other independent variables we use the `+` command:
+
+```{r}
+#| warning: false
+
+# Build the model
+result_maths <- lm(per_top ~ FSM + Sub_students, data=top_grades)
+
+# Output the result
+summary(result_maths)
+
+```
+```{r}
+#| warning: false
+#| echo: false
+
+# Output the result
+mdl_maths <- summary(result_maths)
+
+```
+The R^2^ has increased slightly (`r round(mdl_maths[["adj.r.squared"]],4)`) but still not great, maybe you can do better?
+
+## t-tests
+
+For the `TIMSS` dataset we have a lot of summary lickert scale data, which combines multiple lickert scale responses into an average weighted field. For example `BCBGEAS` is a summary of multiple questions about _School Emphasis on Academic Success_. Taking this data we can look for differences between countries:
+
+```{r}
+#| warning: false
+# create the data to be tested
+# make sure that the NA values are excluded
+# make sure that the data is numeric
+USA_data <- TIMSS %>% 
+  filter(CNTRY == "USA") %>% 
+  filter(!is.na(BCBGEAS)) %>%
+  mutate(BCBGEAS = as.numeric(BCBGEAS))
+
+RUS_data <- TIMSS %>% 
+  filter(CNTRY == "RUS") %>%
+  filter(!is.na(BCBGEAS)) %>%
+  mutate(BCBGEAS = as.numeric(BCBGEAS))
+
+t.test(USA_data$BCBGEAS,
+       RUS_data$BCBGEAS)
+```
+
 
 
 ## Questions
 
-1. 
+::: question
+1. Adjust the linear model above to look at the predictive nature of `FSM` on achieving the lowest grades in `Art`
 
 
+:::
 
-## Faceting
-
-Let's return to the dataset, `computing_test`, we had built in @sec-graphing. We might speculate that it is the boys only schools influencing the data that  in a school predicting 
-
-```{r}
-
-# unique(data_joined$EstablishmentGroup)
-# 
-# ggplot(data=computing_test, 
-#        aes(x=per_male, y=per_taking_cs)) +
-#   geom_point() +
-#   geom_smooth(method='lm') +
-#   ggtitle("The more boys, the more CS") +
-#   facet_grid(Gender ~ EstablishmentGroup)
-# 
-# 
-# # grepl looks for the word “Comput” in the string Description
-# computing_test <- data_joined %>%
-#   filter(grepl("Comput", Description),
-#          Qualification == "GCSE (9-1) Full Course",
-#          Grade == "Total number entered" ) %>%
-#   select(ID, Total_students, Entries, 
-#          FSM, NumberOfBoys, NumberOfGirls, EstablishmentGroup, Gender) %>%
-#   mutate(per_male =
-#            NumberOfBoys / (NumberOfBoys + NumberOfGirls),
-#         per_taking_cs = Entries/Total_students) %>%
-# arrange(desc(per_taking_cs))
-
-
-```
-
-
-Additionally `facet`s
-
-
-## Exporting plots
-`ggsave(<file_name_and_extension>, <object_type>)`
-
-
-```{r}
-# ggsave("poverty_size.pdf", graph_poverty_size)
-```
-as png
-
-as svg and pdf
-
+Chi square test on 
 
 
 ```{r}
@@ -2360,64 +2479,3 @@ as.data.frame(
     dist = c(200, 149, 224, 94, 308)))
 
 ```
-
-# Statistical analysis
-
-There are probably statistical libraries in R to do every sort of test you will ever need, from the typical ANOVA to cutting edge machine learning. The full list of R packages sits on the (cran server)[https://cran.r-project.org/web/packages/available_packages_by_name.html] and you can load packages as and when you need them at no cost. R comes pre-packaged with some common statistical tools, for example, the `t.test()` and linear model regression `lm()`.
-
-Let’s look at an example to see if poverty (`FSM`) is related to achieving the highest grade (`9`) in `GCSE Mathematics`, 
-
-First we need to _wrangle_ our data, that is get it in a form where we can build a statistical model. We need to mutate a column for `per_top`, the percentage of a school’s maths class getting the top grade, we will compare this against `FSM`, the percentage of a school on free school meals
-
-`lm(<model~formula>, <data>, <method>)`
-
-```{r}
-#| warning: false
-# wrangle our data
-top_grades <- data_joined %>% 
-filter(Qualification == "GCSE (9-1) Full Course",
-                         Open=="Open") %>%
-  group_by(ID, Description) %>%
-  mutate(Sub_students = max(Entries)) %>%
-  filter(Grade != "Total number entered") %>%
-  select(ID, Description, Grade, 
-Entries, Sub_students, FSM, Open) %>%
-  filter(Grade == max(as.numeric(Grade))) %>%
-  mutate(top_grade = ifelse(Grade == 9, Entries, 0),
-         per_top = top_grade / Sub_students)
-
-#filter to select only the maths results
-top_maths <- top_grades %>% filter(Description == "Mathematics")
-
-# Build the model
-result_maths <- lm(per_top ~ FSM, data=top_maths)
-
-# Output the result
-summary(result_maths)
-
-```
-
-logistic regression
-
-Does being a grammar school make it more likely that students sit geography?
-
-lm(geography_uptake ~ grammar + gender)
-
-t-test
-
-TIMSS which country has the most swearing in class
-
-anova
-
-TODO:
-- recode columns as numeric
-- finish questions
-- nested if example
-- bar chart example
-- text
-
-
-
-
-
-# Pretty tables

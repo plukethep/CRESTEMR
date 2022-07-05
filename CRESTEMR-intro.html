@@ -183,14 +183,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#geom_text" id="toc-geom_text" class="nav-link" data-scroll-target="#geom_text"> <span class="header-section-number">5.1.7</span> geom_text</a></li>
   </ul>
 </li>
-  <li><a href="#scales" id="toc-scales" class="nav-link" data-scroll-target="#scales"> <span class="header-section-number">5.2</span> Scales</a></li>
-  <li><a href="#questions-11" id="toc-questions-11" class="nav-link" data-scroll-target="#questions-11"> <span class="header-section-number">5.3</span> Questions</a></li>
-  <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting"> <span class="header-section-number">5.4</span> Faceting</a></li>
-  <li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.5</span> Exporting plots</a></li>
+  <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting"> <span class="header-section-number">5.2</span> Faceting</a></li>
+  <li><a href="#exporting-plots" id="toc-exporting-plots" class="nav-link" data-scroll-target="#exporting-plots"> <span class="header-section-number">5.3</span> Exporting plots</a></li>
   </ul>
 </li>
-  <li><a href="#statistical-analysis" id="toc-statistical-analysis" class="nav-link" data-scroll-target="#statistical-analysis"> <span class="header-section-number">6</span> Statistical analysis</a></li>
-  <li><a href="#pretty-tables" id="toc-pretty-tables" class="nav-link" data-scroll-target="#pretty-tables"> <span class="header-section-number">7</span> Pretty tables</a></li>
+  <li>
+<a href="#statistical-analysis" id="toc-statistical-analysis" class="nav-link" data-scroll-target="#statistical-analysis"> <span class="header-section-number">6</span> Statistical analysis</a>
+  <ul class="collapse">
+<li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models"> <span class="header-section-number">6.1</span> linear models</a></li>
+  <li><a href="#t-tests" id="toc-t-tests" class="nav-link" data-scroll-target="#t-tests"> <span class="header-section-number">6.2</span> t-tests</a></li>
+  <li><a href="#questions-11" id="toc-questions-11" class="nav-link" data-scroll-target="#questions-11"> <span class="header-section-number">6.3</span> Questions</a></li>
+  </ul>
+</li>
   </ul></nav>
 </div>
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -1346,19 +1350,19 @@ Tip
 
 </div>
 <ol start="2" type="1">
-<li>What is the largest <code>Total_students</code> size?</li>
+<li>Using the <code>results</code> table what is the largest <code>Total_students</code> size?</li>
 </ol>
 <div class="cell">
 
 </div>
 <ol start="3" type="1">
-<li>How many different types of subject <code>Description</code> are there?</li>
+<li>Using the <code>results</code> table, how many different types of subject <code>Description</code> are there?</li>
 </ol>
 <div class="cell">
 
 </div>
 <ol start="4" type="1">
-<li>What’s the average value for free school meals (<code>FSM</code>)?</li>
+<li>Using the <code>schools</code> table, what is the average value for free school meals (<code>FSM</code>)?</li>
 </ol>
 <div class="cell">
 
@@ -2051,7 +2055,7 @@ Tip
 </div>
 <p>The basic structure of <code>ggplot</code> code is to combine different graphing elements through the use of the <code>+</code> operator. To demonstrate this, let’s look at the relationship between the percentage of males in a school and the percentage of the school taking <code>computer science</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1"></a><span class="co"># join our data</span></span>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1"></a><span class="co"># join our results to their matching schools</span></span>
 <span id="cb127-2"><a href="#cb127-2"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span>
 <span id="cb127-3"><a href="#cb127-3"></a></span>
 <span id="cb127-4"><a href="#cb127-4"></a><span class="co"># wrangle our data</span></span>
@@ -2179,25 +2183,25 @@ Important
 <blockquote class="blockquote">
 <p><code>ifelse(&lt;statement(s)&gt;, &lt;value_if_true&gt;, &lt;value_if_false&gt;)</code></p>
 </blockquote>
-<p><code>ifelse</code> allow us to <em>recode</em> the data. In the example below, we are going to add a new column to the schools table (using <code>mutate</code>) noting whether a school is a <code>grammar</code> school or not. A school is a grammar school <em>if</em> it is not an <em>Independent</em> school <em>and</em> it is <em>selective</em> in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school.</p>
+<p><code>ifelse</code> allow us to <em>recode</em> the data. In the example below, we are going to add a new column to the schools table (using <code>mutate</code>) noting whether a school is a <em>grammar</em> school or not. A school is a grammar school <em>if</em> it is not an <em>Independent</em> school <em>and</em> it is <em>selective</em> in its admissions policy, either of these two criteria being false will mean that the school is not a grammar school.</p>
 <p>You can see how the above logic is is implemented in an R <code>ifelse</code> statement on lines 4-8.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb131"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
 <span id="cb131-2"><a href="#cb131-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
 <span id="cb131-3"><a href="#cb131-3"></a>         Phase<span class="sc">==</span><span class="st">"Secondary"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb131-4"><a href="#cb131-4"></a>  <span class="fu">mutate</span>(<span class="at">grammar =</span> </span>
+<span id="cb131-4"><a href="#cb131-4"></a>  <span class="fu">mutate</span>(<span class="at">sch_type =</span> </span>
 <span id="cb131-5"><a href="#cb131-5"></a>           <span class="fu">ifelse</span>(EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span> <span class="sc">&amp;</span> </span>
 <span id="cb131-6"><a href="#cb131-6"></a>                    AdmissionsPolicy<span class="sc">==</span><span class="st">"Selective"</span>,</span>
 <span id="cb131-7"><a href="#cb131-7"></a>                  <span class="st">"GRAMMAR"</span>,</span>
 <span id="cb131-8"><a href="#cb131-8"></a>                  <span class="st">"NOT GRAMMAR"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb131-9"><a href="#cb131-9"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(grammar))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb131-9"><a href="#cb131-9"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sch_type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>4 uses mutate to create a new column in the schools table called <code>grammar</code>, this will be given the value of the <code>ifelse</code> statement calculation for each line.</li>
+<li>4 uses mutate to create a new column in the schools table called <code>sch_type</code>, this will be given the value of the <code>ifelse</code> statement calculation for each line.</li>
 <li>5 - 6 the <code>if</code> statement to be evaluated as either <code>true</code> or <code>false</code> has two parts, separated by the ampersand symbol <code>&amp;</code> instead of the word <em>and</em> (as we have seen above, <em>or</em> is implemented using a bar <code>|</code>).</li>
-<li>7 is the value that will be returned <code>if</code> the statements on line 5 and 6 are both <em>TRUE</em>
+<li>7 “GRAMMAR” will be returned <code>if</code> the statements on line 5 and 6 are both <em>TRUE</em>
 </li>
-<li>8 is the value that will be returned if the combined statements on line 5 and 6 are <em>FALSE</em>, i.e.&nbsp;<em>else</em> the values on line 5 and 6 are true</li>
+<li>8 “NOT GRAMMAR” will be returned if the combined statements on line 5 and 6 are <em>FALSE</em>, i.e.&nbsp;<em>else</em> the values on line 5 and 6 are true</li>
 </ul>
 <p>Additionally, on line 9 we arrange the results, which means you can explore the details of the 163 grammar schools using the Environment panel, how you use arrange also changes the order in which the points will be plotted, allowing you to plot the grammar schools on top of other school types to make them stand out.</p>
 <div class="callout-tip callout callout-style-default callout-captioned">
@@ -2227,7 +2231,7 @@ Tip
 <div class="sourceCode cell-code" id="cb133"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data) <span class="sc">+</span></span>
 <span id="cb133-2"><a href="#cb133-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Easting, <span class="at">y=</span>Northing, </span>
 <span id="cb133-3"><a href="#cb133-3"></a>                 <span class="at">size =</span> NumberOfBoys<span class="sc">+</span>NumberOfGirls,</span>
-<span id="cb133-4"><a href="#cb133-4"></a>                 <span class="at">colour=</span>grammar),</span>
+<span id="cb133-4"><a href="#cb133-4"></a>                 <span class="at">colour=</span>sch_type),</span>
 <span id="cb133-5"><a href="#cb133-5"></a>                 <span class="at">alpha=</span><span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-222-1.png" class="img-fluid" width="672"></p>
@@ -2239,7 +2243,7 @@ Tip
 <li>2 we define the <code>x</code> and <code>y</code> <code>aes</code>theic values here for the <code>geom_point</code>s, we could have done this on line one, but this shows that this can be done separately for each <code>geom_</code>
 </li>
 <li>3 <code>size</code> is also inside <code>aes()</code> and takes the <code>NumberOfBoys+NumberOfGirls</code> as a parameter, i.e.&nbsp;the population of the school will change the size of the points on the graph</li>
-<li>4 <code>colour</code> is also inside <code>aes()</code> and takes the newly coded <code>grammar</code> values, this means that grammar schools will be a different colour from non-grammar schools</li>
+<li>4 <code>colour</code> is also inside <code>aes()</code> and takes the newly coded <code>sch_type</code> values, this means that grammar schools will be a different colour from non-grammar schools</li>
 <li>5 to stop the schools blotting each other out, we set the <code>alpha</code> (transparency) of each point to <code>0.4</code>. This is done outside the <code>aes</code> as we want all points to have the same transparency.</li>
 </ul>
 <div class="callout-important callout callout-style-default callout-captioned">
@@ -2348,7 +2352,7 @@ Important
 <li>5 <code>position</code> tells ggplot what to do when a bar on the x axis is made up of multiple elements, in this case <code>position="fill"</code> will take each x axis bar grouping and work out the fractional value of each Ofsted rating for each Region.</li>
 <li>7 when we created the factor on lines 3-4 to pass to the fill command, it also created a really inconvenient title for the graph legend: <em>factor(OfstedRating, levels = c(“Outstanding”, “Good”, “Requires improvement”, “Inadequate”))</em>. <code>scale_fill_discrete</code> let’s us provide a more sensible title for the key.</li>
 </ul>
-<p>We might also want to look at this graph on a Region by Region basis, at the moment it’s very hard to tell if the East Midlands have more schools that are <em>Outstanding</em>, or more school that <em>Require improvement</em>. To do compare the bars in each x axis group we can use the position command, setting it to dodge:</p>
+<p>We might also want to look at this graph on a Region by Region basis, at the moment it’s very hard to tell if the East Midlands have more schools that are <em>Outstanding</em>, or more schools that <em>Require improvement</em>. To do compare the bars in each x axis group we can use the position command, setting it to <code>position="dodge"</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> plot_schools, </span>
 <span id="cb137-2"><a href="#cb137-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span>Region)) <span class="sc">+</span> </span>
@@ -2361,124 +2365,172 @@ Important
 <p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-238-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="questions-10" class="level3" data-number="5.1.6"><h3 data-number="5.1.6" class="anchored" data-anchor-id="questions-10">
+<section id="raising-the-bars-yourself" class="level4" data-number="5.1.5.1"><h4 data-number="5.1.5.1" class="anchored" data-anchor-id="raising-the-bars-yourself">
+<span class="header-section-number">5.1.5.1</span> Raising the bars yourself</h4>
+<p><code>ggplot</code> can do a lot of the hard work when putting together bar charts, but there might also be times when you want to use pipes to calculate summary values that you then want plot. That is, you want to specify the heights of the bars yourself. To do this we <em>will</em> specify the y axis in the <code>aes</code> and use <code>stat="indentity"</code> to tell ggplot that’s what we’re doing. Take the example where you want to find the overall percentages of each grade given to the <em>four</em> single sciences in one year (can we say one is harder than another?):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a>plot_data <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span></span>
+<span id="cb138-2"><a href="#cb138-2"></a>  <span class="fu">filter</span>(Description <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Physics"</span>, <span class="st">"Biology"</span>, <span class="st">"Chemistry"</span>, <span class="st">"Computer Studies/Computing"</span>),</span>
+<span id="cb138-3"><a href="#cb138-3"></a>         Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb138-4"><a href="#cb138-4"></a>  <span class="fu">group_by</span>(Description, Grade) <span class="sc">%&gt;%</span></span>
+<span id="cb138-5"><a href="#cb138-5"></a>  <span class="fu">summarise</span>(<span class="at">total_grade =</span> <span class="fu">sum</span>(Entries, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb138-6"><a href="#cb138-6"></a>  <span class="fu">mutate</span>(<span class="at">total_entries =</span> <span class="fu">max</span>(total_grade, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb138-7"><a href="#cb138-7"></a>         <span class="at">per_entries =</span> total_grade<span class="sc">/</span>total_entries) <span class="sc">%&gt;%</span></span>
+<span id="cb138-8"><a href="#cb138-8"></a>  <span class="fu">filter</span>(Grade <span class="sc">!=</span> <span class="st">"Total number entered"</span>)</span>
+<span id="cb138-9"><a href="#cb138-9"></a></span>
+<span id="cb138-10"><a href="#cb138-10"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, <span class="fu">aes</span>(<span class="at">x=</span>Grade, <span class="at">y=</span>per_entries)) <span class="sc">+</span></span>
+<span id="cb138-11"><a href="#cb138-11"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Description), </span>
+<span id="cb138-12"><a href="#cb138-12"></a>           <span class="at">position=</span><span class="st">"dodge"</span>,</span>
+<span id="cb138-13"><a href="#cb138-13"></a>           <span class="at">stat=</span><span class="st">"identity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-240-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>1 to 8 creates a dataframe <code>plot_data</code> that calculates the percentage of entries for each science subject achieving each grade, this is called <code>per_entries</code>
+</li>
+<li>10 as we are setting the heights of the bars ourselves, we need to give the ggplot aes command a y value, in this case <code>y=per_entries</code>
+</li>
+<li>11 the geom_bar is given a fill value of <code>Description</code>, this will allow us to see the plots of different subjects</li>
+<li>12 we use <code>position="dodge"</code> as we want the perctange grades of each subject to be next to each other so we can look for differences in heights</li>
+<li>13 <code>stat="identity"</code> tells <code>geom_bar</code> that you have defined your own bar heights in the <code>y</code> attribute and not to count the number of rows.</li>
+</ul></section></section><section id="questions-10" class="level3" data-number="5.1.6"><h3 data-number="5.1.6" class="anchored" data-anchor-id="questions-10">
 <span class="header-section-number">5.1.6</span> Questions</h3>
-<div class="questions">
+<div class="question">
 <ol type="1">
-<li>Can you spot the 4 errors in this code</li>
+<li>Can you spot the 4 errors in this code.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Phase <span class="sc">==</span> <span class="st">"Secondary"</span>), </span>
-<span id="cb138-2"><a href="#cb138-2"></a>       <span class="at">x=</span>Region <span class="sc">+</span></span>
-<span id="cb138-3"><a href="#cb138-3"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Gender) <span class="at">position=</span><span class="st">"full"</span>) <span class="co"># missing comma # 4 position="full" rather than fill </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode numberSource r none number-lines code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>schools <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Phase <span class="sc">==</span> <span class="st">"Secondary"</span>), </span>
+<span id="cb139-2"><a href="#cb139-2"></a>       <span class="at">x=</span>Region <span class="sc">+</span></span>
+<span id="cb139-3"><a href="#cb139-3"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Gender) <span class="at">position=</span><span class="st">"full"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
 </div>
 <ol start="2" type="1">
-<li>
-</li></ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1"></a>plot_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
-<span id="cb139-2"><a href="#cb139-2"></a>  <span class="fu">filter</span>(CNTRY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"ENG"</span>),</span>
-<span id="cb139-3"><a href="#cb139-3"></a>         <span class="sc">!</span><span class="fu">is.na</span>(BCBG14G))</span>
-<span id="cb139-4"><a href="#cb139-4"></a>  </span>
-<span id="cb139-5"><a href="#cb139-5"></a></span>
-<span id="cb139-6"><a href="#cb139-6"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data,</span>
-<span id="cb139-7"><a href="#cb139-7"></a>       <span class="fu">aes</span>(<span class="at">x=</span>BCBG14G</span>
-<span id="cb139-8"><a href="#cb139-8"></a>           )) <span class="sc">+</span></span>
-<span id="cb139-9"><a href="#cb139-9"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-244-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</div>
-<p>ggplot(data=plot_data, aes(x=factor(BCBG14G, levels = c(“Very low”, “Low”, “Medium”, “High”, “Very high”)) )) + geom_bar() + facet_wrap(.~CNTRY)</p>
-<p>ggplot(data=plot_data, aes(x=BCBG14G )) + geom_bar(aes(fill=CNTRY))</p>
-<p>ggplot(data=plot_data, aes(x=BCBG14G )) + geom_bar(aes(fill=CNTRY), position=“dodge”) # , stat=“percentage”</p>
-<p>plot_data &lt;- plot_data %&gt;% group_by(CNTRY, BCBG14G) %&gt;% summarise(n=n())</p>
-<p>ggplot(data=plot_data, aes(x=factor(BCBG14G, levels = c(“Very low”, “Low”, “Medium”, “High”, “Very high”)), y=n )) + geom_bar(stat=“identity”) + facet_wrap(.~CNTRY)</p>
-<p>“Teachers’ ability to inspire students” bcbg14D</p>
-<p>“Parental expectations for student achievement” BCBG14G</p>
-<p>groups stacking dodge count</p>
-</section><section id="geom_text" class="level3" data-number="5.1.7"><h3 data-number="5.1.7" class="anchored" data-anchor-id="geom_text">
-<span class="header-section-number">5.1.7</span> geom_text</h3>
-</section></section><section id="scales" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="scales">
-<span class="header-section-number">5.2</span> Scales</h2>
-</section><section id="questions-11" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="questions-11">
-<span class="header-section-number">5.3</span> Questions</h2>
-<ol type="1">
-<li>
-</li></ol></section><section id="faceting" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="faceting">
-<span class="header-section-number">5.4</span> Faceting</h2>
-<p>Let’s return to the dataset, <code>computing_test</code>, we had built in <a href="#sec-graphing">Section&nbsp;5</a>. We might speculate that it is the boys only schools influencing the data that in a school predicting</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a><span class="co"># unique(data_joined$EstablishmentGroup)</span></span>
-<span id="cb140-2"><a href="#cb140-2"></a><span class="co"># </span></span>
-<span id="cb140-3"><a href="#cb140-3"></a><span class="co"># ggplot(data=computing_test, </span></span>
-<span id="cb140-4"><a href="#cb140-4"></a><span class="co">#        aes(x=per_male, y=per_taking_cs)) +</span></span>
-<span id="cb140-5"><a href="#cb140-5"></a><span class="co">#   geom_point() +</span></span>
-<span id="cb140-6"><a href="#cb140-6"></a><span class="co">#   geom_smooth(method='lm') +</span></span>
-<span id="cb140-7"><a href="#cb140-7"></a><span class="co">#   ggtitle("The more boys, the more CS") +</span></span>
-<span id="cb140-8"><a href="#cb140-8"></a><span class="co">#   facet_grid(Gender ~ EstablishmentGroup)</span></span>
-<span id="cb140-9"><a href="#cb140-9"></a><span class="co"># </span></span>
-<span id="cb140-10"><a href="#cb140-10"></a><span class="co"># </span></span>
-<span id="cb140-11"><a href="#cb140-11"></a><span class="co"># # grepl looks for the word “Comput” in the string Description</span></span>
-<span id="cb140-12"><a href="#cb140-12"></a><span class="co"># computing_test &lt;- data_joined %&gt;%</span></span>
-<span id="cb140-13"><a href="#cb140-13"></a><span class="co">#   filter(grepl("Comput", Description),</span></span>
-<span id="cb140-14"><a href="#cb140-14"></a><span class="co">#          Qualification == "GCSE (9-1) Full Course",</span></span>
-<span id="cb140-15"><a href="#cb140-15"></a><span class="co">#          Grade == "Total number entered" ) %&gt;%</span></span>
-<span id="cb140-16"><a href="#cb140-16"></a><span class="co">#   select(ID, Total_students, Entries, </span></span>
-<span id="cb140-17"><a href="#cb140-17"></a><span class="co">#          FSM, NumberOfBoys, NumberOfGirls, EstablishmentGroup, Gender) %&gt;%</span></span>
-<span id="cb140-18"><a href="#cb140-18"></a><span class="co">#   mutate(per_male =</span></span>
-<span id="cb140-19"><a href="#cb140-19"></a><span class="co">#            NumberOfBoys / (NumberOfBoys + NumberOfGirls),</span></span>
-<span id="cb140-20"><a href="#cb140-20"></a><span class="co">#         per_taking_cs = Entries/Total_students) %&gt;%</span></span>
-<span id="cb140-21"><a href="#cb140-21"></a><span class="co"># arrange(desc(per_taking_cs))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Additionally <code>facet</code>s</p>
-</section><section id="exporting-plots" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="exporting-plots">
-<span class="header-section-number">5.5</span> Exporting plots</h2>
-<p><code>ggsave(&lt;file_name_and_extension&gt;, &lt;object_type&gt;)</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1"></a><span class="co"># ggsave("poverty_size.pdf", graph_poverty_size)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>as png</p>
-<p>as svg and pdf</p>
+<li>Create a bar chart showing the total number of open Independent schools for each Gender</li>
+</ol>
 <div class="cell">
 
 </div>
-</section></section><section id="statistical-analysis" class="level1" data-number="6"><h1 data-number="6">
+<ol start="3" type="1">
+<li>Using the TIMSS dataset:
+<ul>
+<li>
+<code>filter</code> to only look at the USA and ENG</li>
+<li>make a graph to show the overall picture of <em>Parental expectations for student achievement</em> (<code>BCBG14G</code>).</li>
+<li>Make the <code>x</code> axis a <code>factor</code> so the graph makes sense</li>
+<li>
+<code>fill</code> the bars in to show how many schools each bar came from each country</li>
+<li>
+<code>position</code> bars so they aren’t stacked on top of each other</li>
+</ul>
+</li>
+</ol>
+<div class="cell">
+
+</div>
+<ol start="4" type="1">
+<li>Repeat Q3, but this time work out the percentage of responses for each option in <code>BCBG14G</code> by country. Display a graph showing this “indentity”.</li>
+</ol>
+<div class="cell">
+
+</div>
+<ol start="5" type="1">
+<li>[Extension] Explore other patterns in: “Teachers’ ability to inspire students” <code>BCBG14D</code> and “Parental expectations for student achievement” <code>BCBG14G</code>
+</li>
+</ol>
+</div>
+</section><section id="geom_text" class="level3" data-number="5.1.7"><h3 data-number="5.1.7" class="anchored" data-anchor-id="geom_text">
+<span class="header-section-number">5.1.7</span> geom_text</h3>
+<p>TODO: if time</p>
+</section></section><section id="faceting" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="faceting">
+<span class="header-section-number">5.2</span> Faceting</h2>
+<p>Faceting allows you to easily create multiple graphs from one dataset and one graph definition by splitting the data on different factors. By defining</p>
+<p><code>facet_wrap(&lt;factor_to_split&gt; ~ .)</code></p>
+<p>Let’s return to grammar school dataset from <a href="#sec-ifelse">Section&nbsp;5.1.3</a>, we can easily plot this to show the relationship between poverty and school size, showing that grammar schools tend to serve quite affluent cohorts and that larger secondary schools tend to serve poorer cohorts:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a>plot_data <span class="ot">&lt;-</span> schools <span class="sc">%&gt;%</span> </span>
+<span id="cb140-2"><a href="#cb140-2"></a>  <span class="fu">filter</span>(Open<span class="sc">==</span><span class="st">"Open"</span>, </span>
+<span id="cb140-3"><a href="#cb140-3"></a>         Phase<span class="sc">==</span><span class="st">"Secondary"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb140-4"><a href="#cb140-4"></a>  <span class="fu">mutate</span>(<span class="at">sch_type =</span> </span>
+<span id="cb140-5"><a href="#cb140-5"></a>           <span class="fu">ifelse</span>(EstablishmentGroup <span class="sc">!=</span> <span class="st">"Independent schools"</span> <span class="sc">&amp;</span> </span>
+<span id="cb140-6"><a href="#cb140-6"></a>                    AdmissionsPolicy<span class="sc">==</span><span class="st">"Selective"</span>,</span>
+<span id="cb140-7"><a href="#cb140-7"></a>                  <span class="st">"GRAMMAR"</span>,</span>
+<span id="cb140-8"><a href="#cb140-8"></a>                  <span class="st">"NOT GRAMMAR"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb140-9"><a href="#cb140-9"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sch_type))</span>
+<span id="cb140-10"><a href="#cb140-10"></a></span>
+<span id="cb140-11"><a href="#cb140-11"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, <span class="fu">aes</span>(<span class="at">x=</span>FSM, <span class="at">y=</span>NumberOfBoys <span class="sc">+</span> NumberOfGirls)) <span class="sc">+</span> </span>
+<span id="cb140-12"><a href="#cb140-12"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>sch_type)) <span class="sc">+</span></span>
+<span id="cb140-13"><a href="#cb140-13"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb140-14"><a href="#cb140-14"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-252-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>What isn’t clear about the above is how this changes on a regional basis. We might be tempted to filter on each region and create separate charts for each regional name. But this would take a considerable amount of time and effort. Another way to do this is using <code>facet_wrap(Region ~ .)</code>. The below example uses the <code>Region</code> column to create the same chart for each Region, only using the data that is recorded as being in that region:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>plot_data, <span class="fu">aes</span>(<span class="at">x=</span>FSM, <span class="at">y=</span>NumberOfBoys <span class="sc">+</span> NumberOfGirls)) <span class="sc">+</span> </span>
+<span id="cb141-2"><a href="#cb141-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span>sch_type)) <span class="sc">+</span></span>
+<span id="cb141-3"><a href="#cb141-3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb141-4"><a href="#cb141-4"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb141-5"><a href="#cb141-5"></a>  <span class="fu">facet_wrap</span>(Region <span class="sc">~</span> .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="CRESTEMR-intro_files/figure-html/unnamed-chunk-254-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="exporting-plots" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="exporting-plots">
+<span class="header-section-number">5.3</span> Exporting plots</h2>
+<p>ggplot can export data in a variety of formats suitable for printing, publication and the web. Once you have created a graph and stored it in an object, the command to save the graph to your hard drive is:</p>
+<p><code>ggsave(&lt;file_name_and_extension&gt;, &lt;object_name&gt;)</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a><span class="fu">ggsave</span>(<span class="st">"poverty_size.pdf"</span>, graph_poverty_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you want to change the output format, just change the extension of the file you are saving:</p>
+<ul>
+<li>“poverty_size.pdf” perfect for publication and printing, large size</li>
+<li>“poverty_size.svg” the same as pdf, also suitable for putting on webpages</li>
+<li>“poverty_size.png” smaller file size, suitable for websites and presentations</li>
+<li>“poverty_size.jpg” same as the png</li>
+</ul></section></section><section id="statistical-analysis" class="level1" data-number="6"><h1 data-number="6">
 <span class="header-section-number">6</span> Statistical analysis</h1>
 <p>There are probably statistical libraries in R to do every sort of test you will ever need, from the typical ANOVA to cutting edge machine learning. The full list of R packages sits on the (cran server)[https://cran.r-project.org/web/packages/available_packages_by_name.html] and you can load packages as and when you need them at no cost. R comes pre-packaged with some common statistical tools, for example, the <code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code> and linear model regression <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>.</p>
-<p>Let’s look at an example to see if poverty (<code>FSM</code>) is related to achieving the highest grade (<code>9</code>) in <code>GCSE Mathematics</code>,</p>
-<p>First we need to <em>wrangle</em> our data, that is get it in a form where we can build a statistical model. We need to mutate a column for <code>per_top</code>, the percentage of a school’s maths class getting the top grade, we will compare this against <code>FSM</code>, the percentage of a school on free school meals</p>
-<p><code>lm(&lt;model~formula&gt;, &lt;data&gt;, &lt;method&gt;)</code></p>
+<p>Let’s look at a quick example to see how the poverty of a school (<code>FSM</code>) is related to achieving the highest grade (<code>9</code>) in <code>GCSE Mathematics</code>,</p>
+<p>First we need to <em>wrangle</em> our data, that is get it in a form where we can build a statistical model. We need to mutate a column for <code>per_top</code>, the percentage of a school’s maths class getting the top grade, we will compare this against <code>FSM</code>, the percentage of a school on free school meals.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a><span class="co"># wrangle our data</span></span>
-<span id="cb142-2"><a href="#cb142-2"></a>top_grades <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
-<span id="cb142-3"><a href="#cb142-3"></a><span class="fu">filter</span>(Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
-<span id="cb142-4"><a href="#cb142-4"></a>                         Open<span class="sc">==</span><span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb142-5"><a href="#cb142-5"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
-<span id="cb142-6"><a href="#cb142-6"></a>  <span class="fu">mutate</span>(<span class="at">Sub_students =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
-<span id="cb142-7"><a href="#cb142-7"></a>  <span class="fu">filter</span>(Grade <span class="sc">!=</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb142-8"><a href="#cb142-8"></a>  <span class="fu">select</span>(ID, Description, Grade, </span>
-<span id="cb142-9"><a href="#cb142-9"></a>Entries, Sub_students, FSM, Open) <span class="sc">%&gt;%</span></span>
-<span id="cb142-10"><a href="#cb142-10"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(Grade))) <span class="sc">%&gt;%</span></span>
-<span id="cb142-11"><a href="#cb142-11"></a>  <span class="fu">mutate</span>(<span class="at">top_grade =</span> <span class="fu">ifelse</span>(Grade <span class="sc">==</span> <span class="dv">9</span>, Entries, <span class="dv">0</span>),</span>
-<span id="cb142-12"><a href="#cb142-12"></a>         <span class="at">per_top =</span> top_grade <span class="sc">/</span> Sub_students)</span>
-<span id="cb142-13"><a href="#cb142-13"></a></span>
-<span id="cb142-14"><a href="#cb142-14"></a><span class="co">#filter to select only the maths results</span></span>
-<span id="cb142-15"><a href="#cb142-15"></a>top_maths <span class="ot">&lt;-</span> top_grades <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Mathematics"</span>)</span>
-<span id="cb142-16"><a href="#cb142-16"></a></span>
-<span id="cb142-17"><a href="#cb142-17"></a><span class="co"># Build the model</span></span>
-<span id="cb142-18"><a href="#cb142-18"></a>result_maths <span class="ot">&lt;-</span> <span class="fu">lm</span>(per_top <span class="sc">~</span> FSM, <span class="at">data=</span>top_maths)</span>
-<span id="cb142-19"><a href="#cb142-19"></a></span>
-<span id="cb142-20"><a href="#cb142-20"></a><span class="co"># Output the result</span></span>
-<span id="cb142-21"><a href="#cb142-21"></a><span class="fu">summary</span>(result_maths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1"></a><span class="co"># join our results to their matching schools</span></span>
+<span id="cb143-2"><a href="#cb143-2"></a>data_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(results, schools, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb143-3"><a href="#cb143-3"></a></span>
+<span id="cb143-4"><a href="#cb143-4"></a><span class="co"># wrangle our data</span></span>
+<span id="cb143-5"><a href="#cb143-5"></a>top_grades <span class="ot">&lt;-</span> data_joined <span class="sc">%&gt;%</span> </span>
+<span id="cb143-6"><a href="#cb143-6"></a>  <span class="fu">filter</span>(Description <span class="sc">==</span> <span class="st">"Mathematics"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb143-7"><a href="#cb143-7"></a>  <span class="fu">filter</span>(Qualification <span class="sc">==</span> <span class="st">"GCSE (9-1) Full Course"</span>,</span>
+<span id="cb143-8"><a href="#cb143-8"></a>                         Open<span class="sc">==</span><span class="st">"Open"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb143-9"><a href="#cb143-9"></a>  <span class="fu">group_by</span>(ID, Description) <span class="sc">%&gt;%</span></span>
+<span id="cb143-10"><a href="#cb143-10"></a>  <span class="fu">mutate</span>(<span class="at">Sub_students =</span> <span class="fu">max</span>(Entries)) <span class="sc">%&gt;%</span></span>
+<span id="cb143-11"><a href="#cb143-11"></a>  <span class="fu">filter</span>(Grade <span class="sc">!=</span> <span class="st">"Total number entered"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb143-12"><a href="#cb143-12"></a>  <span class="fu">select</span>(ID, School, Description, Grade, </span>
+<span id="cb143-13"><a href="#cb143-13"></a>         Entries, Sub_students, FSM, Open) <span class="sc">%&gt;%</span></span>
+<span id="cb143-14"><a href="#cb143-14"></a>  <span class="fu">filter</span>(Grade <span class="sc">==</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(Grade))) <span class="sc">%&gt;%</span></span>
+<span id="cb143-15"><a href="#cb143-15"></a>  <span class="fu">mutate</span>(<span class="at">top_grade =</span> <span class="fu">ifelse</span>(Grade <span class="sc">==</span> <span class="dv">9</span>, Entries, <span class="dv">0</span>),</span>
+<span id="cb143-16"><a href="#cb143-16"></a>         <span class="at">per_top =</span> top_grade <span class="sc">/</span> Sub_students)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="linear-models" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="linear-models">
+<span class="header-section-number">6.1</span> linear models</h2>
+<p>The linear model function has the following format</p>
+<p><code>fit &lt;- lm(&lt;model~formula&gt;, &lt;data&gt;)</code></p>
+<p>For this example we will set the <code>per_top</code> as our <em>dependent</em> variable, and <code>FSM</code> as our <em>independent</em> variable, making the formula: <code>per_top ~ FSM</code>. One you run the model, we then need to use the <code>summary(&lt;mdl&gt;)</code> command to print out the analyse the bits we are interested in:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1"></a><span class="co"># Build the model</span></span>
+<span id="cb144-2"><a href="#cb144-2"></a>result_maths <span class="ot">&lt;-</span> <span class="fu">lm</span>(per_top <span class="sc">~</span> FSM, <span class="at">data=</span>top_grades)</span>
+<span id="cb144-3"><a href="#cb144-3"></a></span>
+<span id="cb144-4"><a href="#cb144-4"></a><span class="co"># Output the result</span></span>
+<span id="cb144-5"><a href="#cb144-5"></a><span class="fu">summary</span>(result_maths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = per_top ~ FSM, data = top_maths)
+lm(formula = per_top ~ FSM, data = top_grades)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
@@ -2496,16 +2548,88 @@ Multiple R-squared:  0.06384,   Adjusted R-squared:  0.06298
 F-statistic: 74.94 on 1 and 1099 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<p>logistic regression</p>
-<p>Does being a grammar school make it more likely that students sit geography?</p>
-<p>lm(geography_uptake ~ grammar + gender)</p>
-<p>t-test</p>
-<p>TIMSS which country has the most swearing in class</p>
-<p>anova</p>
-<p>TODO: - recode columns as numeric - finish questions - nested if example - bar chart example - text</p>
-</section><section id="pretty-tables" class="level1" data-number="7"><h1 data-number="7">
-<span class="header-section-number">7</span> Pretty tables</h1>
-</section><div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div class="cell">
+
+</div>
+<p>The results show that FSM has statistical significance (0.00) in predicting the number of top grades, but the adjusted R<sup>2</sup> value is very small (0.063). We might want to add some other factors to see if we can increase the effect size. Maybe the size of the math’s cohort <code>Sub_students</code> in a school has a part to play, e.g.&nbsp;they might support each other better in class? To add other independent variables we use the <code>+</code> command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1"></a><span class="co"># Build the model</span></span>
+<span id="cb146-2"><a href="#cb146-2"></a>result_maths <span class="ot">&lt;-</span> <span class="fu">lm</span>(per_top <span class="sc">~</span> FSM <span class="sc">+</span> Sub_students, <span class="at">data=</span>top_grades)</span>
+<span id="cb146-3"><a href="#cb146-3"></a></span>
+<span id="cb146-4"><a href="#cb146-4"></a><span class="co"># Output the result</span></span>
+<span id="cb146-5"><a href="#cb146-5"></a><span class="fu">summary</span>(result_maths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = per_top ~ FSM + Sub_students, data = top_grades)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.10757 -0.05864 -0.02733  0.01757  0.79084 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.739e-02  5.164e-03  11.113  &lt; 2e-16 ***
+FSM          -2.491e-01  2.666e-02  -9.340  &lt; 2e-16 ***
+Sub_students  2.867e-04  3.787e-05   7.571 7.81e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.09116 on 1098 degrees of freedom
+Multiple R-squared:  0.1103,    Adjusted R-squared:  0.1087 
+F-statistic: 68.05 on 2 and 1098 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<p>The R<sup>2</sup> has increased slightly (0.1087) but still not great, maybe you can do better?</p>
+</section><section id="t-tests" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="t-tests">
+<span class="header-section-number">6.2</span> t-tests</h2>
+<p>For the <code>TIMSS</code> dataset we have a lot of summary lickert scale data, which combines multiple lickert scale responses into an average weighted field. For example <code>BCBGEAS</code> is a summary of multiple questions about <em>School Emphasis on Academic Success</em>. Taking this data we can look for differences between countries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1"></a><span class="co"># create the data to be tested</span></span>
+<span id="cb148-2"><a href="#cb148-2"></a><span class="co"># make sure that the NA values are excluded</span></span>
+<span id="cb148-3"><a href="#cb148-3"></a><span class="co"># make sure that the data is numeric</span></span>
+<span id="cb148-4"><a href="#cb148-4"></a>USA_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb148-5"><a href="#cb148-5"></a>  <span class="fu">filter</span>(CNTRY <span class="sc">==</span> <span class="st">"USA"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb148-6"><a href="#cb148-6"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(BCBGEAS)) <span class="sc">%&gt;%</span></span>
+<span id="cb148-7"><a href="#cb148-7"></a>  <span class="fu">mutate</span>(<span class="at">BCBGEAS =</span> <span class="fu">as.numeric</span>(BCBGEAS))</span>
+<span id="cb148-8"><a href="#cb148-8"></a></span>
+<span id="cb148-9"><a href="#cb148-9"></a>RUS_data <span class="ot">&lt;-</span> TIMSS <span class="sc">%&gt;%</span> </span>
+<span id="cb148-10"><a href="#cb148-10"></a>  <span class="fu">filter</span>(CNTRY <span class="sc">==</span> <span class="st">"RUS"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb148-11"><a href="#cb148-11"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(BCBGEAS)) <span class="sc">%&gt;%</span></span>
+<span id="cb148-12"><a href="#cb148-12"></a>  <span class="fu">mutate</span>(<span class="at">BCBGEAS =</span> <span class="fu">as.numeric</span>(BCBGEAS))</span>
+<span id="cb148-13"><a href="#cb148-13"></a></span>
+<span id="cb148-14"><a href="#cb148-14"></a><span class="fu">t.test</span>(USA_data<span class="sc">$</span>BCBGEAS,</span>
+<span id="cb148-15"><a href="#cb148-15"></a>       RUS_data<span class="sc">$</span>BCBGEAS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  USA_data$BCBGEAS and RUS_data$BCBGEAS
+t = 6.2458, df = 378.4, p-value = 1.134e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.706074 1.354889
+sample estimates:
+mean of x mean of y 
+10.324163  9.293682 </code></pre>
+</div>
+</div>
+</section><section id="questions-11" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="questions-11">
+<span class="header-section-number">6.3</span> Questions</h2>
+<div class="question">
+<ol type="1">
+<li>Adjust the linear model above to look at the predictive nature of <code>FSM</code> on achieving the lowest grades in <code>Art</code>
+</li>
+</ol>
+</div>
+<p>Chi square test on</p>
+<div class="cell">
+
+</div>
+</section></section><div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 <ol>
 <li id="fn1" role="doc-endnote"><p>As of October 2020, Tiobe has R as the 9th most popular programming language: <a href="">https://www.tiobe.com/tiobe-index/</a> Many other, contradictory, ranking systems exist.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p><code>camelCase</code> has a capital letter in the front or front and middle forming the camel’s hump(s), there are multiple <a href="https://en.wikipedia.org/wiki/Naming_convention_(programming)">naming conventions</a>, it doesn’t matter what you pick, just stick to one of them<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

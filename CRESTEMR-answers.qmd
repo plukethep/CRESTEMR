@@ -901,15 +901,17 @@ schools %>%
   filter(NumberOfGirls == 400)
 ```
 
-5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`, and arrange them by descending `FSM`.
+5.  Filter all the schools that got `Outstanding` as an `OfstedRating`, display the `ID`, `Name`, `FSM` and `TypeOfEstablishment`.
 
 ```{r}
 #| eval: true
 #| echo: true
 schools %>%
   filter(OfstedRating == "Outstanding") %>%
-  select(ID, Name, FSM, TypeOfEstablishment) %>%
-  arrange(desc(FSM))
+  select(ID, Name, FSM, TypeOfEstablishment)
+
+# optionally, you could add an arrange to put things in order
+# arrange(desc(FSM))
 ```
 
 6.  Count the number (`n()`) of `Open` schools that have an `FSM` number of over `0.95` (You don't have to use `summarise`, but it helps)
@@ -920,7 +922,7 @@ schools %>%
 schools %>%
   filter(Open == "Open") %>%
   filter(FSM > 0.95) %>%
-  summarise(n=n())
+  summarise(total = n())
 
 # alternatively:
 schools %>%
@@ -1214,6 +1216,90 @@ ggplot(data=plot_data,
 :::
 
 ### geom_bar
+
+### Questions
+
+::: question
+
+1. Can you spot the 4 errors in this code.
+
+```{r}
+#| eval: false
+#| echo: true
+#| class.source: "none"
+ggplot(data=schools %>% filter(Phase == "Secondary"), 
+       x=Region +
+  geom_bar(aes(fill=Gender) position="full") 
+```
+
+```{r}
+#| eval: false
+#| echo: true
+ggplot(data=schools %>% filter(Phase == "Secondary"), 
+       aes(x=Region)) + # 1 no aes() around the x value # 2 missing close brackets
+  geom_bar(aes(fill=Gender), position="fill") # 3 missing comma # 4 position="full" rather than fill 
+```
+
+2. Create a bar chart showing the total number of open Independent schools for each Gender
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+plot_data <- schools %>% filter(Open == "Open",
+                                EstablishmentGroup == "Independent schools")
+
+ggplot(data=plot_data,
+       aes(x=Gender)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+3. Using the TIMSS dataset:
+    - `filter` to only look at the USA and ENG
+    - make a graph to show the overall picture of _Parental expectations for student achievement_ (`BCBG14G`).
+    - Make the `x` axis a `factor` so the graph makes sense
+    - `fill` the bars in to show how many schools  each bar came from each country
+    - `position` bars so they aren't stacked on top of each other
+
+```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+plot_data <- TIMSS %>% 
+  filter(CNTRY %in% c("USA", "ENG"),
+         !is.na(BCBG14G))
+
+ggplot(data=plot_data,
+       aes(x=factor(BCBG14G,
+                    levels=c("Very low", "Low", "Medium", "High", "Very high")))) +
+  geom_bar(aes(fill=CNTRY), position="dodge")
+```
+
+4. Repeat Q3, but this time work out the percentage of responses for each option in `BCBG14G` by country. Display a graph showing this "indentity".
+
+```{r}
+#| warning: false
+#| echo: true
+#| eval: true
+plot_data <- TIMSS %>% 
+  filter(CNTRY %in% c("USA", "ENG"),
+         !is.na(BCBG14G)) %>%
+  group_by(CNTRY) %>%
+  mutate(total = n()) %>%
+  group_by(CNTRY, BCBG14G) %>%
+  summarise(per = n()/max(total))
+  
+ggplot(data=plot_data,
+       aes(x=factor(BCBG14G,
+                    levels=c("Very low", "Low", "Medium", "High", "Very high")),
+           y=per)) +
+  geom_bar(aes(fill=CNTRY), position="dodge", stat="identity")
+```
+
+5. [Extension] Explore other patterns in: "Teachers’ ability to inspire students" `BCBG14D` and "Parental expectations for student achievement" `BCBG14G`
+
+:::
 
 
 ## exporting plots
